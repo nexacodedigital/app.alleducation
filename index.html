@@ -2182,12 +2182,32 @@
                     document.getElementById('res-target-info-box').innerHTML = `<p class="text-xs text-gray-500 italic mt-2">Belum ada target PTN dipilih.</p>`;
                 }
 
-                // Subtest Scores
-                let subHtml = '';
+                // Subtest Scores (Dikelompokkan menjadi TPS & Literasi)
+                let tpsHtml = '';
+                let litHtml = '';
+                let otherHtml = '';
+
                 r.subtestScores.forEach(s => {
-                    subHtml += `<div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center"><span class="font-bold text-sm text-gray-700">${s.subtest}</span><span class="font-black text-brand-orange bg-orange-50 px-3 py-1 rounded-lg border border-orange-100">${s.score}</span></div>`;
+                    const name = s.subtest.toLowerCase();
+                    const cardHtml = `<div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center mb-3"><span class="font-bold text-sm text-gray-700">${s.subtest}</span><span class="font-black text-brand-orange bg-orange-50 px-3 py-1 rounded-lg border border-orange-100">${s.score}</span></div>`;
+                    
+                    // Deteksi mapel masuk TPS atau Literasi berdasarkan kata kunci
+                    if (name.includes('penalaran umum') || name.includes('pemahaman umum') || name.includes('bacaan dan menulis') || name.includes('kuantitatif') || name.includes('ppu') || name.includes('pbm')) {
+                        tpsHtml += cardHtml;
+                    } else if (name.includes('literasi bahasa') || name.includes('penalaran matematika')) {
+                        litHtml += cardHtml;
+                    } else {
+                        // Jika ada nama subtest lain yang tidak sesuai standar
+                        otherHtml += cardHtml;
+                    }
                 });
-                document.getElementById('res-subtest-scores').innerHTML = subHtml;
+
+                let finalHtml = '';
+                if (tpsHtml !== '') finalHtml += `<h3 class="font-bold text-gray-500 mb-3 text-xs uppercase tracking-wider">Tes Potensi Skolastik (TPS)</h3>` + tpsHtml;
+                if (litHtml !== '') finalHtml += `<h3 class="font-bold text-gray-500 mb-3 mt-6 text-xs uppercase tracking-wider">Tes Literasi & Matematika</h3>` + litHtml;
+                if (otherHtml !== '') finalHtml += `<h3 class="font-bold text-gray-500 mb-3 mt-6 text-xs uppercase tracking-wider">Subtes Lainnya</h3>` + otherHtml;
+                
+                document.getElementById('res-subtest-scores').innerHTML = finalHtml;
 
                 // Discussions
                 let discHtml = '';
