@@ -2558,6 +2558,85 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             renderCBTQuestion();
             renderCBTMap();
         }
+        // =========================================================================
+        // FUNGSI INTI YANG HILANG (PENYELAMAT SEMUA TOMBOL)
+        // =========================================================================
+
+        // 1. Fungsi Menutup Pop-up Modal
+        window.closeModal = function() {
+            const modal = document.getElementById('custom-modal');
+            if (modal) modal.classList.add('hidden');
+        };
+
+        // 2. Fungsi Ikon Mata (Lihat/Sembunyikan Password)
+        window.togglePassword = function(inputId) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const icon = input.nextElementSibling ? input.nextElementSibling.querySelector('i') : null;
+            if (input.type === 'password') {
+                input.type = 'text';
+                if (icon) { icon.classList.remove('fa-eye'); icon.classList.add('fa-eye-slash'); }
+            } else {
+                input.type = 'password';
+                if (icon) { icon.classList.remove('fa-eye-slash'); icon.classList.add('fa-eye'); }
+            }
+        };
+
+        // 3. Fungsi Render Rumus Matematika (MathJax)
+        window.renderMath = function() {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise().catch(e => console.log('MathJax error:', e));
+            }
+        };
+
+        // 4. Fungsi Sinkronisasi Penyimpanan Lokal (LocalStorage) & Database GAS (Spreadsheet)
+        window.syncServerData = function(tableName = 'NONE') {
+            // Simpan sesi user yang sedang login
+            if (currentUser) {
+                localStorage.setItem('bb_user', JSON.stringify(currentUser));
+                const uIdx = dbUsers.findIndex(u => u.id === currentUser.id);
+                if (uIdx > -1) dbUsers[uIdx] = currentUser;
+            }
+            
+            // Simpan seluruh database ke LocalStorage
+            const dbDump = {
+                dbUsers, dbMaster, dbModules, dbTryouts, 
+                dbResults, dbClasses, dbPtn, dbArticles, dbSettings
+            };
+            localStorage.setItem('bb_db', JSON.stringify(dbDump));
+
+            // Push ke Google Apps Script jika terhubung dan ada tabel spesifik yang diubah
+            if (USE_GAS_DATABASE && isGasReady && tableName !== 'NONE') {
+                let payload = null;
+                if (tableName === 'Users') payload = dbUsers.map(u => ({...u, targetPtn: u.targetPtn ? JSON.stringify(u.targetPtn) : ''}));
+                else if (tableName === 'Master') payload = [{ programs: JSON.stringify(dbMaster.programs), episodes: JSON.stringify(dbMaster.episodes), subtests: JSON.stringify(dbMaster.subtests) }];
+                else if (tableName === 'Modules') payload = dbModules.map(m => ({...m, questions: JSON.stringify(m.questions)}));
+                else if (tableName === 'Tryouts') payload = dbTryouts.map(t => ({...t, modules: JSON.stringify(t.modules)}));
+                else if (tableName === 'Results') payload = dbResults.map(r => ({...r, ansMap: JSON.stringify(r.ansMap), subtestScores: JSON.stringify(r.subtestScores)}));
+                else if (tableName === 'Classes') payload = dbClasses;
+                else if (tableName === 'PTN') payload = dbPtn;
+                else if (tableName === 'Articles') payload = dbArticles;
+                else if (tableName === 'Settings') payload = [dbSettings];
+
+                if (payload) pushToGAS(tableName, payload);
+            }
+        };
+
+        // 5. Fungsi Konfirmasi Mulai Drill Soal
+        window.startDrill = function(modId) {
+            const m = dbModules.find(x => x.id === modId);
+            if (!m) return;
+            if (!m.questions || m.questions.length === 0) {
+                showModal('Soal Kosong', 'Modul latihan ini belum memiliki soal.', 'error');
+                return;
+            }
+            showModal(
+                'Mulai Drill Soal',
+                `Anda akan mengerjakan latihan <b>${m.subtest}</b> (${m.program}).<br><br>Jumlah Soal: <b>${m.questions.length} Soal</b><br>Durasi: <b>${m.duration} Menit</b>`,
+                'info',
+                `<button onclick="executeStartDrill('${modId}')" class="w-full bg-brand-orange text-white py-3.5 rounded-xl font-bold text-lg hover:bg-orange-600 shadow-lg transition">Mulai Latihan Sekarang</button>
+                 <button onclick="closeModal()" class="w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-bold mt-2 hover:bg-gray-300 transition">Batal</button>`
+            );
     </script>
 </body>
 </html>
