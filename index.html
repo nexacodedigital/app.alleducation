@@ -291,18 +291,43 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8">
-                    <button onclick="switchUserTab('classes')" class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center gap-2 hover:border-brand-orange hover:shadow-md transition transform hover:-translate-y-1"><div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl mb-1"><i class="fa-solid fa-video"></i></div><span class="font-bold text-sm md:text-base text-gray-700">Kelas Online</span></button>
-                    <button onclick="switchUserTab('tryout')" class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center gap-2 hover:border-brand-orange hover:shadow-md transition transform hover:-translate-y-1"><div class="w-12 h-12 bg-orange-100 text-brand-orange rounded-full flex items-center justify-center text-xl mb-1"><i class="fa-solid fa-laptop-file"></i></div><span class="font-bold text-sm md:text-base text-gray-700">Tryout</span></button>
-                    <button onclick="switchUserTab('ptn')" class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center gap-2 hover:border-brand-orange hover:shadow-md transition transform hover:-translate-y-1"><div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xl mb-1"><i class="fa-solid fa-building-columns"></i></div><span class="font-bold text-sm md:text-base text-gray-700">Cek Peluang</span></button>
-                    <button onclick="switchUserTab('profile')" class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center gap-2 hover:border-brand-orange hover:shadow-md transition transform hover:-translate-y-1"><div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-xl mb-1"><i class="fa-solid fa-user-gear"></i></div><span class="font-bold text-sm md:text-base text-gray-700">Profil Saya</span></button>
-                </div>
-            </div>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 mb-8">
+    <button onclick="switchUserTab('classes')" class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center gap-2 hover:border-brand-orange hover:shadow-md transition transform hover:-translate-y-1"><div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl mb-1"><i class="fa-solid fa-video"></i></div><span class="font-bold text-sm md:text-base text-gray-700">Kelas Online</span></button>
+    <button onclick="switchUserTab('tryout')" class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center gap-2 hover:border-brand-orange hover:shadow-md transition transform hover:-translate-y-1"><div class="w-12 h-12 bg-orange-100 text-brand-orange rounded-full flex items-center justify-center text-xl mb-1"><i class="fa-solid fa-laptop-file"></i></div><span class="font-bold text-sm md:text-base text-gray-700">Tryout</span></button>
+    
+    <!-- INI TOMBOL BARU DRILL SOAL -->
+    <button onclick="switchUserTab('drill')" class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center gap-2 hover:border-brand-orange hover:shadow-md transition transform hover:-translate-y-1"><div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xl mb-1"><i class="fa-solid fa-file-pen"></i></div><span class="font-bold text-sm md:text-base text-gray-700">Drill Soal</span></button>
+    
+    <button onclick="switchUserTab('ptn')" class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center gap-2 hover:border-brand-orange hover:shadow-md transition transform hover:-translate-y-1"><div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xl mb-1"><i class="fa-solid fa-building-columns"></i></div><span class="font-bold text-sm md:text-base text-gray-700">Cek Peluang</span></button>
+    <button onclick="switchUserTab('profile')" class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center gap-2 hover:border-brand-orange hover:shadow-md transition transform hover:-translate-y-1"><div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-xl mb-1"><i class="fa-solid fa-user-gear"></i></div><span class="font-bold text-sm md:text-base text-gray-700">Profil Saya</span></button>
+</div>
 
             <div id="u-content-view" class="hidden max-w-7xl mx-auto px-4 mt-6">
                 <button onclick="goUserHome()" class="mb-6 bg-white border border-gray-200 text-gray-600 hover:text-brand-orange hover:border-brand-orange px-4 py-2 rounded-xl font-bold text-sm shadow-sm transition inline-flex items-center"><i class="fa-solid fa-arrow-left mr-2"></i> Kembali ke Menu Utama</button>
 
                 <div id="user-content-area">
+                    <!-- TAB DRILL SOAL BARU -->
+                    <div id="u-tab-drill" class="hidden">
+                        <div class="bg-white p-5 md:p-6 rounded-3xl border shadow-sm mb-6">
+                            <h2 class="text-xl md:text-2xl font-bold text-brand-navy mb-4"><i class="fa-solid fa-file-pen mr-2 text-brand-orange"></i>Drill Soal (Latihan)</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Pilih Program / Kelas</label>
+                                    <select id="drill-filter-prog" class="w-full border p-3 rounded-xl bg-gray-50 outline-none focus:border-brand-orange font-bold text-sm" onchange="renderDrillModules()">
+                                        <option value="">-- Semua Program --</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Pilih Subtest / Mapel</label>
+                                    <select id="drill-filter-sub" class="w-full border p-3 rounded-xl bg-gray-50 outline-none focus:border-brand-orange font-bold text-sm" onchange="renderDrillModules()">
+                                        <option value="">-- Semua Mapel --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="drill-module-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                    </div>
+                    
                     <div id="u-tab-classes" class="hidden">
                         <div class="flex gap-4 mb-6 border-b pb-2">
                             <button onclick="renderUserClasses('active')" id="btn-u-cls-act" class="font-bold text-brand-navy border-b-2 border-brand-navy pb-2 px-2">Kelas Mendatang</button>
@@ -1575,10 +1600,17 @@
 
         function goUserHome() { document.getElementById('u-content-view').classList.add('hidden'); document.getElementById('u-home-view').classList.remove('hidden'); updateUserTargetStats(); }
         function switchUserTab(tab) { 
-            document.getElementById('u-home-view').classList.add('hidden'); document.getElementById('u-content-view').classList.remove('hidden');
-            ['classes', 'tryout', 'ptn', 'profile'].forEach(t => document.getElementById('u-tab-' + t).classList.add('hidden')); 
+            document.getElementById('u-home-view').classList.add('hidden'); 
+            document.getElementById('u-content-view').classList.remove('hidden');
+            
+            ['classes', 'tryout', 'ptn', 'profile', 'drill'].forEach(t => document.getElementById('u-tab-' + t).classList.add('hidden')); 
             document.getElementById('u-tab-' + tab).classList.remove('hidden'); 
-            if(tab === 'tryout') renderUserTryouts(); if(tab === 'classes') renderUserClasses('active'); 
+            
+            if(tab === 'tryout') renderUserTryouts(); 
+            if(tab === 'classes') renderUserClasses('active'); 
+            
+            // ---> INI DIA KODENYA BRO, DI PALING BAWAH SEBELUM KURUNG TUTUP <---
+            if(tab === 'drill') { initDrillDropdowns(); renderDrillModules(); } 
         }
 
         function renderUserClasses(filter) {
@@ -2080,20 +2112,23 @@
             closeModal();
             clearInterval(cbtState.timer);
             window.isCbtActive = false;
-            sessionStorage.removeItem('bb_cbt_state'); // Clear session
+            sessionStorage.removeItem('bb_cbt_state');
             
             const loader = document.getElementById('global-loader');
             if(loader) {
                 loader.querySelector('h2').innerText = "Mengumpulkan Jawaban...";
-                loader.querySelector('p').innerText = "Memproses kalkulasi nilai IRT, mohon tunggu.";
+                loader.querySelector('p').innerText = "Memproses kalkulasi nilai, mohon tunggu.";
                 loader.classList.remove('hidden', 'opacity-0');
             }
             
             setTimeout(() => {
                 try {
-                    let totalRawScore = 0; let subtestThetas = []; let subtestScoresArr = [];
+                    let totalRawScore = 0, totalQuestions = 0, subtestThetas = [], subtestScoresArr = [];
+
                     cbtState.modules.forEach((mod, modIdx) => {
-                        let responses = [];
+                        let responses = [], subRaw = 0;
+                        totalQuestions += mod.questions.length;
+
                         mod.questions.forEach((q, qIdx) => {
                             const k = `${modIdx}-${qIdx}`; let userAns = cbtState.ans[k] || ""; let isCorrect = false;
                             
@@ -2101,38 +2136,53 @@
                                 const arrAns = Array.isArray(q.ans) ? q.ans : (q.ans ? [q.ans] : []);
                                 const arrUser = Array.isArray(userAns) ? userAns : (userAns ? [userAns] : []);
                                 isCorrect = ([...arrUser].sort().join(',') === [...arrAns].sort().join(',')); 
-                            } else { 
-                                isCorrect = (userAns === q.ans); 
-                            }
+                            } else { isCorrect = (userAns === q.ans); }
                             
-                            if(isCorrect) totalRawScore++;
-                            const params = getIrtParams(q.cog || 'C1'); responses.push({ a: params.a, b: params.b, c: params.c, isCorrect: isCorrect });
+                            if(isCorrect) { totalRawScore++; subRaw++; }
+                            const params = getIrtParams(q.cog || 'C1'); 
+                            responses.push({ a: params.a, b: params.b, c: params.c, isCorrect: isCorrect });
                         });
-                        let subTheta = estimateThetaIRT(responses); subtestThetas.push(subTheta);
-                        let sScore = 100 + ((subTheta + 3) / 6) * 900; sScore = Math.max(100, Math.min(1000, Math.round(sScore))); subtestScoresArr.push({ subtest: mod.subtest || 'Subtest', score: sScore });
+
+                        if(cbtState.isDrill) {
+                            let sScore = Math.round((subRaw / mod.questions.length) * 100);
+                            subtestScoresArr.push({ subtest: mod.subtest || 'Latihan', score: sScore });
+                        } else {
+                            let subTheta = estimateThetaIRT(responses); subtestThetas.push(subTheta);
+                            let sScore = Math.max(100, Math.min(1000, Math.round(100 + ((subTheta + 3) / 6) * 900))); 
+                            subtestScoresArr.push({ subtest: mod.subtest || 'Subtest', score: sScore });
+                        }
                     });
                     
-                    let thetaTotal = subtestThetas.length > 0 ? (subtestThetas.reduce((a,b)=>a+b,0) / subtestThetas.length) : 0;
-                    let finalIRTScore = Math.round(100 + ((thetaTotal + 3) / 6) * 900); finalIRTScore = Math.max(100, Math.min(1000, finalIRTScore));
+                    let finalScore = 0;
+                    if(cbtState.isDrill) {
+                        finalScore = Math.round((totalRawScore / totalQuestions) * 100);
+                    } else {
+                        let thetaTotal = subtestThetas.length > 0 ? (subtestThetas.reduce((a,b)=>a+b,0) / subtestThetas.length) : 0;
+                        finalScore = Math.max(100, Math.min(1000, Math.round(100 + ((thetaTotal + 3) / 6) * 900)));
+                    }
 
-                    const userId = currentUser ? currentUser.id : 'UNKNOWN';
-                    dbResults.push({ toId: cbtState.tryout.id, userId: userId, rawScore: totalRawScore, irtScore: finalIRTScore, subtestScores: subtestScoresArr, ansMap: {...cbtState.ans} });
+                    dbResults.push({ 
+                        toId: cbtState.tryout.id, userId: currentUser ? currentUser.id : 'UNKNOWN', 
+                        rawScore: totalRawScore, irtScore: finalScore, 
+                        subtestScores: subtestScoresArr, ansMap: {...cbtState.ans},
+                        isDrillResult: cbtState.isDrill ? true : false
+                    });
+                    
                     syncServerData('Results');
                     
-                    router('dashboard-user'); switchUserTab('tryout'); updateUserTargetStats(); 
-                    showModal('Tryout Selesai!', `Seluruh jawaban berhasil dikumpulkan secara permanen.<br><br>Hasil simulasi akan tersedia sesuai dengan jadwal yang telah ditentukan.`, 'success');
-                } catch (err) {
-                    console.error("Error submitting CBT:", err);
-                    showToast('Gagal memproses nilai, harap lapor Admin.', 'error');
-                } finally {
-                    if(loader) {
-                        loader.classList.add('opacity-0');
-                        setTimeout(() => {
-                            loader.classList.add('hidden');
-                            loader.querySelector('h2').innerText = "Sedang memproses..."; 
-                            loader.querySelector('p').innerText = "Silakan tunggu sebentar.";
-                        }, 150);
+                    router('dashboard-user'); 
+                    if(cbtState.isDrill) {
+                        switchUserTab('drill'); 
+                        showModal('Latihan Selesai!', `Jawaban Drill berhasil disimpan.<br><br>Nilai Anda: <b class="text-2xl text-brand-orange ml-2">${finalScore} / 100</b>`, 'success');
+                    } else {
+                        switchUserTab('tryout'); updateUserTargetStats(); 
+                        showModal('Tryout Selesai!', `Seluruh jawaban berhasil dikumpulkan secara permanen.`, 'success');
                     }
+                    
+                } catch (err) {
+                    showToast('Gagal memproses nilai.', 'error');
+                } finally {
+                    if(loader) { loader.classList.add('opacity-0'); setTimeout(() => loader.classList.add('hidden'), 150); }
                 }
             }, 300);
         }
@@ -2336,7 +2386,75 @@
 
             document.getElementById('class-preview-modal').classList.remove('hidden');
         }
+// =========================================================================
+        // ENGINE DRILL SOAL
+        // =========================================================================
+        
+        function initDrillDropdowns() {
+            let pStr = '<option value="">-- Semua Program --</option>';
+            dbMaster.programs.forEach(p => pStr += `<option value="${p}">${p}</option>`);
+            document.getElementById('drill-filter-prog').innerHTML = pStr;
 
+            let sStr = '<option value="">-- Semua Mapel --</option>';
+            dbMaster.subtests.forEach(s => sStr += `<option value="${s}">${s}</option>`);
+            document.getElementById('drill-filter-sub').innerHTML = sStr;
+        }
+
+        window.renderDrillModules = function() {
+            const prog = document.getElementById('drill-filter-prog').value;
+            const sub = document.getElementById('drill-filter-sub').value;
+            const cont = document.getElementById('drill-module-list');
+
+            let filtered = dbModules; 
+            if(prog) filtered = filtered.filter(m => m.program === prog);
+            if(sub) filtered = filtered.filter(m => m.subtest === sub);
+
+            if(filtered.length === 0) {
+                cont.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-2xl border text-gray-500 font-medium"><i class="fa-solid fa-folder-open text-4xl mb-3 text-gray-300 block"></i>Belum ada Modul Latihan untuk filter tersebut.</div>`;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(m => {
+                html += `<div class="bg-white p-6 rounded-3xl border shadow-sm flex flex-col hover:border-brand-orange transition group">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[10px] font-bold bg-blue-50 text-blue-600 px-2 py-1 rounded border border-blue-100">${m.program}</span>
+                        <span class="text-[10px] font-bold text-gray-500 bg-gray-50 px-2 py-1 rounded border"><i class="fa-solid fa-clock text-brand-orange mr-1"></i> ${m.duration} Min</span>
+                    </div>
+                    <h3 class="font-bold text-brand-navy leading-tight mb-2">${m.subtest}</h3>
+                    <p class="text-xs text-gray-500 mb-5 font-medium"><i class="fa-solid fa-layer-group text-gray-400 mr-1"></i> Modul: ${m.moduleCode || 'MOD'} • ${m.questions.length} Soal</p>
+                    <button onclick="startDrill('${m.id}')" class="mt-auto w-full bg-brand-orange text-white py-3 rounded-xl font-bold text-sm shadow hover:bg-orange-600 transition flex items-center justify-center"><i class="fa-solid fa-play mr-2"></i> Mulai Latihan</button>
+                </div>`;
+            });
+            cont.innerHTML = html;
+        }
+
+        window.startDrill = function(modId) {
+            const m = dbModules.find(x => x.id === modId);
+            if(!m) return;
+            showModal('Mulai Latihan Drill?', `Anda akan mengerjakan latihan <b>${m.subtest}</b> berjumlah <b>${m.questions.length} soal</b>.<br><br>Sistem penilaian menggunakan persentase Benar (0-100).`, 'info', `<button onclick="executeStartDrill('${modId}')" class="w-full bg-brand-navy text-white py-3.5 rounded-xl font-bold text-lg hover:bg-opacity-90 shadow-lg transition">Mulai Sekarang</button>`);
+        }
+
+        window.executeStartDrill = function(modId) {
+            closeModal();
+            const m = dbModules.find(x => x.id === modId);
+            
+            cbtState = {
+                tryout: { program: 'DRILL SOAL', episode: m.subtest, id: 'DRILL_' + modId }, 
+                modules: [JSON.parse(JSON.stringify(m))], 
+                currModIdx: 0, currQIdx: 0,
+                ans: {}, doubt: {}, fontSize: 15,
+                endTime: new Date().getTime() + (m.duration * 60000),
+                isDrill: true // INI TANDA BAHWA INI DRILL (BUKAN IRT)
+            };
+            
+            window.isCbtActive = true;
+            saveCbtSession();
+            router('cbt-engine', false);
+            startCBTTimer();
+            renderCBTQuestion();
+            renderCBTMap();
+        }
     </script>
 </body>
 </html>
