@@ -2276,13 +2276,12 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                     return;
                 }
                 
-                window.currentViewedToId = toId; // for leaderboard
+                window.currentViewedToId = toId; 
                 
                 document.getElementById('res-header-title').innerText = to.program + ' - ' + to.episode;
                 document.getElementById('res-user-name').innerText = currentUser.nama;
                 document.getElementById('res-score-display').innerText = r.irtScore;
                 
-                // Total questions
                 let totalQ = 0;
                 to.modules.forEach(mid => {
                     const m = dbModules.find(x=>x.id===mid);
@@ -2291,7 +2290,6 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                 document.getElementById('res-raw-score').innerText = r.rawScore;
                 document.getElementById('res-raw-score-container').innerHTML = `${r.rawScore}<span class="text-sm font-bold text-gray-400">/${totalQ}</span>`;
                 
-                // Rank
                 const allRes = dbResults.filter(x => x.toId === toId).sort((a,b)=>b.irtScore - a.irtScore);
                 const myRank = allRes.findIndex(x => x.userId === currentUser.id) + 1;
                 const rankTotal = allRes.length;
@@ -2302,7 +2300,6 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                 document.getElementById('res-rank-badge').innerHTML = `<i class="fa-solid fa-arrow-${pct<=50?'up':'down'} mr-1 text-[8px]"></i> ${pct}% <span class="ml-1 font-normal">teratas</span>`;
                 document.getElementById('res-rank-badge').className = `text-white font-bold px-2 py-1 rounded-md text-[10px] flex items-center ${pct<=50?'bg-green-500':'bg-red-500'}`;
                 
-                // Target Info
                 if(currentUser.targetPtn) {
                     const t = currentUser.targetPtn;
                     const basePG = 450 + (t.peminat / t.daya) * 5;
@@ -2312,23 +2309,16 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                     document.getElementById('res-target-info-box').innerHTML = `<p class="text-xs text-gray-500 italic mt-2">Belum ada target PTN dipilih.</p>`;
                 }
 
-               // Subtest Scores (Dikelompokkan menjadi TPS & Literasi)
-                let tpsHtml = '';
-                let litHtml = '';
-                let otherHtml = '';
-
+                let tpsHtml = '', litHtml = '', otherHtml = '';
                 r.subtestScores.forEach(s => {
                     const name = s.subtest.toLowerCase();
                     const cardHtml = `<div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center mb-3"><span class="font-bold text-sm text-gray-700">${s.subtest}</span><span class="font-black text-brand-orange bg-orange-50 px-3 py-1 rounded-lg border border-orange-100">${s.score}</span></div>`;
                     
-                    // Deteksi mapel masuk TPS atau Literasi berdasarkan kata kunci
-                    // Gue ganti jadi 'kuantita' biar kalau ada typo Kuantitatif / Kuantitafif tetep masuk TPS
                     if (name.includes('penalaran umum') || name.includes('pemahaman umum') || name.includes('bacaan dan menulis') || name.includes('kuantita') || name.includes('ppu') || name.includes('pbm')) {
                         tpsHtml += cardHtml;
                     } else if (name.includes('literasi bahasa') || name.includes('penalaran matematika') || name.includes('matematika')) {
                         litHtml += cardHtml;
                     } else {
-                        // Jika ada nama subtest lain yang tidak sesuai standar
                         otherHtml += cardHtml;
                     }
                 });
@@ -2340,7 +2330,6 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                 
                 document.getElementById('res-subtest-scores').innerHTML = finalHtml;
 
-                // Discussions
                 let discHtml = '';
                 to.modules.forEach((mid, mIdx) => {
                     const m = dbModules.find(x => x.id === mid);
@@ -2367,7 +2356,6 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                 showToast('Terjadi kesalahan rendering. Harap tekan F5 (Refresh) browser Anda.', 'error');
             }
         }
-
         // Discussion Engine Logic
         let discState = { toId: null, mIdx: 0, qIdx: 0, result: null, tryout: null };
         window.openDiscussionEngine = function(toId, mIdx, qIdx) {
