@@ -2170,7 +2170,7 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
 
         function finishCBT() {
             closeModal();
-            clearInterval(cbtState.timer);
+            if(cbtState.timer) clearInterval(cbtState.timer);
             window.isCbtActive = false;
             sessionStorage.removeItem('bb_cbt_state');
             
@@ -2190,28 +2190,33 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                         totalQuestions += mod.questions.length;
 
                         mod.questions.forEach((q, qIdx) => {
-                            const k = `${modIdx}-${qIdx}`; let userAns = cbtState.ans[k] || ""; let isCorrect = false;
+                            const k = `${modIdx}-${qIdx}`; 
+                            let userAns = cbtState.ans[k] || ""; 
+                            let isCorrect = false;
                             
+                            // Validasi Aman untuk Berbagai Tipe Soal (PG, PGK, Isian)
                             if(q.type === 'PGK') { 
                                 const arrAns = Array.isArray(q.ans) ? q.ans : (q.ans ? [q.ans] : []);
                                 const arrUser = Array.isArray(userAns) ? userAns : (userAns ? [userAns] : []);
                                 isCorrect = ([...arrUser].sort().join(',') === [...arrAns].sort().join(',')); 
-                            } else { isCorrect = (userAns === q.ans); }
+                            } else if(q.type === 'ISIAN') {
+                                // Cek Isian: Bersihkan spasi dan abaikan kapital/huruf besar-kecil
+                                const cleanUser = String(userAns).trim().toLowerCase();
+                                const cleanKey = String(q.ans).trim().toLowerCase();
+                                isCorrect = (cleanUser === cleanKey);
+                            } else { 
+                                isCorrect = (String(userAns).trim() === String(q.ans).trim()); 
+                            }
                             
                             if(isCorrect) { totalRawScore++; subRaw++; }
                             const params = getIrtParams(q.cog || 'C1'); 
                             responses.push({ a: params.a, b: params.b, c: params.c, isCorrect: isCorrect });
                         });
 
-                       if(cbtState.isDrill) {
-                        switchUserTab('drill'); 
-                        showModal('Latihan Selesai!', 
-                            `<div class="text-center text-gray-600">Jawaban Drill berhasil disimpan.<br><br>Nilai Anda: <b class="text-3xl text-brand-orange ml-2">${finalScore} / 100</b></div>`, 
-                            'success',
-                            `<button onclick="closeModal(); openDiscussionEngine('${cbtState.tryout.id}', 0, 0);" class="w-full bg-brand-orange text-white py-3.5 rounded-xl font-bold text-lg hover:bg-orange-600 shadow-lg transition"><i class="fa-solid fa-book-open mr-2"></i>Lihat Pembahasan</button>
-                             <button onclick="closeModal()" class="w-full bg-brand-navy text-white py-3.5 rounded-xl font-bold text-lg hover:bg-opacity-90 shadow-lg transition mt-3">Tutup Latihan</button>`
-                        );
-                    } else {
+                        if(cbtState.isDrill) {
+                            let sScore = mod.questions.length > 0 ? Math.round((subRaw / mod.questions.length) * 100) : 0;
+                            subtestScoresArr.push({ subtest: mod.subtest || 'Latihan', score: sScore });
+                        } else {
                             let subTheta = estimateThetaIRT(responses); subtestThetas.push(subTheta);
                             let sScore = Math.max(100, Math.min(1000, Math.round(100 + ((subTheta + 3) / 6) * 900))); 
                             subtestScoresArr.push({ subtest: mod.subtest || 'Subtest', score: sScore });
@@ -2220,7 +2225,7 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                     
                     let finalScore = 0;
                     if(cbtState.isDrill) {
-                        finalScore = Math.round((totalRawScore / totalQuestions) * 100);
+                        finalScore = totalQuestions > 0 ? Math.round((totalRawScore / totalQuestions) * 100) : 0;
                     } else {
                         let thetaTotal = subtestThetas.length > 0 ? (subtestThetas.reduce((a,b)=>a+b,0) / subtestThetas.length) : 0;
                         finalScore = Math.max(100, Math.min(1000, Math.round(100 + ((thetaTotal + 3) / 6) * 900)));
@@ -2238,16 +2243,25 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                     router('dashboard-user'); 
                     if(cbtState.isDrill) {
                         switchUserTab('drill'); 
-                        showModal('Latihan Selesai!', `Jawaban Drill berhasil disimpan.<br><br>Nilai Anda: <b class="text-2xl text-brand-orange ml-2">${finalScore} / 100</b>`, 'success');
+                        showModal('Latihan Selesai!', 
+                            `<div class="text-center text-gray-600">Jawaban Drill berhasil disimpan.<br><br>Nilai Anda: <b class="text-3xl text-brand-orange ml-2">${finalScore} / 100</b></div>`, 
+                            'success',
+                            `<button onclick="closeModal(); openDiscussionEngine('${cbtState.tryout.id}', 0, 0);" class="w-full bg-brand-orange text-white py-3.5 rounded-xl font-bold text-lg hover:bg-orange-600 shadow-lg transition"><i class="fa-solid fa-book-open mr-2"></i>Lihat Pembahasan</button>
+                             <button onclick="closeModal()" class="w-full bg-brand-navy text-white py-3.5 rounded-xl font-bold text-lg hover:bg-opacity-90 shadow-lg transition mt-3">Tutup Latihan</button>`
+                        );
                     } else {
                         switchUserTab('tryout'); updateUserTargetStats(); 
                         showModal('Tryout Selesai!', `Seluruh jawaban berhasil dikumpulkan secara permanen.`, 'success');
                     }
                     
                 } catch (err) {
-                    showToast('Gagal memproses nilai.', 'error');
+                    console.error("Error Finish CBT:", err);
+                    showToast('Gagal memproses nilai: ' + err.message, 'error');
                 } finally {
-                    if(loader) { loader.classList.add('opacity-0'); setTimeout(() => loader.classList.add('hidden'), 150); }
+                    if(loader) { 
+                        loader.classList.add('opacity-0'); 
+                        setTimeout(() => loader.classList.add('hidden'), 150); 
+                    }
                 }
             }, 300);
         }
