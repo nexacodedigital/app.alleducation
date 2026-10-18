@@ -708,12 +708,17 @@
                         <div id="view-bs-list">
                             <div class="bg-white rounded-2xl shadow-sm border p-6 mb-6">
                                 <h3 class="font-bold text-lg mb-4 border-b pb-2 text-brand-navy"><i class="fa-solid fa-folder-plus mr-2"></i>Buat Modul Soal Baru</h3>
-                                <form onsubmit="createModule(event)" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
-                                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">Program</label><select id="bs-sel-prog" required class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange font-bold"></select></div>
-                                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">Episode</label><select id="bs-sel-eps" required class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange font-bold"></select></div>
-                                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">Mata Pelajaran</label><select id="bs-sel-sub" required class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange font-bold"></select></div>
-                                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">Durasi (Menit)</label><input type="number" id="bs-inp-dur" required value="15" class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange font-bold text-center"></div>
-                                    <button type="submit" class="bg-brand-navy text-white px-4 py-2.5 rounded-xl font-bold h-fit w-full shadow border border-brand-navy hover:bg-gray-800 transition"><i class="fa-solid fa-save mr-2"></i>Buat Modul</button>
+                               <form onsubmit="createModule(event)" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-3 items-end">
+                                    <div class="lg:col-span-1"><label class="text-[10px] font-bold text-gray-500 mb-1 block">Program</label><select id="bs-sel-prog" required class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange text-xs font-bold"></select></div>
+                                    <div class="lg:col-span-1"><label class="text-[10px] font-bold text-gray-500 mb-1 block">Episode</label><select id="bs-sel-eps" required class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange text-xs font-bold"></select></div>
+                                    <div class="lg:col-span-1"><label class="text-[10px] font-bold text-gray-500 mb-1 block">Mata Pelajaran</label><select id="bs-sel-sub" required class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange text-xs font-bold"></select></div>
+                                    <div class="lg:col-span-1"><label class="text-[10px] font-bold text-gray-500 mb-1 block">Durasi (Menit)</label><input type="number" id="bs-inp-dur" required value="15" class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange text-xs font-bold text-center"></div>
+                                    
+                                    <!-- INI DROPDOWN BARUNYA BRO -->
+                                    <div class="lg:col-span-1"><label class="text-[10px] font-bold text-gray-500 mb-1 block">Tipe Modul</label><select id="bs-sel-type" required class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange text-xs font-bold"><option value="DRILL">Latihan (Drill)</option><option value="TRYOUT">Khusus Tryout</option></select></div>
+                                    <div class="lg:col-span-1"><label class="text-[10px] font-bold text-gray-500 mb-1 block">Akses</label><select id="bs-sel-access" required class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange text-xs font-bold"><option value="FREE">FREE</option><option value="PREMIUM">PREMIUM</option></select></div>
+                                    
+                                    <button type="submit" class="lg:col-span-1 bg-brand-navy text-white px-2 py-2.5 rounded-xl font-bold h-fit w-full shadow border border-brand-navy hover:bg-gray-800 transition text-xs"><i class="fa-solid fa-save mr-1"></i>Simpan</button>
                                 </form>
                             </div>
                             
@@ -1389,7 +1394,17 @@
         function createModule(e) { 
             e.preventDefault(); const id = 'M' + Date.now(); 
             const modCode = 'MOD-' + Math.random().toString(36).substr(2, 5).toUpperCase();
-            dbModules.push({ id, moduleCode: modCode, program: document.getElementById('bs-sel-prog').value, episode: document.getElementById('bs-sel-eps').value, subtest: document.getElementById('bs-sel-sub').value, duration: parseInt(document.getElementById('bs-inp-dur').value), questions: [] }); 
+            dbModules.push({ 
+                id: id, 
+                moduleCode: modCode, 
+                program: document.getElementById('bs-sel-prog').value, 
+                episode: document.getElementById('bs-sel-eps').value, 
+                subtest: document.getElementById('bs-sel-sub').value, 
+                duration: parseInt(document.getElementById('bs-inp-dur').value), 
+                modType: document.getElementById('bs-sel-type').value, // Tipe: Drill atau Tryout
+                access: document.getElementById('bs-sel-access').value, // Akses: Free atau Premium
+                questions: [] 
+            }); 
             syncServerData('Modules'); document.getElementById('bs-search').value = ''; renderBankSoalModules(); openModuleEditor(id); 
         }
         function deleteModule(id) { if(confirm("Yakin hapus modul soal ini seluruhnya?")) { dbModules = dbModules.filter(m => m.id !== id); syncServerData('Modules'); renderBankSoalModules(); } }
@@ -1565,7 +1580,8 @@
         function loadModulesForTryout() { 
             const prog = document.getElementById('ts-prog').value; const eps = document.getElementById('ts-eps').value; 
             const container = document.getElementById('ts-module-list'); 
-            const filtered = dbModules.filter(m => m.program === prog && m.episode === eps); 
+            // Filter: Cuma ambil modul yang BUKAN DRILL (Khusus Tryout)
+const filtered = dbModules.filter(m => m.program === prog && m.episode === eps && m.modType !== 'DRILL');
             if(filtered.length === 0) { container.innerHTML = '<span class="text-sm text-red-500 italic font-medium bg-red-50 p-2 rounded w-full">Tidak ada modul Bank Soal untuk parameter ini.</span>'; return; } 
             
             let htmlStr = '';
@@ -2424,7 +2440,9 @@
             const sub = document.getElementById('drill-filter-sub').value;
             const cont = document.getElementById('drill-module-list');
 
-            let filtered = dbModules; 
+            // 1. FILTER: Cuma tampilkan modul yang tipenya DRILL
+            let filtered = dbModules.filter(m => m.modType === 'DRILL'); 
+            
             if(prog) filtered = filtered.filter(m => m.program === prog);
             if(sub) filtered = filtered.filter(m => m.subtest === sub);
 
@@ -2435,14 +2453,26 @@
 
             let html = '';
             filtered.forEach(m => {
+                const mAcc = m.access || 'FREE';
+                const isPrem = mAcc === 'PREMIUM';
+                const canJoin = !isPrem || currentUser.isPremium; // Cek status akun peserta
+
+                // 2. LOGIKA TOMBOL (FREE vs PREMIUM)
+                let btnHtml = '';
+                if(canJoin) {
+                    btnHtml = `<button onclick="startDrill('${m.id}')" class="mt-auto w-full bg-brand-orange text-white py-3 rounded-xl font-bold text-sm shadow hover:bg-orange-600 transition flex items-center justify-center"><i class="fa-solid fa-play mr-2"></i> Mulai Latihan</button>`;
+                } else {
+                    btnHtml = `<button onclick="showModal('Akses Ditolak','Modul latihan ini khusus untuk member PREMIUM. Silakan upgrade akun Anda untuk mengakses semua bank soal.','error')" class="mt-auto w-full bg-yellow-400 text-brand-navy border border-yellow-500 py-3 rounded-xl font-bold text-sm shadow transition flex items-center justify-center"><i class="fa-solid fa-lock mr-2"></i> Upgrade ke Premium</button>`;
+                }
+
                 html += `<div class="bg-white p-6 rounded-3xl border shadow-sm flex flex-col hover:border-brand-orange transition group">
                     <div class="flex justify-between items-center mb-3">
                         <span class="text-[10px] font-bold bg-blue-50 text-blue-600 px-2 py-1 rounded border border-blue-100">${m.program}</span>
-                        <span class="text-[10px] font-bold text-gray-500 bg-gray-50 px-2 py-1 rounded border"><i class="fa-solid fa-clock text-brand-orange mr-1"></i> ${m.duration} Min</span>
+                        ${isPrem ? `<span class="text-[10px] font-bold text-yellow-700 bg-yellow-100 px-2 py-1 rounded border border-yellow-300"><i class="fa-solid fa-crown mr-1"></i> PREMIUM</span>` : `<span class="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded border border-gray-300">FREE</span>`}
                     </div>
                     <h3 class="font-bold text-brand-navy leading-tight mb-2">${m.subtest}</h3>
                     <p class="text-xs text-gray-500 mb-5 font-medium"><i class="fa-solid fa-layer-group text-gray-400 mr-1"></i> Modul: ${m.moduleCode || 'MOD'} • ${m.questions.length} Soal</p>
-                    <button onclick="startDrill('${m.id}')" class="mt-auto w-full bg-brand-orange text-white py-3 rounded-xl font-bold text-sm shadow hover:bg-orange-600 transition flex items-center justify-center"><i class="fa-solid fa-play mr-2"></i> Mulai Latihan</button>
+                    ${btnHtml}
                 </div>`;
             });
             cont.innerHTML = html;
