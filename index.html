@@ -953,18 +953,6 @@
             } 
             modal.classList.remove('hidden'); 
         }
-        function closeModal() { document.getElementById('custom-modal').classList.add('hidden'); }
-        function togglePassword(id) { const el = document.getElementById(id); el.type = el.type === "password" ? "text" : "password"; }
-        function renderMath() { if(window.MathJax) { MathJax.typesetPromise().catch((err) => console.log('MathJax error: ', err)); } }
-        
-        function syncServerData(tableName) {
-            localStorage.setItem('bb_db', JSON.stringify({dbUsers, dbMaster, dbModules, dbTryouts, dbResults, dbClasses, dbPtn, dbArticles, dbSettings}));
-            if (currentUser) localStorage.setItem('bb_user', JSON.stringify(currentUser));
-            if(!USE_GAS_DATABASE || !isGasReady) return;
-            let payload = []; if(tableName === 'Users') payload = dbUsers; else if(tableName === 'Master') payload = [{programs: JSON.stringify(dbMaster.programs), episodes: JSON.stringify(dbMaster.episodes), subtests: JSON.stringify(dbMaster.subtests)}]; else if(tableName === 'Modules') payload = dbModules; else if(tableName === 'Tryouts') payload = dbTryouts; else if(tableName === 'Results') payload = dbResults; else if(tableName === 'Classes') payload = dbClasses; else if(tableName === 'PTN') payload = dbPtn; else if(tableName === 'Articles') payload = dbArticles; else if(tableName === 'Settings') payload = [dbSettings];
-            if(tableName !== 'NONE') { pushToGAS(tableName, payload); }
-        }
-
         function pushToGAS(tableName, payload) {
             if(!GAS_SCRIPT_URL || !GAS_SCRIPT_URL.startsWith('http')) return;
             fetch(GAS_SCRIPT_URL, {
@@ -1902,7 +1890,13 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
         function initCBT(toId) {
             const to = dbTryouts.find(t => t.id === toId);
             if(!to) return;
-            showModal('Konfirmasi Tryout', `Anda akan memulai Tryout <b>${to.program} - ${to.episode}</b>.<br><br>Waktu akan terus berjalan meskipun Anda keluar dari browser. Pastikan koneksi internet Anda stabil.`, 'info', `<button onclick="startCBT('${toId}')" class="w-full bg-brand-navy text-white py-3.5 rounded-xl font-bold text-lg hover:bg-opacity-90 shadow-lg transition">Mulai Ujian Sekarang</button>`);
+            showModal(
+                'Konfirmasi Tryout', 
+                `Anda akan memulai Tryout <b>${to.program} - ${to.episode}</b>.<br><br>Waktu akan terus berjalan meskipun Anda keluar dari browser. Pastikan koneksi internet Anda stabil.`, 
+                'info', 
+                `<button onclick="startCBT('${toId}')" class="w-full bg-brand-orange text-white py-3.5 rounded-xl font-bold text-lg hover:bg-orange-600 shadow-lg transition">Mulai Ujian Sekarang</button>
+                 <button onclick="closeModal()" class="w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-bold mt-2 hover:bg-gray-300 transition">Batal</button>`
+            );
         }
 
         function startCBT(toId) {
