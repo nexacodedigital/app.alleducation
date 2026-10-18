@@ -1717,18 +1717,43 @@
             document.getElementById('ptn-prodi-dropdown').classList.add('hidden');
             const univ = document.getElementById('ptn-search-univ').value;
             const ptn = dbPtn.find(p => p.univ === univ && p.prodi === prodi);
+            
             if(ptn) {
                 currentSelectedPtn = ptn;
                 const ratio = Math.round(ptn.peminat / ptn.daya);
                 document.getElementById('ptn-ratio-display').innerText = `1 : ${ratio}`;
-                let diffText = 'Keketatan Rendah'; if(ratio > 15) diffText = 'Keketatan Sedang'; if(ratio > 30) diffText = 'Keketatan Tinggi';
+                
+                // === LOGIKA PENYEMANGAT BERDASARKAN KEKETATAN ===
+                let diffText = 'Keketatan Rendah'; 
+                let motivText = 'Peluangmu terbuka lebar! Tetap konsisten belajar dan jangan sampai lengah ya bro.';
+                let textColor = 'text-green-400';
+
+                if(ratio > 15) { 
+                    diffText = 'Keketatan Sedang'; 
+                    motivText = 'Persaingan lumayan nih! Tingkatkan terus skor tryout kamu biar posisi aman.';
+                    textColor = 'text-yellow-400';
+                } 
+                if(ratio > 30) { 
+                    diffText = 'Keketatan Tinggi'; 
+                    motivText = 'Saingan berat bro! Waktunya gaspol, all-out, dan buktikan kamu pantes masuk sini!';
+                    textColor = 'text-red-400';
+                }
+
+                // Ubah warna label keketatan
                 document.getElementById('ptn-ratio-text').innerText = diffText;
+                document.getElementById('ptn-ratio-text').className = `text-xs bg-white/10 inline-block px-4 py-1.5 rounded-full font-bold shadow-inner border border-white/5 ${textColor}`;
+                
+                // Masukkan teks penyemangat ke kotak HTML
+                document.getElementById('ptn-motivation-box').innerHTML = `
+                    <i class="fa-solid fa-fire-flame-curved mt-1 ${textColor}"></i>
+                    <span class="text-gray-300 leading-tight">${motivText}</span>
+                `;
+
                 document.getElementById('ptn-res-daya').innerText = ptn.daya;
                 document.getElementById('ptn-res-peminat').innerText = ptn.peminat;
                 document.getElementById('ptn-result-box').classList.remove('hidden');
             }
         }
-
         function setAsTarget() {
             if(!currentSelectedPtn) return;
             currentUser.targetPtn = currentSelectedPtn;
