@@ -511,50 +511,56 @@
 
                 <!-- Tab Navigasi Visual -->
                 <div class="flex gap-2 mb-6 bg-white rounded-full p-1.5 shadow-sm border border-gray-100">
-                    <button class="flex-1 bg-[#3b5998] text-white py-2.5 rounded-full font-bold text-sm shadow-inner transition">Nilai</button>
-                    <button onclick="document.getElementById('res-discussion-section').scrollIntoView({behavior:'smooth'})" class="flex-1 text-gray-500 py-2.5 rounded-full font-bold text-sm hover:bg-gray-50 transition">Pembahasan</button>
+                    <button id="res-btn-nilai" onclick="toggleResultTab('nilai')" class="flex-1 bg-[#3b5998] text-white py-2.5 rounded-full font-bold text-sm shadow-inner transition">Nilai</button>
+                    <button id="res-btn-bahas" onclick="toggleResultTab('bahas')" class="flex-1 text-gray-500 py-2.5 rounded-full font-bold text-sm hover:bg-gray-50 transition">Pembahasan</button>
                 </div>
 
-                <!-- Peringkat & Leaderboard Box -->
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4 flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-gray-500 font-medium mb-2">Peringkat</p>
-                        <div class="flex items-center gap-3">
-                            <span id="res-rank-badge" class="bg-green-500 text-white font-bold px-2 py-1 rounded-md text-[10px] flex items-center"><i class="fa-solid fa-arrow-up mr-1 text-[8px]"></i> 0% <span class="ml-1 font-normal">teratas</span></span>
-                            <div class="font-black text-gray-800 text-sm"><span id="res-rank-pos">0</span> <span class="text-[10px] text-gray-400 font-normal">/ <span id="res-rank-total">0</span> peserta</span></div>
+                <!-- BUNGKUSAN TAB NILAI -->
+                <div id="res-tab-nilai">
+                    <!-- Peringkat & Leaderboard Box -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-gray-500 font-medium mb-2">Peringkat</p>
+                            <div class="flex items-center gap-3">
+                                <span id="res-rank-badge" class="bg-green-500 text-white font-bold px-2 py-1 rounded-md text-[10px] flex items-center"><i class="fa-solid fa-arrow-up mr-1 text-[8px]"></i> 0% <span class="ml-1 font-normal">teratas</span></span>
+                                <div class="font-black text-gray-800 text-sm"><span id="res-rank-pos">0</span> <span class="text-[10px] text-gray-400 font-normal">/ <span id="res-rank-total">0</span> peserta</span></div>
+                            </div>
                         </div>
+                        <button onclick="openUserLeaderboard()" class="flex flex-col items-center justify-center text-[#3b5998] transition cursor-pointer flex-shrink-0">
+                            <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mb-1">
+                                <i class="fa-solid fa-ranking-star text-xl text-[#3b5998]"></i>
+                            </div>
+                            <span class="text-[10px] font-bold">Leaderboard</span>
+                        </button>
                     </div>
-                    <button onclick="openUserLeaderboard()" class="flex flex-col items-center justify-center text-[#3b5998] transition cursor-pointer flex-shrink-0">
-                        <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mb-1">
-                            <i class="fa-solid fa-ranking-star text-xl text-[#3b5998]"></i>
-                        </div>
-                        <span class="text-[10px] font-bold">Leaderboard</span>
-                    </button>
-                </div>
 
-                <!-- Pilihan Jurusan / Target Box -->
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-6">
-                    <p class="text-[10px] text-gray-500 font-medium mb-3">Pilih Jurusan Kamu</p>
-                    <div class="flex gap-3 items-center mb-4">
-                        <div class="w-14 h-14 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-blue-200 shadow-inner">
-    <i class="fa-solid fa-building-columns text-2xl text-blue-600 animate-bounce" style="animation-duration: 2s;"></i>
-</div>
-                        <div class="flex-1" id="res-target-info-box">
-                            <!-- Injected Target Content -->
+                    <!-- Pilihan Jurusan / Target Box -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-6">
+                        <p class="text-[10px] text-gray-500 font-medium mb-3">Pilih Jurusan Kamu</p>
+                        <div class="flex gap-3 items-center mb-4">
+                            <div class="w-14 h-14 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-blue-200 shadow-inner">
+                                <i class="fa-solid fa-building-columns text-2xl text-blue-600 animate-bounce" style="animation-duration: 2s;"></i>
+                            </div>
+                            <div class="flex-1" id="res-target-info-box">
+                                <!-- Injected Target Content -->
+                            </div>
                         </div>
+                        <button id="res-motivational" class="w-full text-center py-3 rounded-full font-bold text-xs transition bg-[#3b5998] text-white hover:bg-blue-800">Lihat Hasil Rasionalisasi</button>
                     </div>
-                    <button id="res-motivational" class="w-full text-center py-3 rounded-full font-bold text-xs transition bg-[#3b5998] text-white hover:bg-blue-800">Lihat Hasil Rasionalisasi</button>
-                </div>
 
-                <!-- Skor Subtest -->
-                <div id="res-subtest-scores" class="mb-10">
-                    <!-- Render Subtest Score dan Judul Kategori dari Javascript -->
-                </div>
+                    <!-- Skor Subtest -->
+                    <div id="res-subtest-scores" class="mb-10">
+                        <!-- Render Subtest Score dan Judul Kategori dari Javascript -->
+                    </div>
+                </div> <!-- END BUNGKUSAN TAB NILAI -->
 
-                <!-- Bagian Pembahasan -->
-                <h3 id="res-discussion-section" class="font-bold text-gray-500 mb-3 text-xs uppercase tracking-wider border-t-2 border-gray-100 pt-6">Pembahasan</h3>
-                <div id="res-discussion-list" class="space-y-3">
-                </div>
+                <!-- BUNGKUSAN TAB PEMBAHASAN -->
+                <div id="res-tab-bahas" class="hidden mb-10">
+                    <!-- Bagian Pembahasan -->
+                    <h3 id="res-discussion-section" class="font-bold text-gray-500 mb-3 text-xs uppercase tracking-wider">Daftar Modul Soal & Pembahasan</h3>
+                    <div id="res-discussion-list" class="space-y-3 pb-8">
+                    </div>
+                </div> <!-- END BUNGKUSAN TAB PEMBAHASAN -->
             </div>
         </div>
 
@@ -2365,13 +2371,16 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                         discHtml += `</div>`;
                     }
                 });
-                document.getElementById('res-discussion-list').innerHTML = discHtml;
+               document.getElementById('res-discussion-list').innerHTML = discHtml;
 
-                router('cbt-result');
-            } catch (err) {
-                console.error("Error menampilkan hasil:", err);
-                showToast('Terjadi kesalahan rendering. Harap tekan F5 (Refresh) browser Anda.', 'error');
-            }
+    // Reset tab ke default (Nilai) tiap kali buka hasil tryout
+    if (window.toggleResultTab) window.toggleResultTab('nilai');
+
+    router('cbt-result');
+} catch (err) {
+    console.error("Error menampilkan hasil:", err);
+    showToast('Terjadi kesalahan rendering. Harap tekan F5 (Refresh) browser Anda.', 'error');
+}
         }
         // Discussion Engine Logic
         let discState = { toId: null, mIdx: 0, qIdx: 0, result: null, tryout: null };
@@ -2641,6 +2650,30 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                  <button onclick="closeModal()" class="w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-bold mt-2 hover:bg-gray-300 transition">Batal</button>`
             );
      };
+        // 6. Fungsi Pindah Tab Hasil (Nilai vs Pembahasan)
+        window.toggleResultTab = function(tab) {
+            const btnNilai = document.getElementById('res-btn-nilai');
+            const btnBahas = document.getElementById('res-btn-bahas');
+            const tabNilai = document.getElementById('res-tab-nilai');
+            const tabBahas = document.getElementById('res-tab-bahas');
+
+            if(tab === 'nilai') {
+                btnNilai.className = "flex-1 bg-[#3b5998] text-white py-2.5 rounded-full font-bold text-sm shadow-inner transition";
+                btnBahas.className = "flex-1 text-gray-500 py-2.5 rounded-full font-bold text-sm hover:bg-gray-50 transition";
+                
+                tabNilai.classList.remove('hidden');
+                tabBahas.classList.add('hidden');
+            } else {
+                btnBahas.className = "flex-1 bg-[#3b5998] text-white py-2.5 rounded-full font-bold text-sm shadow-inner transition";
+                btnNilai.className = "flex-1 text-gray-500 py-2.5 rounded-full font-bold text-sm hover:bg-gray-50 transition";
+                
+                tabBahas.classList.remove('hidden');
+                tabNilai.classList.add('hidden');
+            }
+        };
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>
