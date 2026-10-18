@@ -29,6 +29,21 @@
     </script>
     
     <style>
+        <style>
+        /* Animasi Loading Baru */
+        @keyframes scalePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        .animate-scale-pulse { animation: scalePulse 1.2s ease-in-out infinite; }
+        
+        @keyframes slideBar {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+        .animate-slide-bar { animation: slideBar 1.5s ease-in-out infinite; }
+
+        .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         
@@ -53,13 +68,19 @@
     <!-- Print Container Khusus Fitur PDF -->
     <div id="print-container" class="hidden bg-white text-black p-8 relative"></div>
 
-    <!-- Loading Screen Awal -->
-    <div id="global-loader" class="fixed inset-0 z-[9999999] bg-[#05142b] flex flex-col items-center justify-center text-white transition-opacity duration-150">
-        <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(255,122,0,0.4)]">
-            <i class="fa-solid fa-spinner animate-spin text-5xl text-brand-orange"></i>
+    <!-- Loading Screen Awal (Desain Baru Membesar Mengecil) -->
+    <div id="global-loader" class="fixed inset-0 z-[9999999] bg-[#f8fafc] flex flex-col items-center justify-center transition-opacity duration-200">
+        <!-- Logo Membesar Mengecil -->
+        <div class="animate-scale-pulse mb-8 relative drop-shadow-xl">
+            <img id="logo-img-loader" src="https://iili.io/CMttawP.md.png" class="h-28 w-auto object-contain">
         </div>
-        <h2 class="text-2xl font-bold tracking-wide">Sedang memproses...</h2>
-        <p class="text-sm text-gray-400 mt-2 text-center px-4">Silakan tunggu sebentar.</p>
+        
+        <!-- Garis Loading (Progress Bar) di bawah Logo -->
+        <div class="w-48 h-1.5 bg-gray-200 rounded-full overflow-hidden relative shadow-inner">
+            <div class="h-full bg-gradient-to-r from-[#14b8a6] to-[#071B3A] rounded-full w-1/2 absolute left-0 animate-slide-bar"></div>
+        </div>
+        
+        <h2 class="text-xs font-bold text-gray-400 mt-5 tracking-[0.2em] uppercase">Memuat Data...</h2>
     </div>
 
     <!-- Toast Notifikasi -->
