@@ -2538,13 +2538,7 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             cont.innerHTML = html;
         }
 
-        window.startDrill = function(modId) {
-            const m = dbModules.find(x => x.id === modId);
-            if(!m) return;
-            showModal('Mulai Latihan Drill?', `Anda akan mengerjakan latihan <b>${m.subtest}</b> berjumlah <b>${m.questions.length} soal</b>.<br><br>Sistem penilaian menggunakan persentase Benar (0-100).`, 'info', `<button onclick="executeStartDrill('${modId}')" class="w-full bg-brand-navy text-white py-3.5 rounded-xl font-bold text-lg hover:bg-opacity-90 shadow-lg transition">Mulai Sekarang</button>`);
-        }
-
-        window.executeStartDrill = function(modId) {
+       window.executeStartDrill = function(modId) {
             closeModal();
             const m = dbModules.find(x => x.id === modId);
             
@@ -2554,7 +2548,7 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                 currModIdx: 0, currQIdx: 0,
                 ans: {}, doubt: {}, fontSize: 15,
                 endTime: new Date().getTime() + (m.duration * 60000),
-                isDrill: true // INI TANDA BAHWA INI DRILL (BUKAN IRT)
+                isDrill: true 
             };
             
             window.isCbtActive = true;
