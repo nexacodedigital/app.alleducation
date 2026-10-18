@@ -1858,8 +1858,7 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             showToast('Target PTN Impian berhasil disimpan!', 'success');
             updateUserTargetStats();
         }
-
-        function updateUserTargetStats() {
+       function updateUserTargetStats() {
             if(!currentUser) return;
             // Rata-rata Skor: HANYA mengambil Tryout (bukan Drill)
             const myResults = dbResults.filter(r => r.userId === currentUser.id && !r.isDrillResult);
@@ -1894,31 +1893,6 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             }
         }
             document.getElementById('u-stat-score').innerText = avgScore;
-            
-            // Target PTN
-            if(currentUser.targetPtn) {
-                const t = currentUser.targetPtn;
-                document.getElementById('u-target-text').innerHTML = `<span class="font-bold text-brand-orange">${t.univ}</span><br>${t.prodi}`;
-                const basePG = 450 + (t.peminat / t.daya) * 5;
-                const targetScore = Math.min(1000, Math.round(basePG));
-                document.getElementById('u-target-pg').innerText = targetScore;
-                document.getElementById('u-target-myscore').innerText = avgScore;
-                
-                let percent = Math.min(100, Math.max(0, (avgScore / targetScore) * 100));
-                document.getElementById('u-target-bar').style.width = percent + '%';
-                
-                let statText = "Peluang Kecil (Perlu Belajar Ekstra)";
-                if(percent >= 100) statText = "Peluang Sangat Besar (Aman)";
-                else if(percent >= 80) statText = "Peluang Cukup Baik (Terus Tingkatkan)";
-                document.getElementById('u-target-status').innerText = statText;
-            } else {
-                document.getElementById('u-target-text').innerText = 'Pilih universitas dan prodi target Anda.';
-                document.getElementById('u-target-pg').innerText = '0';
-                document.getElementById('u-target-myscore').innerText = '0';
-                document.getElementById('u-target-bar').style.width = '0%';
-                document.getElementById('u-target-status').innerText = 'Belum ada target dipilih';
-            }
-        }
 
         // =========================================================================
         // CBT ENGINE LOGIC
