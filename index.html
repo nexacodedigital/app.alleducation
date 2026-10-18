@@ -1939,7 +1939,8 @@
                     let isChecked = q.type === 'PGK' ? userAns.includes(letters[idx]) : userAns === letters[idx];
                     let bgClass = isChecked ? 'bg-blue-50 border-blue-500' : 'bg-gray-50 border-gray-200 hover:border-blue-300';
                     let boxType = q.type === 'PGK' ? 'checkbox' : 'radio';
-                    optHtml += `<label class="flex items-start gap-4 p-4 border-2 rounded-xl cursor-pointer transition ${bgClass}"><input type="${boxType}" name="cbt-opt" value="${letters[idx]}" class="mt-1 w-5 h-5 accent-blue-600" ${isChecked?'checked':''} onchange="saveAnswer('${letters[idx]}', this.checked)"><div class="flex-1 font-medium text-[15px] whitespace-pre-wrap">${letters[idx]}. ${opt}</div></label>`;
+                    // Bagian ${letters[idx]}. sudah dihapus di bawah ini
+                    optHtml += `<label class="flex items-start gap-4 p-4 border-2 rounded-xl cursor-pointer transition ${bgClass}"><input type="${boxType}" name="cbt-opt" value="${letters[idx]}" class="mt-1 w-5 h-5 accent-blue-600" ${isChecked?'checked':''} onchange="saveAnswer('${letters[idx]}', this.checked)"><div class="flex-1 font-medium text-[15px] whitespace-pre-wrap">${opt}</div></label>`;
                 });
             }
             document.getElementById('cbt-q-options').innerHTML = optHtml;
