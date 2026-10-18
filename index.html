@@ -2284,7 +2284,8 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
 
         window.viewTryoutResult = function(toId) {
             try {
-                const r = dbResults.find(x => x.toId === toId && x.userId === currentUser.id);
+                // UBAH BARIS INI: Tambahkan [...dbResults].reverse() biar ngambil data terbaru
+                const r = [...dbResults].reverse().find(x => x.toId === toId && x.userId === currentUser.id);
                 const to = dbTryouts.find(t => t.id === toId);
                 
                 if(!r || !to) {
@@ -2376,7 +2377,9 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
         let discState = { toId: null, mIdx: 0, qIdx: 0, result: null, tryout: null };
         window.openDiscussionEngine = function(toId, mIdx, qIdx) {
             discState.toId = toId; discState.mIdx = mIdx; discState.qIdx = qIdx;
-            discState.result = dbResults.find(x => x.toId === toId && x.userId === currentUser.id);
+            
+            // UBAH BARIS INI JUGA: Tambahkan [...dbResults].reverse()
+            discState.result = [...dbResults].reverse().find(x => x.toId === toId && x.userId === currentUser.id);
             
             // Deteksi apakah ini Drill atau Tryout
             if(toId.startsWith('DRILL_')) {
