@@ -2280,8 +2280,10 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             
             const loader = document.getElementById('global-loader');
             if(loader) {
-                loader.querySelector('h2').innerText = "Mengumpulkan Jawaban...";
-                loader.querySelector('p').innerText = "Memproses kalkulasi nilai, mohon tunggu.";
+                const h2El = loader.querySelector('h2');
+                const pEl = loader.querySelector('p');
+                if(h2El) h2El.innerText = "Mengumpulkan Jawaban...";
+                if(pEl) pEl.innerText = "Memproses kalkulasi nilai, mohon tunggu.";
                 loader.classList.remove('hidden', 'opacity-0');
             }
             
