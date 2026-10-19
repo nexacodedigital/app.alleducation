@@ -2301,66 +2301,6 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
         }
 
         function saveProfile(e) { e.preventDefault(); currentUser.nama = document.getElementById('prof-name').value; currentUser.sekolah = document.getElementById('prof-school').value; if(document.getElementById('prof-pass').value) currentUser.pass = document.getElementById('prof-pass').value; syncServerData('Users'); document.getElementById('user-name-display').innerText = currentUser.nama; document.getElementById('user-school-display').innerText = currentUser.sekolah; document.getElementById('prof-pass').value = ''; showToast('Profil diperbarui.', 'success'); }
-        
-        let currentUserTryoutFilter = 'active';
-
-        function initUserDropdowns() { 
-            const pSel = document.getElementById('user-filter-program'); 
-            let htmlStr = '<option value="">-- Semua Program --</option>'; 
-            dbMaster.programs.forEach(p => htmlStr += `<option value="${p}">${p}</option>`); 
-            pSel.innerHTML = htmlStr;
-            renderUserTryouts('active'); 
-        }
-        
-        window.renderUserTryouts = function(filterType) {
-            if(filterType) currentUserTryoutFilter = filterType;
-            const filter = currentUserTryoutFilter;
-
-            document.getElementById('btn-u-to-act').className = filter === 'active' ? "font-bold text-brand-navy border-b-2 border-brand-navy pb-2 px-2 text-sm md:text-base transition" : "font-medium text-gray-500 pb-2 px-2 border-b-2 border-transparent hover:border-gray-200 transition text-sm md:text-base";
-            document.getElementById('btn-u-to-his').className = filter === 'history' ? "font-bold text-brand-navy border-b-2 border-brand-navy pb-2 px-2 text-sm md:text-base transition" : "font-medium text-gray-500 pb-2 px-2 border-b-2 border-transparent hover:border-gray-200 transition text-sm md:text-base";
-
-            const prog = document.getElementById('user-filter-program').value; const cont = document.getElementById('user-tryout-list'); 
-            let filteredAll = prog ? dbTryouts.filter(t => t.program === prog) : dbTryouts; 
-            
-            let filtered = filteredAll.filter(t => {
-                const isDone = dbResults.find(r => r.toId === t.id && r.userId === currentUser.id);
-                return filter === 'history' ? isDone : !isDone;
-            });
-
-            if(filtered.length === 0) { 
-                cont.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-2xl border text-gray-500 font-medium"><i class="fa-solid fa-clipboard-list text-3xl mb-3 text-gray-300 block"></i>Belum ada data Tryout ${filter==='history'?'di riwayat Anda':'yang tersedia'}.</div>`; 
-                return; 
-            }
-            
-            const now = new Date();
-            let htmlStr = '';
-            filtered.forEach(t => {
-                const start = new Date(t.start); const end = new Date(t.end); const rel = new Date(t.relScore); let stat = "Belum Mulai", btn = `<button class="w-full bg-gray-200 text-gray-500 py-3 rounded-xl font-bold cursor-not-allowed mt-3 text-sm">Belum Waktunya</button>`; let totalTime = 0; t.modules.forEach(mid => { const m = dbModules.find(x=>x.id===mid); if(m) totalTime += m.duration; });
-                const isDone = dbResults.find(r => r.toId === t.id && r.userId === currentUser.id);
-                if(isDone) {
-                    if (now >= rel) { 
-                        stat = "<span class='text-blue-600'>HASIL RILIS</span>"; 
-                        btn = `<button onclick="viewTryoutResult('${t.id}')" class="w-full bg-brand-orange text-white py-3 rounded-xl font-bold mt-3 text-sm shadow hover:bg-orange-600 transition border border-orange-600">Lihat Laporan & Pembahasan</button>`; 
-                    } else { 
-                        stat = "<span class='text-gray-500'>MENUNGGU HASIL</span>"; 
-                        btn = `<button onclick="showTryoutSchedule('${t.id}')" class="w-full bg-gray-200 text-gray-700 border border-gray-300 py-3 rounded-xl font-bold mt-3 text-sm hover:bg-gray-300 transition"><i class="fa-solid fa-clock mr-2 text-brand-orange"></i>Cek Jadwal Hasil</button>`; 
-                    }
-                } else {
-                    if (now >= start && now <= end) { 
-                        stat = "<span class='text-green-600'>BERLANGSUNG</span>"; 
-                        btn = (t.type === 'PREMIUM' && !currentUser.isPremium) ? `<button onclick="showModal('Akses Ditolak','Khusus PREMIUM.','error')" class="w-full bg-yellow-400 text-brand-navy py-3 rounded-xl font-bold mt-3 text-sm border border-yellow-500 shadow-sm"><i class="fa-solid fa-lock mr-1"></i>Upgrade Sekarang</button>` : `<button onclick="initCBT('${t.id}')" class="w-full bg-brand-navy text-white py-3 rounded-xl font-bold shadow mt-3 text-sm hover:bg-gray-800 transition">Kerjakan Ujian CBT</button>`; 
-                    } else if (now < start) {
-                        stat = "<span class='text-gray-500'>BELUM MULAI</span>";
-                        btn = `<button onclick="showTryoutSchedule('${t.id}')" class="w-full bg-gray-100 text-brand-navy border border-gray-300 py-3 rounded-xl font-bold hover:bg-gray-200 mt-3 text-sm transition"><i class="fa-solid fa-calendar-alt mr-2"></i>Cek Jadwal Tryout</button>`;
-                    } else if (now > end) { 
-                        stat = "<span class='text-red-500'>DITUTUP</span>"; 
-                        btn = `<button class="w-full bg-red-50 text-red-500 border border-red-200 py-3 rounded-xl font-bold cursor-not-allowed mt-3 text-sm shadow-inner">Melewati Batas Waktu</button>`; 
-                    }
-                }
-                htmlStr += `<div class="bg-white p-6 rounded-3xl border shadow-sm flex flex-col hover:shadow-md hover:border-brand-orange transition"><div class="flex justify-between items-center mb-4"><span class="text-[10px] font-bold px-2 py-1 rounded border tracking-wider uppercase ${t.type==='PREMIUM'?'bg-yellow-50 text-yellow-600 border-yellow-200':'bg-gray-100 text-gray-500'}">${t.type}</span><span class="text-[10px] font-black tracking-wider">${stat}</span></div><div class="flex gap-4 mb-4 items-center"><div class="w-16 h-16 rounded-2xl bg-brand-soft border border-gray-100 flex items-center justify-center text-3xl text-brand-orange overflow-hidden shadow-inner flex-shrink-0"><img src="${t.img}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" class="w-full h-full object-cover"><i class="fa-solid fa-laptop-file hidden"></i></div><div class="flex-1"><h3 class="font-extrabold text-lg text-brand-navy leading-tight mb-1">${t.program}</h3><p class="text-xs font-bold text-gray-400">${t.episode}</p></div></div><div class="text-[11px] text-gray-600 bg-gray-50 p-2.5 rounded-xl border mb-auto flex justify-around font-medium shadow-inner"><span><i class="fa-regular fa-clock text-blue-500 mr-1"></i> ${totalTime} Menit</span> <span class="text-gray-300">|</span> <span><i class="fa-solid fa-layer-group text-brand-orange mr-1"></i> ${t.modules.length} Subtest</span></div>${btn}</div>`;
-            });
-            cont.innerHTML = htmlStr;
-        }
 
         window.showTryoutSchedule = function(toId) {
             const t = dbTryouts.find(x => x.id === toId);
