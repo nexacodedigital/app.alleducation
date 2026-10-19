@@ -47,29 +47,7 @@
         .animate-marquee-fast:hover, .animate-marquee-slow:hover {
             animation-play-state: paused;
         }
-        .slider-container::-webkit-scrollbar { display: none; }
-        .slider-container { -ms-overflow-style: none; scrollbar-width: none; }
-        /* Animasi Card Berjalan Otomatis (Marquee) */
-        @keyframes scrollLeft {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .animate-marquee-fast {
-            display: flex;
-            width: max-content;
-            animation: scrollLeft 25s linear infinite;
-        }
-        .animate-marquee-slow {
-            display: flex;
-            width: max-content;
-            animation: scrollLeft 40s linear infinite;
-        }
-        .animate-marquee-fast:hover, .animate-marquee-slow:hover {
-            animation-play-state: paused;
-        }
-        /* Sembunyikan scrollbar bawaan di container slider */
-        .slider-container::-webkit-scrollbar { display: none; }
-        .slider-container { -ms-overflow-style: none; scrollbar-width: none; }
+        
         /* Animasi Banner Berjalan */
         @keyframes scrollBanner {
             0% { transform: translateX(0); }
@@ -81,8 +59,9 @@
             animation: scrollBanner 15s linear infinite;
         }
         .animate-scroll-banner:hover {
-            animation-play-state: paused; /* Berhenti kalau disentuh/di-hover */
+            animation-play-state: paused; 
         }
+
         /* Animasi Loading Baru */
         @keyframes scalePulse {
             0%, 100% { transform: scale(1); }
@@ -96,10 +75,13 @@
         }
         .animate-slide-bar { animation: slideBar 1.5s ease-in-out infinite; }
 
-        .hide-scroll::-webkit-scrollbar { display: none; }
+        /* Sembunyikan scrollbar */
+        .slider-container::-webkit-scrollbar { display: none; }
+        .slider-container { -ms-overflow-style: none; scrollbar-width: none; }
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         
+        /* Tombol Navigasi Peta CBT */
         .cbt-map-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 8px; border: 2px solid #e5e7eb; background-color: #f9fafb; color: #6b7280; transition: all 0.2s; cursor: pointer; }
         .cbt-map-btn:hover { background-color: #f3f4f6; }
         .cbt-map-btn.answered { background-color: #3b82f6 !important; border-color: #2563eb !important; color: white !important; }
