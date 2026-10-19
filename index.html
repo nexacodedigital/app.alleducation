@@ -849,89 +849,182 @@
                         <div id="u-class-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
                     </div>
 
-                    <!-- ================= TAB TRYOUT (DESAIN BARU) ================= -->
+                    <!-- ================= TAB TRYOUT (DESAIN BARU & INTERAKTIF) ================= -->
                     <div id="u-tab-tryout" class="hidden">
                         
-                        <!-- Header Banner -->
-                        <div class="bg-gradient-to-r from-[#4f8bea] to-[#3b82f6] rounded-3xl p-6 md:p-10 mb-8 relative overflow-hidden flex items-center justify-center min-h-[200px] shadow-md border border-blue-400/50">
+                        <!-- 1. HEADER BANNER TRYOUT (MODERN & MENARIK) -->
+                        <div id="tryout-hero-banner" class="bg-gradient-to-br from-[#071B3A] via-[#1d4ed8] to-[#3b82f6] rounded-3xl p-6 md:p-10 mb-8 relative overflow-hidden shadow-xl border border-blue-400/30">
+                            <!-- Efek Cahaya Dekoratif -->
+                            <div class="absolute -top-20 -left-20 w-72 h-72 bg-blue-400/20 rounded-full blur-3xl pointer-events-none"></div>
+                            <div class="absolute -bottom-20 right-1/4 w-80 h-80 bg-brand-orange/25 rounded-full blur-3xl pointer-events-none"></div>
+                            
                             <!-- Tombol Tryout Saya -->
-                            <div class="absolute top-4 right-4 z-20">
-                                <button onclick="toggleTryoutView('history')" class="bg-white/20 hover:bg-white/30 text-white border border-white/40 px-4 py-2 rounded-full font-bold text-sm backdrop-blur-sm transition flex items-center gap-2 shadow-sm">
-                                    <i class="fa-solid fa-clock-rotate-left"></i> Tryout Saya
+                            <div class="flex justify-between items-start relative z-20 mb-6 md:mb-2">
+                                <span class="bg-white/15 backdrop-blur-md border border-white/20 text-orange-300 text-[10px] md:text-xs font-extrabold px-3.5 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-2 shadow-sm">
+                                    <i class="fa-solid fa-bolt text-yellow-400"></i> CBT IRT System Resmi
+                                </span>
+                                <button onclick="toggleTryoutView('history')" class="bg-white text-brand-navy hover:bg-orange-50 px-4 py-2 rounded-full font-extrabold text-xs md:text-sm shadow-lg transition flex items-center gap-2 transform hover:-translate-y-0.5">
+                                    <i class="fa-solid fa-clock-rotate-left text-brand-orange"></i> Tryout Saya
                                 </button>
                             </div>
-                            <!-- Tulisan Tengah -->
-                            <div class="absolute bottom-6 md:bottom-8 text-center z-10">
-                                <h2 class="text-4xl md:text-6xl font-black text-white drop-shadow-lg" style="-webkit-text-stroke: 1.5px rgba(255,255,255,0.8); color: transparent;">Tryout</h2>
+
+                            <!-- Konten Utama Banner -->
+                            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 mt-2">
+                                <div class="text-left max-w-xl">
+                                    <h2 class="text-3xl md:text-5xl font-black text-white leading-tight mb-3 drop-shadow-md">
+                                        Simulasi Ujian & <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-orange-300 to-brand-orange">Tryout Akbar</span>
+                                    </h2>
+                                    <p class="text-blue-100 text-xs md:text-sm leading-relaxed font-medium mb-5">
+                                        Uji kesiapan belajarmu dengan soal standar terbaru, sistem penilaian IRT yang akurat, dan analisis peluang lolos kampus impian secara real-time!
+                                    </p>
+                                    <div class="flex flex-wrap gap-2.5 text-[11px] font-bold text-white">
+                                        <div class="bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-white/15 flex items-center gap-1.5"><i class="fa-solid fa-chart-pie text-yellow-300"></i> Analisis Skor IRT</div>
+                                        <div class="bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-white/15 flex items-center gap-1.5"><i class="fa-solid fa-ranking-star text-green-300"></i> Leaderboard Nasional</div>
+                                        <div class="bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-white/15 flex items-center gap-1.5"><i class="fa-solid fa-book-open-reader text-pink-300"></i> Pembahasan Lengkap</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Ilustrasi Kanan Banner -->
+                                <div class="hidden md:flex items-center justify-center relative pr-6">
+                                    <div class="w-36 h-36 bg-gradient-to-tr from-brand-orange to-yellow-400 rounded-3xl rotate-12 flex items-center justify-center shadow-2xl border-4 border-white/30 relative">
+                                        <i class="fa-solid fa-trophy text-6xl text-white drop-shadow-lg -rotate-12"></i>
+                                        <div class="absolute -top-4 -left-6 bg-white text-brand-navy px-3 py-1.5 rounded-xl shadow-lg font-black text-xs flex items-center gap-1.5 -rotate-12 border border-gray-100">
+                                            <i class="fa-solid fa-star text-yellow-400"></i> Skor 800+
+                                        </div>
+                                        <div class="absolute -bottom-3 -right-5 bg-green-500 text-white px-3 py-1 rounded-xl shadow-lg font-black text-[10px] flex items-center gap-1 -rotate-12">
+                                            <i class="fa-solid fa-circle-check"></i> Akurat
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <!-- Hiasan Hijau di bawah -->
-                            <div class="absolute -bottom-10 w-48 h-32 bg-green-400/30 rounded-t-full blur-2xl"></div>
                         </div>
 
                         <!-- ================= HALAMAN UTAMA TRYOUT ================= -->
                         <div id="tryout-main-view">
-                            <!-- Kategori Tryout Kotak-Kotak -->
+                            <!-- 2. Kategori Tryout Dinamis dari Master Data -->
                             <div class="mb-8">
-                                <h3 class="font-bold text-brand-navy mb-4 ml-2">Kategori Tryout</h3>
-                                <div class="flex gap-3 overflow-x-auto hide-scroll pb-3 px-1">
-                                    <button onclick="filterTryoutCategory('')" class="flex-shrink-0 w-[110px] bg-[#fff8e1] border border-[#ffecb3] rounded-2xl p-3 flex flex-col items-center justify-center gap-2 hover:-translate-y-1 hover:shadow-md transition relative">
-                                        <div class="absolute -top-2 -right-2 bg-[#ff7f3f] text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm">All</div>
-                                        <i class="fa-solid fa-layer-group text-3xl text-yellow-500 drop-shadow-sm"></i>
-                                        <span class="text-[11px] font-bold text-gray-700 text-center leading-tight mt-1">Semua<br>Tryout</span>
-                                    </button>
-                                    <button onclick="filterTryoutCategory('UTBK SNBT')" class="flex-shrink-0 w-[110px] bg-[#fff3e0] border border-[#ffe0b2] rounded-2xl p-3 flex flex-col items-center justify-center gap-2 hover:-translate-y-1 hover:shadow-md transition relative">
-                                        <i class="fa-solid fa-file-contract text-3xl text-orange-400 drop-shadow-sm"></i>
-                                        <span class="text-[11px] font-bold text-gray-700 text-center leading-tight mt-1">Tryout<br>UTBK</span>
-                                    </button>
-                                    <button onclick="filterTryoutCategory('SIMAK UI')" class="flex-shrink-0 w-[110px] bg-[#e3f2fd] border border-[#bbdefb] rounded-2xl p-3 flex flex-col items-center justify-center gap-2 hover:-translate-y-1 hover:shadow-md transition relative">
-                                        <i class="fa-solid fa-building-columns text-3xl text-blue-400 drop-shadow-sm"></i>
-                                        <span class="text-[11px] font-bold text-gray-700 text-center leading-tight mt-1">Tryout<br>SIMAK UI</span>
-                                    </button>
-                                    <button onclick="filterTryoutCategory('UM UGM')" class="flex-shrink-0 w-[110px] bg-[#f3e5f5] border border-[#e1bee7] rounded-2xl p-3 flex flex-col items-center justify-center gap-2 hover:-translate-y-1 hover:shadow-md transition relative">
-                                        <i class="fa-solid fa-graduation-cap text-3xl text-purple-400 drop-shadow-sm"></i>
-                                        <span class="text-[11px] font-bold text-gray-700 text-center leading-tight mt-1">Tryout<br>UM UGM</span>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Tab Berlangsung & Akan Datang -->
-                            <div class="flex gap-3 mb-6 px-2">
-                                <button onclick="renderUserTryouts('active')" id="btn-to-act" class="bg-[#4f8bea] text-white font-bold px-5 py-2 rounded-full text-sm shadow-sm transition">Berlangsung</button>
-                                <button onclick="renderUserTryouts('upcoming')" id="btn-to-upc" class="bg-white border border-[#4f8bea] text-[#4f8bea] hover:bg-blue-50 font-bold px-5 py-2 rounded-full text-sm shadow-sm transition">Akan Datang</button>
-                            </div>
-
-                            <!-- Area List Kartu Tryout -->
-                            <div id="user-tryout-list" class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-10"></div>
-
-                            <!-- Kalender Tryout -->
-                            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden mb-8">
-                                <div class="bg-gradient-to-r from-[#4f8bea] to-[#60a5fa] p-6 text-white flex justify-between items-center">
+                                <div class="flex justify-between items-center mb-4 px-1">
                                     <div>
-                                        <h3 class="text-xl font-bold mb-1">Kalender Try Out</h3>
-                                        <p class="text-xs text-blue-100">Bebas pilih kapan saja TO-mu dan langsung daftar!</p>
-                                    </div>
-                                    <i class="fa-regular fa-calendar-check text-4xl opacity-80 drop-shadow-sm"></i>
-                                </div>
-                                <div class="p-6">
-                                    <div class="flex justify-between items-center mb-6">
-                                        <span class="font-bold text-sm text-gray-700">Pilih tipe tryout</span>
-                                        <select class="bg-blue-50 text-blue-700 font-bold px-4 py-2 rounded-xl text-xs outline-none border border-blue-100"><option>UTBK</option></select>
-                                    </div>
-                                    <div class="flex justify-between items-center mb-4 text-gray-500 font-bold">
-                                        <i class="fa-solid fa-chevron-left cursor-pointer hover:text-blue-500"></i>
-                                        <span class="text-sm">Oktober 2026 <span class="bg-[#ff7f3f] text-white text-[8px] px-1.5 py-0.5 rounded-full ml-1 relative -top-1">1</span></span>
-                                        <i class="fa-solid fa-chevron-right cursor-pointer hover:text-blue-500"></i>
-                                    </div>
-                                    <div class="grid grid-cols-7 gap-1 md:gap-2 text-center text-[10px] md:text-xs text-gray-400 font-bold mb-2">
-                                        <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
-                                    </div>
-                                    <div class="grid grid-cols-7 gap-1 md:gap-2 text-center text-xs md:text-sm font-bold text-gray-600">
-                                        <div class="p-2 md:p-3 bg-gray-50 rounded-lg text-gray-300">27</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg text-gray-300">28</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg text-gray-300">29</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg text-gray-300">30</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">01</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">02</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">03</div>
-                                        <div class="p-2 md:p-3 bg-gray-50 rounded-lg">04</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">05</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">06</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">07</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">08</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">09</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">10</div>
-                                        <div class="p-2 md:p-3 bg-gray-50 rounded-lg">11</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">12</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">13</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">14</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">15</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">16</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">17</div>
-                                        <div class="p-2 md:p-3 bg-gray-50 rounded-lg">18</div><div class="p-2 md:p-3 bg-[#4f8bea] text-white rounded-lg shadow-md cursor-pointer hover:bg-blue-600">19</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">20</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">21</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg">22</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg text-red-500">23</div><div class="p-2 md:p-3 bg-gray-50 rounded-lg text-red-500">24</div>
+                                        <h3 class="font-extrabold text-brand-navy text-base md:text-lg">Kategori Tryout</h3>
+                                        <p class="text-xs text-gray-400 font-medium">Pilih program belajar untuk melihat seluruh paket Tryout</p>
                                     </div>
                                 </div>
+                                <div id="tryout-category-list" class="flex gap-3.5 overflow-x-auto hide-scroll pb-3 px-1">
+                                    <!-- Diisi otomatis dari dbMaster.programs oleh JS -->
+                                </div>
+                            </div>
+
+                            <!-- 3. Highlight Promosi: 2 Tryout Terdekat (Semua Kategori) -->
+                            <div class="mb-10">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 px-1">
+                                    <div class="flex gap-2.5">
+                                        <button onclick="renderUserTryouts('active')" id="btn-to-act" class="bg-[#4f8bea] text-white font-bold px-5 py-2 rounded-full text-xs md:text-sm shadow-sm transition">Berlangsung</button>
+                                        <button onclick="renderUserTryouts('upcoming')" id="btn-to-upc" class="bg-white border border-[#4f8bea] text-[#4f8bea] hover:bg-blue-50 font-bold px-5 py-2 rounded-full text-xs md:text-sm shadow-sm transition">Akan Datang</button>
+                                    </div>
+                                    <span class="text-[11px] font-bold text-brand-orange bg-orange-50 border border-orange-200 px-3 py-1 rounded-full w-fit flex items-center gap-1.5">
+                                        <i class="fa-solid fa-fire"></i> Menampilkan 2 Tryout Terdekat
+                                    </span>
+                                </div>
+
+                                <!-- Area List 2 Kartu Tryout Terdekat -->
+                                <div id="user-tryout-list" class="grid grid-cols-1 lg:grid-cols-2 gap-4"></div>
+                            </div>
+
+                            <!-- 4. Kalender Tryout Interaktif (Bisa Hide / Show & Pindah Bulan) -->
+                            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden mb-8 transition-all">
+                                <div class="bg-gradient-to-r from-[#4f8bea] to-[#60a5fa] p-5 md:p-6 text-white flex justify-between items-center">
+                                    <div class="flex items-center gap-3.5">
+                                        <div class="w-11 h-11 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-white/20">
+                                            <i class="fa-regular fa-calendar-check text-2xl"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-lg md:text-xl font-extrabold leading-tight">Kalender Try Out</h3>
+                                            <p class="text-[11px] md:text-xs text-blue-100">Pantau tanggal mainnya dan klik tanggal berwarna untuk daftar!</p>
+                                        </div>
+                                    </div>
+                                    <button onclick="toggleCalendarVisibility()" id="btn-toggle-cal" class="bg-white/20 hover:bg-white/30 text-white border border-white/30 px-3.5 py-2 rounded-xl text-xs font-bold backdrop-blur-sm transition flex items-center gap-1.5 shadow-sm">
+                                        <i class="fa-solid fa-chevron-up" id="icon-toggle-cal"></i> <span id="text-toggle-cal">Sembunyikan</span>
+                                    </button>
+                                </div>
+
+                                <div id="tryout-calendar-body" class="p-5 md:p-6 transition-all">
+                                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+                                        <span class="font-bold text-xs md:text-sm text-gray-700">Filter Program Tryout:</span>
+                                        <select id="cal-filter-prog" onchange="changeCalProgram(this.value)" class="bg-blue-50 text-blue-700 font-bold px-4 py-2 rounded-xl text-xs outline-none border border-blue-200 cursor-pointer w-full sm:w-auto">
+                                            <option value="">Semua Program</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Navigasi Bulan & Tahun -->
+                                    <div class="flex justify-between items-center mb-5 bg-gray-50 p-3 rounded-2xl border border-gray-100">
+                                        <button onclick="changeTryoutMonth(-1)" class="w-9 h-9 rounded-xl bg-white border border-gray-200 text-gray-600 hover:bg-[#4f8bea] hover:text-white hover:border-[#4f8bea] flex items-center justify-center transition shadow-sm">
+                                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                                        </button>
+                                        <div class="font-extrabold text-sm md:text-base text-brand-navy flex items-center gap-2">
+                                            <span id="cal-month-year-label">Oktober 2026</span>
+                                            <span id="cal-to-count-badge" class="bg-[#ff7f3f] text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow-sm">0 TO</span>
+                                        </div>
+                                        <button onclick="changeTryoutMonth(1)" class="w-9 h-9 rounded-xl bg-white border border-gray-200 text-gray-600 hover:bg-[#4f8bea] hover:text-white hover:border-[#4f8bea] flex items-center justify-center transition shadow-sm">
+                                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                                        </button>
+                                    </div>
+
+                                    <!-- Header Hari -->
+                                    <div class="grid grid-cols-7 gap-1.5 md:gap-2 text-center text-[10px] md:text-xs text-gray-400 font-extrabold mb-2">
+                                        <div class="text-red-400">Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div class="text-blue-400">Sab</div>
+                                    </div>
+
+                                    <!-- Grid Tanggal Kalender -->
+                                    <div id="cal-days-grid" class="grid grid-cols-7 gap-1.5 md:gap-2 text-center text-xs md:text-sm font-bold">
+                                        <!-- Diisi secara dinamis oleh JS -->
+                                    </div>
+
+                                    <!-- Keterangan Warna Kalender -->
+                                    <div class="flex flex-wrap gap-4 items-center justify-center mt-5 pt-4 border-t border-gray-100 text-[11px] font-bold text-gray-500">
+                                        <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#4f8bea] inline-block"></span> Hari Ini</div>
+                                        <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span> TO Berlangsung</div>
+                                        <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-brand-orange inline-block"></span> TO Akan Datang</div>
+                                        <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-purple-500 inline-block"></span> Selesai Dikerjakan</div>
+                                    </div>
+
+                                    <!-- Detail TO pada Tanggal yang Diklik -->
+                                    <div id="cal-selected-date-box" class="mt-5 hidden">
+                                        <!-- Muncul saat user klik tanggal di kalender -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ================= HALAMAN DETAIL KATEGORI PROGRAM (SEPERTI GAMBAR KE-3) ================= -->
+                        <div id="tryout-category-detail-view" class="hidden">
+                            <!-- Header Biru Melengkung & Card Putih Kategori -->
+                            <div class="bg-[#4f8bea] -mx-4 px-4 pt-5 pb-14 rounded-t-3xl relative mb-12 shadow-sm">
+                                <div class="max-w-5xl mx-auto">
+                                    <button onclick="closeCategoryDetailView()" class="text-white hover:text-blue-100 text-xl font-bold flex items-center gap-2 transition">
+                                        <i class="fa-solid fa-arrow-left"></i>
+                                    </button>
+                                </div>
+                                <!-- Card Putih Mengambang -->
+                                <div class="max-w-5xl mx-auto bg-white rounded-2xl p-4 md:p-5 shadow-md border border-gray-100 flex items-center gap-4 absolute left-4 right-4 -bottom-7">
+                                    <div id="cat-detail-icon-box" class="w-12 h-12 md:w-14 md:h-14 bg-[#fff3e0] border border-[#ffe0b2] rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <i id="cat-detail-icon" class="fa-solid fa-file-contract text-2xl text-orange-500"></i>
+                                    </div>
+                                    <div class="flex flex-wrap items-center gap-2.5">
+                                        <h3 id="cat-detail-title" class="font-extrabold text-brand-navy text-base md:text-lg">Tryout Program</h3>
+                                        <span id="cat-detail-badge" class="bg-[#ff6d24] text-white text-[11px] font-extrabold px-2.5 py-0.5 rounded-full shadow-sm">0 Tryout</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="max-w-5xl mx-auto px-1">
+                                <!-- Pill Berlangsung & Akan Datang khusus Kategori Ini -->
+                                <div class="flex gap-2.5 mb-6">
+                                    <button onclick="renderCategoryDetailTryouts('active')" id="btn-cat-to-act" class="bg-[#5c8df6] text-white font-bold px-5 py-1.5 rounded-full text-xs md:text-sm shadow-sm transition">Berlangsung</button>
+                                    <button onclick="renderCategoryDetailTryouts('upcoming')" id="btn-cat-to-upc" class="bg-white border border-[#5c8df6] text-[#5c8df6] hover:bg-blue-50 font-bold px-5 py-1.5 rounded-full text-xs md:text-sm transition">Akan Datang</button>
+                                </div>
+
+                                <!-- Daftar Seluruh Tryout di Program Ini -->
+                                <div id="cat-detail-tryout-list" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10"></div>
                             </div>
                         </div>
 
@@ -944,14 +1037,11 @@
                             
                             <div class="bg-blue-50/50 p-4 rounded-2xl border border-blue-100 mb-8">
                                 <div class="relative mb-4">
-                                    <input type="text" placeholder="Cari try out di sini..." class="w-full pl-11 pr-4 py-3 bg-white border border-blue-100 rounded-xl text-sm outline-none focus:border-[#4f8bea] text-gray-700 shadow-sm">
+                                    <input type="text" id="history-search-input" oninput="renderUserTryouts('history')" placeholder="Cari try out di sini..." class="w-full pl-11 pr-4 py-3 bg-white border border-blue-100 rounded-xl text-sm outline-none focus:border-[#4f8bea] text-gray-700 shadow-sm">
                                     <i class="fa-solid fa-search absolute left-4 top-3.5 text-blue-300 text-lg"></i>
                                 </div>
-                                <div class="flex gap-2 overflow-x-auto hide-scroll pb-1">
-                                    <button class="bg-white border border-blue-100 text-blue-500 px-3 py-1.5 rounded-xl text-xs flex-shrink-0 shadow-sm"><i class="fa-solid fa-sliders"></i></button>
-                                    <button class="bg-[#4f8bea] text-white px-4 py-1.5 rounded-xl text-xs font-bold flex-shrink-0 shadow-sm">Semua</button>
-                                    <button class="bg-white border border-blue-100 text-gray-500 px-4 py-1.5 rounded-xl text-xs font-bold flex-shrink-0 shadow-sm hover:text-blue-500">UTBK</button>
-                                    <button class="bg-white border border-blue-100 text-gray-500 px-4 py-1.5 rounded-xl text-xs font-bold flex-shrink-0 shadow-sm hover:text-blue-500">SIMAK UI</button>
+                                <div id="history-prog-pills" class="flex gap-2 overflow-x-auto hide-scroll pb-1">
+                                    <!-- Filter program riwayat diisi dinamis oleh JS -->
                                 </div>
                             </div>
 
@@ -3323,117 +3413,521 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             document.getElementById('class-preview-modal').classList.remove('hidden');
         };
         // ==========================================
-        // 9. FUNGSI LOGIKA TRYOUT (DESAIN BARU)
+        // ==========================================
+        // 9. FUNGSI LOGIKA TRYOUT (KATEGORI MASTER, 2 TERDEKAT, & KALENDER INTERAKTIF)
         // ==========================================
         let currentUserTryoutFilter = 'active';
-        let currentToCategory = '';
+        let currentCategoryDetailProg = '';
+        let currentCategoryDetailStatus = 'active';
+        let currentHistoryProgFilter = '';
 
-        window.filterTryoutCategory = function(cat) {
-            currentToCategory = cat;
-            renderUserTryouts(currentUserTryoutFilter);
+        // State Kalender Interaktif (Default ke bulan & tahun berjalan saat ini)
+        let calState = {
+            year: new Date().getFullYear(),
+            month: new Date().getMonth(),
+            selectedDateStr: '',
+            programFilter: '',
+            isHidden: false
         };
 
-        window.toggleTryoutView = function(view) {
-            if(view === 'history') {
-                document.getElementById('tryout-main-view').classList.add('hidden');
-                document.getElementById('tryout-history-view').classList.remove('hidden');
-                renderUserTryouts('history');
-            } else {
-                document.getElementById('tryout-history-view').classList.add('hidden');
-                document.getElementById('tryout-main-view').classList.remove('hidden');
-                renderUserTryouts('active');
+        // Palet Tema Ikon & Warna Kategori Otomatis
+        const categoryStyles = [
+            { bg: 'bg-[#fff3e0]', border: 'border-[#ffe0b2]', icon: 'fa-file-contract', iconColor: 'text-orange-400', badge: 'UTBK' },
+            { bg: 'bg-[#e3f2fd]', border: 'border-[#bbdefb]', icon: 'fa-building-columns', iconColor: 'text-blue-500', badge: 'PTN' },
+            { bg: 'bg-[#f3e5f5]', border: 'border-[#e1bee7]', icon: 'fa-graduation-cap', iconColor: 'text-purple-500', badge: 'MANDIRI' },
+            { bg: 'bg-[#e8f5e9]', border: 'border-[#c8e6c9]', icon: 'fa-award', iconColor: 'text-green-500', badge: 'TKA' },
+            { bg: 'bg-[#fce4ec]', border: 'border-[#f8bbd0]', icon: 'fa-book-open-reader', iconColor: 'text-pink-500', badge: 'MODUL' }
+        ];
+
+        // A. Render Kotak Kategori dari Master Data (dbMaster.programs)
+        window.renderTryoutCategories = function() {
+            const cont = document.getElementById('tryout-category-list');
+            if (!cont) return;
+
+            const programs = (dbMaster && Array.isArray(dbMaster.programs)) ? dbMaster.programs : [];
+            let html = '';
+
+            programs.forEach((prog, idx) => {
+                const st = categoryStyles[idx % categoryStyles.length];
+                const count = dbTryouts.filter(t => t.program === prog).length;
+                html += `
+                <button onclick="openCategoryDetailView('${prog}', ${idx})" class="flex-shrink-0 w-[125px] md:w-[135px] ${st.bg} border ${st.border} rounded-2xl p-3.5 flex flex-col items-center justify-center gap-2 hover:-translate-y-1 hover:shadow-md transition relative group">
+                    <div class="absolute -top-2 -right-1.5 bg-[#ff7f3f] text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full shadow-sm">${count} TO</div>
+                    <div class="w-11 h-11 rounded-xl bg-white/80 flex items-center justify-center shadow-sm group-hover:scale-110 transition">
+                        <i class="fa-solid ${st.icon} text-2xl ${st.iconColor}"></i>
+                    </div>
+                    <span class="text-[11px] font-extrabold text-gray-700 text-center leading-tight mt-1 line-clamp-2">Tryout<br>${prog}</span>
+                </button>`;
+            });
+
+            if (programs.length === 0) {
+                html = `<div class="text-xs text-gray-400 italic py-2">Belum ada Master Program. Tambahkan di menu Master Data Admin.</div>`;
+            }
+            cont.innerHTML = html;
+
+            // Sinkronkan juga dropdown program di Kalender
+            const calSel = document.getElementById('cal-filter-prog');
+            if (calSel) {
+                const currVal = calSel.value;
+                calSel.innerHTML = `<option value="">Semua Program</option>` + programs.map(p => `<option value="${p}">${p}</option>`).join('');
+                if (currVal && programs.includes(currVal)) calSel.value = currVal;
             }
         };
 
+        // B. Buka Halaman Detail Kategori (Gambar Ke-3)
+        window.openCategoryDetailView = function(prog, styleIdx = 0) {
+            currentCategoryDetailProg = prog;
+            currentCategoryDetailStatus = 'active';
+
+            const st = categoryStyles[styleIdx % categoryStyles.length];
+            const totalInProg = dbTryouts.filter(t => t.program === prog).length;
+
+            document.getElementById('tryout-hero-banner').classList.add('hidden');
+            document.getElementById('tryout-main-view').classList.add('hidden');
+            document.getElementById('tryout-history-view').classList.add('hidden');
+            document.getElementById('tryout-category-detail-view').classList.remove('hidden');
+
+            const iconBox = document.getElementById('cat-detail-icon-box');
+            if (iconBox) iconBox.className = `w-12 h-12 md:w-14 md:h-14 ${st.bg} border ${st.border} rounded-xl flex items-center justify-center flex-shrink-0`;
+            const iconEl = document.getElementById('cat-detail-icon');
+            if (iconEl) iconEl.className = `fa-solid ${st.icon} text-2xl ${st.iconColor}`;
+
+            document.getElementById('cat-detail-title').innerText = `Tryout ${prog}`;
+            document.getElementById('cat-detail-badge').innerText = `${totalInProg} Tryout`;
+
+            renderCategoryDetailTryouts('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.closeCategoryDetailView = function() {
+            document.getElementById('tryout-category-detail-view').classList.add('hidden');
+            document.getElementById('tryout-hero-banner').classList.remove('hidden');
+            document.getElementById('tryout-main-view').classList.remove('hidden');
+            renderUserTryouts(currentUserTryoutFilter);
+        };
+
+        // Render Daftar Seluruh Tryout di Dalam Kategori yang Dipilih (Mirip Gambar 3)
+        window.renderCategoryDetailTryouts = function(statusFilter) {
+            if (statusFilter) currentCategoryDetailStatus = statusFilter;
+
+            const btnAct = document.getElementById('btn-cat-to-act');
+            const btnUpc = document.getElementById('btn-cat-to-upc');
+            if (btnAct && btnUpc) {
+                btnAct.className = currentCategoryDetailStatus === 'active'
+                    ? "bg-[#5c8df6] text-white font-bold px-5 py-1.5 rounded-full text-xs md:text-sm shadow-sm transition"
+                    : "bg-white border border-[#5c8df6] text-[#5c8df6] hover:bg-blue-50 font-bold px-5 py-1.5 rounded-full text-xs md:text-sm transition";
+                btnUpc.className = currentCategoryDetailStatus === 'upcoming'
+                    ? "bg-[#5c8df6] text-white font-bold px-5 py-1.5 rounded-full text-xs md:text-sm shadow-sm transition"
+                    : "bg-white border border-[#5c8df6] text-[#5c8df6] hover:bg-blue-50 font-bold px-5 py-1.5 rounded-full text-xs md:text-sm transition";
+            }
+
+            const cont = document.getElementById('cat-detail-tryout-list');
+            const now = new Date();
+
+            let list = dbTryouts.filter(t => {
+                if (t.program !== currentCategoryDetailProg) return false;
+                const isDone = dbResults.find(r => r.toId === t.id && r.userId === currentUser.id);
+                const start = new Date(t.start);
+                const end = new Date(t.end);
+
+                if (currentCategoryDetailStatus === 'active') return !isDone && now >= start && now <= end;
+                if (currentCategoryDetailStatus === 'upcoming') return !isDone && now < start;
+                return false;
+            }).sort((a, b) => new Date(a.start) - new Date(b.start));
+
+            if (list.length === 0) {
+                cont.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-2xl border border-gray-100 text-gray-400 font-medium"><i class="fa-solid fa-box-open text-4xl mb-3 text-gray-200 block"></i>Belum ada Tryout ${currentCategoryDetailStatus === 'active' ? 'Berlangsung' : 'Akan Datang'} di program <b>${currentCategoryDetailProg}</b>.</div>`;
+                return;
+            }
+
+            cont.innerHTML = list.map(t => buildTryoutCardHTML(t, currentCategoryDetailStatus)).join('');
+        };
+
+        // Helper Pembuat Kartu Tryout (Persis Gambar Ke-3)
+        function buildTryoutCardHTML(t, mode) {
+            const start = new Date(t.start);
+            const end = new Date(t.end);
+            const isPrem = t.type === 'PREMIUM';
+
+            let statusText = '';
+            let actionHtml = '';
+
+            if (mode === 'active') {
+                statusText = `Bisa Dikerjakan • s/d ${end.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}`;
+                actionHtml = (isPrem && !currentUser.isPremium)
+                    ? `<button onclick="showModal('Akses Ditolak','Khusus member PREMIUM. Silakan upgrade akun Anda.','error')" class="text-red-500 font-extrabold text-xs hover:underline flex items-center gap-1"><i class="fa-solid fa-lock"></i> Daftar</button>`
+                    : `<button onclick="initCBT('${t.id}')" class="text-[#3b82f6] font-extrabold text-xs underline hover:text-blue-800">Daftar</button>`;
+            } else {
+                statusText = `Dimulai: ${start.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+                actionHtml = `<button onclick="showTryoutSchedule('${t.id}')" class="text-brand-orange font-extrabold text-xs underline hover:text-orange-700">Jadwal</button>`;
+            }
+
+            const premBadge = isPrem
+                ? `<div class="absolute top-0 right-0 bg-[#d1fae5] text-[#059669] text-[10px] font-bold px-4 py-1 rounded-bl-xl rounded-tr-2xl">premium</div>`
+                : `<div class="absolute top-0 right-0 bg-blue-100 text-blue-600 text-[10px] font-bold px-4 py-1 rounded-bl-xl rounded-tr-2xl">gratis</div>`;
+
+            return `
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-blue-200 transition relative flex flex-col">
+                ${premBadge}
+                <div class="flex justify-between items-center pr-16 mb-3 pb-3 border-b border-gray-100">
+                    <h4 class="font-bold text-brand-navy text-sm md:text-base">${t.program} - ${t.episode}</h4>
+                    <i class="fa-solid fa-chevron-down text-blue-400 text-xs"></i>
+                </div>
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 bg-[#e0f2fe] rounded-xl flex flex-col items-center justify-center flex-shrink-0 border border-blue-200 text-blue-600">
+                        <i class="fa-solid fa-file-lines text-lg"></i>
+                        <span class="text-[7px] font-black uppercase tracking-tighter mt-0.5">${t.program.split(' ')[0]}</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h5 class="font-bold text-brand-navy text-xs md:text-sm truncate">${t.episode} - ${t.program}</h5>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-[11px] text-gray-400 font-medium">${statusText}</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-pink-500 text-xs font-bold flex items-center gap-1"><i class="fa-solid fa-gem text-[10px]"></i> ${t.modules ? t.modules.length : 1}</span>
+                                ${actionHtml}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // C. Navigasi Utama vs Riwayat Tryout Saya
+        window.toggleTryoutView = function(view) {
+            document.getElementById('tryout-category-detail-view').classList.add('hidden');
+            if(view === 'history') {
+                document.getElementById('tryout-hero-banner').classList.add('hidden');
+                document.getElementById('tryout-main-view').classList.add('hidden');
+                document.getElementById('tryout-history-view').classList.remove('hidden');
+                renderHistoryProgPills();
+                renderUserTryouts('history');
+            } else {
+                document.getElementById('tryout-history-view').classList.add('hidden');
+                document.getElementById('tryout-hero-banner').classList.remove('hidden');
+                document.getElementById('tryout-main-view').classList.remove('hidden');
+                renderTryoutCategories();
+                renderUserTryouts('active');
+                renderTryoutCalendar();
+            }
+        };
+
+        function renderHistoryProgPills() {
+            const pillCont = document.getElementById('history-prog-pills');
+            if (!pillCont) return;
+            const programs = (dbMaster && Array.isArray(dbMaster.programs)) ? dbMaster.programs : [];
+            let html = `<button onclick="setHistoryProgFilter('')" class="${currentHistoryProgFilter === '' ? 'bg-[#4f8bea] text-white' : 'bg-white border border-blue-100 text-gray-500'} px-4 py-1.5 rounded-xl text-xs font-bold flex-shrink-0 shadow-sm transition">Semua</button>`;
+            programs.forEach(p => {
+                const active = currentHistoryProgFilter === p;
+                html += `<button onclick="setHistoryProgFilter('${p}')" class="${active ? 'bg-[#4f8bea] text-white' : 'bg-white border border-blue-100 text-gray-500 hover:text-blue-500'} px-4 py-1.5 rounded-xl text-xs font-bold flex-shrink-0 shadow-sm transition">${p}</button>`;
+            });
+            pillCont.innerHTML = html;
+        }
+
+        window.setHistoryProgFilter = function(prog) {
+            currentHistoryProgFilter = prog;
+            renderHistoryProgPills();
+            renderUserTryouts('history');
+        };
+
+        // D. Render 2 Tryout Terdekat (Lintas Kategori) untuk Promosi di Halaman Utama
         window.renderUserTryouts = function(filterType) {
             if(filterType) currentUserTryoutFilter = filterType;
             const filter = currentUserTryoutFilter;
 
+            // Pastikan kategori & kalender ikut ter-render
+            renderTryoutCategories();
+            renderTryoutCalendar();
+
             const btnAct = document.getElementById('btn-to-act');
             const btnUpc = document.getElementById('btn-to-upc');
-            if(btnAct && btnUpc) {
-                btnAct.className = filter === 'active' ? "bg-[#4f8bea] text-white font-bold px-5 py-2 rounded-full text-sm shadow-sm transition" : "bg-white border border-[#4f8bea] text-[#4f8bea] hover:bg-blue-50 font-bold px-5 py-2 rounded-full text-sm shadow-sm transition";
-                btnUpc.className = filter === 'upcoming' ? "bg-[#4f8bea] text-white font-bold px-5 py-2 rounded-full text-sm shadow-sm transition" : "bg-white border border-[#4f8bea] text-[#4f8bea] hover:bg-blue-50 font-bold px-5 py-2 rounded-full text-sm shadow-sm transition";
+            if(btnAct && btnUpc && filter !== 'history') {
+                btnAct.className = filter === 'active' ? "bg-[#4f8bea] text-white font-bold px-5 py-2 rounded-full text-xs md:text-sm shadow-sm transition" : "bg-white border border-[#4f8bea] text-[#4f8bea] hover:bg-blue-50 font-bold px-5 py-2 rounded-full text-xs md:text-sm shadow-sm transition";
+                btnUpc.className = filter === 'upcoming' ? "bg-[#4f8bea] text-white font-bold px-5 py-2 rounded-full text-xs md:text-sm shadow-sm transition" : "bg-white border border-[#4f8bea] text-[#4f8bea] hover:bg-blue-50 font-bold px-5 py-2 rounded-full text-xs md:text-sm shadow-sm transition";
             }
 
-            const cont = filter === 'history' ? document.getElementById('user-tryout-history-list') : document.getElementById('user-tryout-list'); 
-            
-            let filteredAll = currentToCategory ? dbTryouts.filter(t => t.program === currentToCategory) : dbTryouts; 
             const now = new Date();
-            
-            let filtered = filteredAll.filter(t => {
-                const isDone = dbResults.find(r => r.toId === t.id && r.userId === currentUser.id);
-                const start = new Date(t.start);
-                
-                if (filter === 'history') return isDone;
-                if (filter === 'active') return !isDone && now >= start; 
-                if (filter === 'upcoming') return !isDone && now < start; 
-                return false;
-            });
 
-            if(filtered.length === 0) { 
-                cont.innerHTML = `<div class="col-span-full text-center py-10 bg-white rounded-2xl border border-gray-100 text-gray-400 font-medium"><i class="fa-solid fa-box-open text-4xl mb-3 text-gray-200 block"></i>Belum ada data Tryout di kategori ini.</div>`; 
-                return; 
-            }
-            
-            let htmlStr = '';
-            filtered.forEach(t => {
-                const start = new Date(t.start); 
-                const end = new Date(t.end); 
-                const rel = new Date(t.relScore); 
-                
-                if(filter === 'history') {
-                    // Card Tryout Saya (Riwayat)
-                    let statText = now >= rel ? "Selesai - Lihat Hasil" : "Menunggu Rilis Hasil";
+            // JIKA TAB RIWAYAT (TRYOUT SAYA)
+            if (filter === 'history') {
+                const cont = document.getElementById('user-tryout-history-list');
+                const searchQ = (document.getElementById('history-search-input')?.value || '').toLowerCase();
+
+                let doneList = dbTryouts.filter(t => {
+                    const isDone = dbResults.find(r => r.toId === t.id && r.userId === currentUser.id);
+                    if (!isDone) return false;
+                    if (currentHistoryProgFilter && t.program !== currentHistoryProgFilter) return false;
+                    if (searchQ && !(`${t.program} ${t.episode}`.toLowerCase().includes(searchQ))) return false;
+                    return true;
+                });
+
+                if (doneList.length === 0) {
+                    cont.innerHTML = `<div class="col-span-full text-center py-10 bg-white rounded-2xl border border-gray-100 text-gray-400 font-medium"><i class="fa-solid fa-box-open text-4xl mb-3 text-gray-200 block"></i>Belum ada Tryout yang selesai dikerjakan.</div>`;
+                    return;
+                }
+
+                cont.innerHTML = doneList.map(t => {
+                    const rel = new Date(t.relScore);
+                    let statText = now >= rel ? "Selesai - Lihat Hasil & Pembahasan" : "Menunggu Rilis Hasil";
                     let statColor = now >= rel ? "text-blue-600" : "text-green-500";
-                    htmlStr += `
+                    return `
                     <div class="bg-white border border-gray-100 rounded-2xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition cursor-pointer" onclick="${now >= rel ? `viewTryoutResult('${t.id}')` : `showTryoutSchedule('${t.id}')`}">
-                        <div class="w-14 h-14 bg-gray-50 rounded-xl flex items-center justify-center flex-shrink-0 border border-gray-100">
-                            <i class="fa-solid fa-file-contract text-2xl text-gray-300"></i>
+                        <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0 border border-blue-100">
+                            <i class="fa-solid fa-file-circle-check text-2xl text-blue-500"></i>
                         </div>
                         <div class="flex-1">
-                            <h4 class="font-bold text-brand-navy text-sm md:text-base leading-tight">${t.program} ${t.episode}</h4>
-                            <p class="text-xs font-bold ${statColor} mt-1.5">${statText}</p>
+                            <span class="text-[10px] font-bold bg-gray-100 text-gray-600 px-2 py-0.5 rounded">${t.program}</span>
+                            <h4 class="font-bold text-brand-navy text-sm md:text-base leading-tight mt-1">${t.program} - ${t.episode}</h4>
+                            <p class="text-xs font-bold ${statColor} mt-1">${statText}</p>
                         </div>
                         <i class="fa-solid fa-chevron-right text-gray-300 mr-2"></i>
                     </div>`;
-                } else {
-                    // Card Berlangsung / Akan Datang
-                    let btnHtml = '';
-                    let statusText = '';
-                    
-                    if (filter === 'active') {
-                        statusText = 'Bisa Dikerjakan';
-                        btnHtml = (t.type === 'PREMIUM' && !currentUser.isPremium) ? `<button onclick="showModal('Akses Ditolak','Khusus PREMIUM.','error')" class="text-red-500 font-bold text-sm hover:underline"><i class="fa-solid fa-lock mr-1"></i> Beli Paket</button>` : `<button onclick="initCBT('${t.id}')" class="text-blue-600 font-bold text-sm hover:underline">Daftar / Mulai</button>`;
-                    } else if (filter === 'upcoming') {
-                        statusText = `Dimulai: ${start.toLocaleDateString('id-ID', {day:'numeric', month:'short'})}`;
-                        btnHtml = `<button onclick="showTryoutSchedule('${t.id}')" class="text-gray-400 font-bold text-sm hover:text-gray-600">Jadwal</button>`;
-                    }
+                }).join('');
+                return;
+            }
 
-                    let premBadge = t.type === 'PREMIUM' ? `<div class="absolute top-0 right-0 bg-[#dcfce7] text-[#166534] text-[9px] font-black px-3 py-1 rounded-bl-xl rounded-tr-2xl tracking-wider">PREMIUM</div>` : `<div class="absolute top-0 right-0 bg-blue-100 text-blue-600 text-[9px] font-black px-3 py-1 rounded-bl-xl rounded-tr-2xl tracking-wider">FREE</div>`;
+            // JIKA HALAMAN DEPAN TRYOUT: AMBIL 2 TRYOUT PALING TERDEKAT DARI SELURUH KATEGORI
+            const cont = document.getElementById('user-tryout-list');
+            let filtered = dbTryouts.filter(t => {
+                const isDone = dbResults.find(r => r.toId === t.id && r.userId === currentUser.id);
+                const start = new Date(t.start);
+                const end = new Date(t.end);
 
-                    htmlStr += `
-                    <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-blue-200 transition relative flex flex-col group">
-                        ${premBadge}
-                        <h4 class="font-bold text-brand-navy text-base pr-16 mb-4 border-b border-gray-50 pb-3">${t.program} ${t.episode}</h4>
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-[#e0f2fe] border border-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition">
-                                <i class="fa-solid fa-file-invoice text-2xl text-blue-500"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h5 class="font-bold text-gray-700 text-sm leading-tight">${t.program} Lengkap</h5>
-                                <p class="text-xs text-gray-400 mt-1">${statusText}</p>
-                            </div>
-                        </div>
-                        <div class="mt-5 flex justify-between items-center">
-                            <div class="flex gap-1.5 text-pink-500 text-xs font-bold items-center"><i class="fa-solid fa-gem"></i> 4</div>
-                            ${btnHtml}
-                        </div>
-                    </div>`;
-                }
+                if (filter === 'active') return !isDone && now >= start && now <= end;
+                if (filter === 'upcoming') return !isDone && now < start;
+                return false;
             });
-            cont.innerHTML = htmlStr;
+
+            // Urutkan berdasarkan waktu terdekat:
+            // - Berlangsung: yang waktu berakhirnya (end) paling dekat dengan sekarang
+            // - Akan Datang: yang waktu mulainya (start) paling dekat dengan sekarang
+            filtered.sort((a, b) => {
+                if (filter === 'active') return new Date(a.end) - new Date(b.end);
+                return new Date(a.start) - new Date(b.start);
+            });
+
+            // Ambil maksimal 2 Tryout terdekat buat promosi
+            const nearestTwo = filtered.slice(0, 2);
+
+            if(nearestTwo.length === 0) { 
+                cont.innerHTML = `<div class="col-span-full text-center py-10 bg-white rounded-2xl border border-gray-100 text-gray-400 font-medium"><i class="fa-solid fa-box-open text-4xl mb-3 text-gray-200 block"></i>Belum ada Tryout ${filter === 'active' ? 'Berlangsung' : 'Akan Datang'} dalam waktu dekat.</div>`; 
+                return; 
+            }
+            
+            cont.innerHTML = nearestTwo.map(t => buildTryoutCardHTML(t, filter)).join('');
         };
+
+        // E. KALENDER TRYOUT INTERAKTIF (BISA PINDAH BULAN, KLIK TANGGAL, & HIDE/SHOW)
+        window.toggleCalendarVisibility = function() {
+            calState.isHidden = !calState.isHidden;
+            const body = document.getElementById('tryout-calendar-body');
+            const icon = document.getElementById('icon-toggle-cal');
+            const text = document.getElementById('text-toggle-cal');
+            if (!body) return;
+
+            if (calState.isHidden) {
+                body.classList.add('hidden');
+                if (icon) icon.className = 'fa-solid fa-chevron-down';
+                if (text) text.innerText = 'Tampilkan Kalender';
+            } else {
+                body.classList.remove('hidden');
+                if (icon) icon.className = 'fa-solid fa-chevron-up';
+                if (text) text.innerText = 'Sembunyikan';
+            }
+        };
+
+        window.changeTryoutMonth = function(delta) {
+            calState.month += delta;
+            if (calState.month > 11) { calState.month = 0; calState.year++; }
+            else if (calState.month < 0) { calState.month = 11; calState.year--; }
+            calState.selectedDateStr = '';
+            renderTryoutCalendar();
+        };
+
+        window.changeCalProgram = function(prog) {
+            calState.programFilter = prog;
+            renderTryoutCalendar();
+        };
+
+        window.renderTryoutCalendar = function() {
+            const grid = document.getElementById('cal-days-grid');
+            const label = document.getElementById('cal-month-year-label');
+            const badge = document.getElementById('cal-to-count-badge');
+            const detailBox = document.getElementById('cal-selected-date-box');
+            if (!grid || !label) return;
+
+            const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            label.innerText = `${monthNames[calState.month]} ${calState.year}`;
+
+            const firstDayOfMonth = new Date(calState.year, calState.month, 1).getDay();
+            const daysInMonth = new Date(calState.year, calState.month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(calState.year, calState.month, 0).getDate();
+
+            const today = new Date();
+            const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+            // Filter TO sesuai program kalender
+            const relevantTryouts = dbTryouts.filter(t => !calState.programFilter || t.program === calState.programFilter);
+
+            // Hitung berapa TO yang aktif/mulai di bulan ini
+            const monthStart = new Date(calState.year, calState.month, 1);
+            const monthEnd = new Date(calState.year, calState.month, daysInMonth, 23, 59, 59);
+            const toInThisMonth = relevantTryouts.filter(t => {
+                const s = new Date(t.start);
+                const e = new Date(t.end);
+                return (s <= monthEnd && e >= monthStart);
+            });
+            if (badge) badge.innerText = `${toInThisMonth.length} TO`;
+
+            let html = '';
+
+            // Tanggal sisa bulan sebelumnya
+            for (let i = firstDayOfMonth - 1; i >= 0; i--) {
+                const d = daysInPrevMonth - i;
+                html += `<div class="p-2.5 md:p-3 bg-gray-50/60 rounded-xl text-gray-300 select-none">${String(d).padStart(2, '0')}</div>`;
+            }
+
+            // Tanggal bulan berjalan
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dateStr = `${calState.year}-${String(calState.month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                const currDateStart = new Date(calState.year, calState.month, d, 0, 0, 0);
+                const currDateEnd = new Date(calState.year, calState.month, d, 23, 59, 59);
+
+                // Cari TO yang jatuh pada tanggal ini
+                const tosOnDay = relevantTryouts.filter(t => {
+                    const s = new Date(t.start);
+                    const e = new Date(t.end);
+                    return (s <= currDateEnd && e >= currDateStart);
+                });
+
+                const isToday = dateStr === todayStr;
+                const isSelected = calState.selectedDateStr === dateStr;
+                const dayOfWeek = new Date(calState.year, calState.month, d).getDay();
+                const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+
+                let boxClass = 'bg-gray-50 text-gray-700 hover:bg-blue-50';
+                let dotHtml = '';
+
+                if (isWeekend && tosOnDay.length === 0 && !isToday) {
+                    boxClass = 'bg-gray-50 text-red-500 hover:bg-red-50';
+                }
+
+                if (tosOnDay.length > 0) {
+                    // Tentukan warna berdasarkan status TO pada tanggal tersebut
+                    const hasDone = tosOnDay.some(t => dbResults.find(r => r.toId === t.id && r.userId === currentUser?.id));
+                    const hasActive = tosOnDay.some(t => today >= new Date(t.start) && today <= new Date(t.end));
+
+                    if (hasDone) {
+                        boxClass = 'bg-purple-100 text-purple-700 border border-purple-300 hover:bg-purple-200';
+                        dotHtml = `<span class="w-1.5 h-1.5 rounded-full bg-purple-600 mx-auto mt-1 block"></span>`;
+                    } else if (hasActive) {
+                        boxClass = 'bg-green-100 text-green-700 border border-green-300 hover:bg-green-200';
+                        dotHtml = `<span class="w-1.5 h-1.5 rounded-full bg-green-600 mx-auto mt-1 block animate-pulse"></span>`;
+                    } else {
+                        boxClass = 'bg-orange-100 text-orange-700 border border-orange-300 hover:bg-orange-200';
+                        dotHtml = `<span class="w-1.5 h-1.5 rounded-full bg-brand-orange mx-auto mt-1 block"></span>`;
+                    }
+                }
+
+                if (isToday) {
+                    boxClass = 'bg-[#4f8bea] text-white shadow-md hover:bg-blue-600';
+                    if (tosOnDay.length > 0) {
+                        dotHtml = `<span class="w-1.5 h-1.5 rounded-full bg-yellow-300 mx-auto mt-1 block"></span>`;
+                    }
+                }
+
+                if (isSelected) {
+                    boxClass += ' ring-2 ring-brand-navy ring-offset-1 scale-105';
+                }
+
+                html += `
+                <button onclick="selectCalendarDate('${dateStr}')" class="p-2 md:p-3 rounded-xl transition flex flex-col items-center justify-center relative ${boxClass}">
+                    <span>${String(d).padStart(2, '0')}</span>
+                    ${dotHtml}
+                    ${tosOnDay.length > 0 ? `<span class="absolute top-1 right-1 text-[8px] font-black px-1 rounded bg-white/80 text-brand-navy">${tosOnDay.length}</span>` : ''}
+                </button>`;
+            }
+
+            grid.innerHTML = html;
+
+            // Jika belum ada tanggal yang diklik, otomatis tampilkan hari ini jika ada TO
+            if (!calState.selectedDateStr) {
+                detailBox.classList.add('hidden');
+            } else {
+                renderSelectedCalendarDate(calState.selectedDateStr, relevantTryouts);
+            }
+        };
+
+        window.selectCalendarDate = function(dateStr) {
+            calState.selectedDateStr = dateStr;
+            renderTryoutCalendar();
+        };
+
+        function renderSelectedCalendarDate(dateStr, relevantTryouts) {
+            const detailBox = document.getElementById('cal-selected-date-box');
+            if (!detailBox) return;
+
+            const [y, m, d] = dateStr.split('-').map(Number);
+            const currDateStart = new Date(y, m - 1, d, 0, 0, 0);
+            const currDateEnd = new Date(y, m - 1, d, 23, 59, 59);
+            const fullDateLabel = currDateStart.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+            const tosOnDay = relevantTryouts.filter(t => {
+                const s = new Date(t.start);
+                const e = new Date(t.end);
+                return (s <= currDateEnd && e >= currDateStart);
+            });
+
+            detailBox.classList.remove('hidden');
+
+            if (tosOnDay.length === 0) {
+                detailBox.innerHTML = `
+                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-4 text-center">
+                    <p class="text-xs font-bold text-gray-600 mb-1">${fullDateLabel}</p>
+                    <p class="text-xs text-gray-400">Tidak ada jadwal Tryout pada tanggal ini.</p>
+                </div>`;
+                return;
+            }
+
+            const now = new Date();
+            let itemsHtml = tosOnDay.map(t => {
+                const isDone = dbResults.find(r => r.toId === t.id && r.userId === currentUser?.id);
+                const start = new Date(t.start);
+                const end = new Date(t.end);
+                let btn = '';
+
+                if (isDone) {
+                    btn = `<button onclick="toggleTryoutView('history')" class="bg-purple-600 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold shadow-sm">Sudah Dikerjakan</button>`;
+                } else if (now >= start && now <= end) {
+                    btn = (t.type === 'PREMIUM' && !currentUser.isPremium)
+                        ? `<button onclick="showModal('Akses Ditolak','Khusus PREMIUM.','error')" class="bg-yellow-400 text-brand-navy px-3.5 py-1.5 rounded-xl text-xs font-bold">Upgrade Premium</button>`
+                        : `<button onclick="initCBT('${t.id}')" class="bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-xl text-xs font-bold shadow-sm transition">Mulai Kerjakan</button>`;
+                } else {
+                    btn = `<button onclick="showTryoutSchedule('${t.id}')" class="bg-brand-orange text-white px-3.5 py-1.5 rounded-xl text-xs font-bold shadow-sm">Lihat Jadwal</button>`;
+                }
+
+                return `
+                <div class="bg-white border border-blue-100 rounded-xl p-3.5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shadow-sm">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-extrabold bg-blue-50 text-blue-600 px-2 py-0.5 rounded border border-blue-200">${t.program}</span>
+                            <span class="text-[10px] font-extrabold ${t.type === 'PREMIUM' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'} px-2 py-0.5 rounded">${t.type}</span>
+                        </div>
+                        <h5 class="font-extrabold text-brand-navy text-sm mt-1">${t.program} - ${t.episode}</h5>
+                        <p class="text-[11px] text-gray-500 font-medium">${start.toLocaleDateString('id-ID', {day:'numeric', month:'short'})} s/d ${end.toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'})}</p>
+                    </div>
+                    ${btn}
+                </div>`;
+            }).join('');
+
+            detailBox.innerHTML = `
+            <div class="bg-blue-50/70 border border-blue-200 rounded-2xl p-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h4 class="font-extrabold text-brand-navy text-xs md:text-sm"><i class="fa-regular fa-calendar-days text-blue-600 mr-1.5"></i> Jadwal Tryout: ${fullDateLabel}</h4>
+                    <button onclick="calState.selectedDateStr=''; renderTryoutCalendar();" class="text-gray-400 hover:text-red-500 text-xs font-bold"><i class="fa-solid fa-xmark"></i> Tutup</button>
+                </div>
+                <div class="space-y-2.5">${itemsHtml}</div>
+            </div>`;
+        }
         // ==========================================
         // OVERRIDE: LOGIKA KELAS ONLINE & SINKRONISASI MASTER DATA
         // ==========================================
