@@ -3591,6 +3591,22 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             if(document.getElementById('class-filter-prog')) document.getElementById('class-filter-prog').innerHTML = pHtml;
             renderUserClasses('active');
         };
+        // 5. Pemicu Otomatis Dropdown Program di Admin Kelas
+        const oldSwitchAdminTabClasses = window.switchAdminTab;
+        window.switchAdminTab = function(tab) {
+            if (oldSwitchAdminTabClasses) oldSwitchAdminTabClasses(tab);
+            // Kalau admin ngeklik menu Kelas Online, otomatis muat data Master Program
+            if (tab === 'classes') {
+                if (typeof updateMasterDropdowns === 'function') {
+                    updateMasterDropdowns();
+                }
+            }
+        };
+        
+        // Panggil juga sekali untuk berjaga-jaga saat web selesai dimuat
+        setTimeout(() => { 
+            if (typeof updateMasterDropdowns === 'function') updateMasterDropdowns(); 
+        }, 1500);
     </script>
 </body>
 </html>
