@@ -1624,7 +1624,7 @@
             
             const isGasConfigured = USE_GAS_DATABASE && GAS_SCRIPT_URL && GAS_SCRIPT_URL.startsWith('http');
             if(isGasConfigured) { 
-                await fetchAllFromGAS(); 
+                fetchAllFromGAS(); 
             } else { 
                 isGasReady = true; 
             }
