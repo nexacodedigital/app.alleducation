@@ -168,7 +168,7 @@
                     <div class="bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-gray-100 flex items-center gap-5 hover:shadow-md transition">
                         <img id="cp-mentor-photo" src="" class="w-16 h-20 md:w-20 md:h-24 object-cover rounded-xl border border-gray-100 shadow-inner">
                         <div>
-                            <p class="text-[10px] uppercase tracking-wider text-gray-400 font-bold mb-1">Star Master Teacher</p>
+                            <p class="text-[10px] uppercase tracking-wider text-gray-400 font-bold mb-1">OWLSTARS TEACHER</p>
                             <p id="cp-mentor" class="font-black text-brand-navy text-xl">Kak Mentor</p>
                         </div>
                     </div>
@@ -822,32 +822,26 @@
                     </div>
                     
                     <!-- TAB KELAS ONLINE BARU -->
+                    <!-- TAB KELAS ONLINE BARU -->
                     <div id="u-tab-classes" class="hidden">
                         <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 mb-6">
-                            <!-- Header Info -->
+                            <!-- Header Info & Filter Program Admin -->
                             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-3">
                                 <h2 class="text-xl font-black text-brand-navy">Jadwal Kelas</h2>
-                                <select class="bg-blue-50 text-blue-700 font-bold px-4 py-2.5 rounded-xl text-sm outline-none border border-blue-100 w-full md:w-auto">
-                                    <option>Live Class TKA SMA 2026/2027</option>
-                                    <option>Live Class SNBT 2026</option>
+                                <select id="class-filter-prog" onchange="renderUserClasses('active')" class="bg-blue-50 hover:bg-blue-100 cursor-pointer text-blue-700 font-bold px-4 py-2.5 rounded-xl text-sm outline-none border border-blue-200 w-full md:w-auto shadow-sm transition">
+                                    <option value="">Semua Program</option>
                                 </select>
                             </div>
                             
                             <!-- Tab Minggu / Riwayat -->
                             <div class="flex gap-4 border-b border-gray-100 mb-5">
-                                <button onclick="renderUserClasses('active')" id="btn-u-cls-act" class="font-black text-blue-600 border-b-[3px] border-blue-600 pb-3 px-4 transition w-1/2 text-center text-sm md:text-base">19 - 25 Oktober</button>
+                                <button onclick="renderUserClasses('active')" id="btn-u-cls-act" class="font-black text-blue-600 border-b-[3px] border-blue-600 pb-3 px-4 transition w-1/2 text-center text-sm md:text-base">Memuat Tanggal...</button>
                                 <button onclick="renderUserClasses('history')" id="btn-u-cls-his" class="font-bold text-gray-400 border-b-[3px] border-transparent hover:text-blue-500 pb-3 px-4 transition w-1/2 text-center text-sm md:text-base">Riwayat Kelas</button>
                             </div>
 
-                            <!-- Hari Navigasi (Desain Visual) -->
-                            <div class="flex gap-2.5 overflow-x-auto hide-scroll pb-2">
-                                <button class="bg-blue-500 text-white font-bold px-5 py-2 rounded-full text-xs md:text-sm flex-shrink-0 shadow-md">Senin</button>
-                                <button class="bg-gray-100 text-gray-500 hover:bg-gray-200 font-bold px-5 py-2 rounded-full text-xs md:text-sm flex-shrink-0 transition">Selasa</button>
-                                <button class="bg-gray-100 text-gray-500 hover:bg-gray-200 font-bold px-5 py-2 rounded-full text-xs md:text-sm flex-shrink-0 transition">Rabu</button>
-                                <button class="bg-gray-100 text-gray-500 hover:bg-gray-200 font-bold px-5 py-2 rounded-full text-xs md:text-sm flex-shrink-0 transition">Kamis</button>
-                                <button class="bg-gray-100 text-gray-500 hover:bg-gray-200 font-bold px-5 py-2 rounded-full text-xs md:text-sm flex-shrink-0 transition">Jumat</button>
-                                <button class="bg-gray-100 text-gray-500 hover:bg-gray-200 font-bold px-5 py-2 rounded-full text-xs md:text-sm flex-shrink-0 transition">Sabtu</button>
-                                <button class="bg-gray-100 text-gray-500 hover:bg-gray-200 font-bold px-5 py-2 rounded-full text-xs md:text-sm flex-shrink-0 transition">Minggu</button>
+                            <!-- Hari Navigasi (Bisa Diklik & Gak Dikunci) -->
+                            <div class="flex gap-2.5 overflow-x-auto hide-scroll pb-2" id="class-days-container">
+                                <!-- Hari akan dimuat otomatis oleh JavaScript -->
                             </div>
                         </div>
 
@@ -999,6 +993,7 @@
                         <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100">
                             <h2 class="text-2xl font-bold text-brand-navy mb-6"><i class="fa-solid fa-user-edit mr-2"></i>Edit Profil</h2>
                             <form onsubmit="saveProfile(event)" class="space-y-4">
+                                <div class="col-span-full md:col-span-1"><label class="block text-xs font-bold text-gray-500 mb-1">Program / Kategori</label><select id="ac-prog" required class="border p-3 rounded-xl outline-none bg-gray-50 w-full text-sm font-bold"></select></div>
                                 <div><label class="block text-sm font-bold text-gray-700 mb-1">Nama Lengkap</label><input type="text" id="prof-name" class="w-full px-4 py-3 bg-gray-50 border rounded-xl outline-none focus:border-brand-orange"></div>
                                 <div><label class="block text-sm font-bold text-gray-700 mb-1">Email (Read Only)</label><input type="text" id="prof-email" readonly class="w-full px-4 py-3 bg-gray-200 border rounded-xl outline-none text-gray-500"></div>
                                 <div><label class="block text-sm font-bold text-gray-700 mb-1">Asal Sekolah</label><input type="text" id="prof-school" class="w-full px-4 py-3 bg-gray-50 border rounded-xl outline-none focus:border-brand-orange"></div>
@@ -3436,6 +3431,162 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                 }
             });
             cont.innerHTML = htmlStr;
+        };
+        // ==========================================
+        // OVERRIDE: LOGIKA KELAS ONLINE SEMPULNA
+        // ==========================================
+        
+        // 1. Variabel Filter Hari (1=Senin, 7=Minggu)
+        window.currentClassDayFilter = new Date().getDay() === 0 ? 7 : new Date().getDay();
+        
+        window.filterClassByDay = function(day) {
+            window.currentClassDayFilter = day;
+            renderUserClasses('active');
+        };
+
+        // 2. Override Render Kelas User
+        window.renderUserClasses = function(filter) {
+            const btnAct = document.getElementById('btn-u-cls-act');
+            const btnHis = document.getElementById('btn-u-cls-his');
+            const daysCont = document.getElementById('class-days-container');
+            const cont = document.getElementById('u-class-list'); 
+            const progFilter = document.getElementById('class-filter-prog') ? document.getElementById('class-filter-prog').value : '';
+            const now = new Date();
+
+            // Setup Tanggal Seminggu Kedepan
+            if(btnAct) {
+                btnAct.className = filter === 'active' ? "font-black text-blue-600 border-b-[3px] border-blue-600 pb-3 px-4 transition w-1/2 text-center text-sm md:text-base" : "font-bold text-gray-400 border-b-[3px] border-transparent hover:text-blue-500 pb-3 px-4 transition w-1/2 text-center text-sm md:text-base";
+                
+                const curr = new Date();
+                const first = curr.getDate() - curr.getDay() + (curr.getDay() === 0 ? -6 : 1);
+                const last = first + 6;
+                const firstDay = new Date(curr.setDate(first));
+                const lastDay = new Date(curr.setDate(last));
+                const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
+                let weekStr = firstDay.getMonth() === lastDay.getMonth() ? 
+                    `${firstDay.getDate()} - ${lastDay.getDate()} ${months[firstDay.getMonth()]}` : 
+                    `${firstDay.getDate()} ${months[firstDay.getMonth()]} - ${lastDay.getDate()} ${months[lastDay.getMonth()]}`;
+                btnAct.innerText = weekStr;
+            }
+            if(btnHis) btnHis.className = filter === 'history' ? "font-black text-blue-600 border-b-[3px] border-blue-600 pb-3 px-4 transition w-1/2 text-center text-sm md:text-base" : "font-bold text-gray-400 border-b-[3px] border-transparent hover:text-blue-500 pb-3 px-4 transition w-1/2 text-center text-sm md:text-base";
+
+            // Render Hari (Senin-Minggu Bisa Diklik)
+            if(daysCont) {
+                if(filter === 'history') {
+                    daysCont.innerHTML = ''; 
+                } else {
+                    const daysName = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+                    let dHtml = '';
+                    daysName.forEach((d, i) => {
+                        const dayNum = i + 1;
+                        if(dayNum === window.currentClassDayFilter) {
+                            dHtml += `<button onclick="filterClassByDay(${dayNum})" class="bg-blue-500 text-white font-bold px-5 py-2 rounded-full text-xs md:text-sm flex-shrink-0 shadow-md transition transform scale-105">${d}</button>`;
+                        } else {
+                            dHtml += `<button onclick="filterClassByDay(${dayNum})" class="bg-gray-100 text-gray-500 hover:bg-gray-200 font-bold px-5 py-2 rounded-full text-xs md:text-sm flex-shrink-0 transition">${d}</button>`;
+                        }
+                    });
+                    daysCont.innerHTML = dHtml;
+                }
+            }
+
+            // Logika Filter
+            let filtered = dbClasses.filter(c => {
+                const cDate = new Date(c.date);
+                if(filter === 'active' && cDate < now) return false;
+                if(filter === 'history' && cDate >= now) return false;
+                if(progFilter && c.program !== progFilter) return false; // Filter Database Admin
+                
+                if(filter === 'active') {
+                    let cDay = cDate.getDay() === 0 ? 7 : cDate.getDay();
+                    if(cDay !== window.currentClassDayFilter) return false; // Filter Hari
+                }
+                return true;
+            }).sort((a,b)=>new Date(a.date)-new Date(b.date));
+            if(filter === 'history') filtered = filtered.reverse();
+
+            if(filtered.length === 0) { cont.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-3xl border text-gray-400 font-medium"><i class="fa-solid fa-video-slash text-4xl mb-4 block text-gray-200"></i>Belum ada kelas ${filter === 'active' ? 'di hari ini' : 'pada riwayat Anda'}.</div>`; return; }
+            
+            // Render Card
+            let htmlStr = '';
+            filtered.forEach(c => {
+                const isPrem = c.type === 'PREMIUM'; 
+                const canJoin = !isPrem || currentUser.isPremium; 
+                const isPast = new Date(c.date) < now;
+                const d = new Date(c.date);
+                const timeStr = d.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) + ' WIB';
+                let lockIcon = (isPrem && !currentUser.isPremium) ? `<div class="absolute top-4 right-4 text-gray-500 bg-gray-100 w-8 h-8 rounded-lg flex items-center justify-center border border-gray-200 shadow-sm"><i class="fa-solid fa-lock text-sm"></i></div>` : '';
+                let statusBadge = isPast ? `<span class="bg-pink-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1.5 mt-2 shadow-sm"><div class="w-1.5 h-1.5 bg-white rounded-full"></div> Berakhir</span>` : `<span class="bg-green-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1.5 mt-2 shadow-sm"><div class="w-1.5 h-1.5 bg-white rounded-full"></div> Segera Mulai</span>`;
+
+                htmlStr += `
+                <div class="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-md hover:border-blue-200 transition cursor-pointer relative flex flex-col" onclick="openClassPreview('${c.id}', ${!isPast})">
+                    ${lockIcon}
+                    <div class="mb-5 flex-1">
+                        <span class="text-[11px] font-black uppercase tracking-wider ${isPrem?'text-pink-500':'text-blue-500'} block mb-2">${isPrem?'Premium Class':'Free Class'}</span>
+                        <h4 class="font-extrabold text-brand-navy text-lg leading-snug pr-8 mb-2">${c.title}</h4>
+                        <div class="text-xs text-gray-500 font-bold"><i class="fa-regular fa-clock mr-1"></i> ${timeStr}</div>
+                        ${statusBadge}
+                    </div>
+                    <div class="flex justify-between items-center border-t border-gray-100 pt-4 mt-auto">
+                        <div class="flex items-center gap-3">
+                            <img src="${c.mentorPhoto||'https://via.placeholder.com/32'}" class="w-8 h-8 rounded-full object-cover border-2 border-white shadow-sm">
+                            <span class="text-sm text-gray-700 font-bold">${c.mentorName||'Kak Mentor'}</span>
+                        </div>
+                        <span class="text-xs font-black text-blue-600 hover:text-blue-800 underline decoration-2 underline-offset-2">Lihat Sesi</span>
+                    </div>
+                </div>`;
+            });
+            cont.innerHTML = htmlStr;
+        };
+
+        // 3. Override Simpan Ke Database Admin (Menyimpan Kategori Program)
+        window.adminAddClass = function(e) { 
+            e.preventDefault(); 
+            const id = document.getElementById('ac-id-edit').value || 'C' + Date.now();
+            const classData = { 
+                id: id,
+                program: document.getElementById('ac-prog') ? document.getElementById('ac-prog').value : '',
+                title: document.getElementById('ac-title').value, 
+                banner: document.getElementById('ac-banner').value || 'https://via.placeholder.com/400x200/071B3A/FFFFFF?text=Class', 
+                zoom: document.getElementById('ac-zoom').value, 
+                zoomId: document.getElementById('ac-meet-id').value, 
+                zoomPass: document.getElementById('ac-meet-pass').value, 
+                date: new Date(document.getElementById('ac-date').value).toISOString(), 
+                type: document.getElementById('ac-type').value,
+                mentorName: document.getElementById('ac-mentor-name').value,
+                mentorPhoto: document.getElementById('ac-mentor-photo').value || 'https://via.placeholder.com/64x64/CCCCCC/FFFFFF?text=M',
+                desc: document.getElementById('ac-desc').value,
+                materials: document.getElementById('ac-materials').value
+            };
+            const idx = dbClasses.findIndex(c => c.id === id);
+            if(idx > -1) dbClasses[idx] = classData; else dbClasses.push(classData);
+            syncServerData('Classes'); e.target.reset(); resetClassForm(); renderAdminClasses(); 
+        };
+
+        window.editClass = function(id) {
+            const c = dbClasses.find(x => x.id === id); if(!c) return;
+            document.getElementById('ac-id-edit').value = c.id; 
+            if(document.getElementById('ac-prog')) document.getElementById('ac-prog').value = c.program || '';
+            document.getElementById('ac-title').value = c.title; document.getElementById('ac-banner').value = c.banner; document.getElementById('ac-zoom').value = c.zoom; document.getElementById('ac-meet-id').value = c.zoomId || ''; document.getElementById('ac-meet-pass').value = c.zoomPass || ''; document.getElementById('ac-date').value = c.date.slice(0,16); document.getElementById('ac-type').value = c.type; document.getElementById('ac-mentor-name').value = c.mentorName || ''; document.getElementById('ac-mentor-photo').value = c.mentorPhoto || ''; document.getElementById('ac-desc').value = c.desc || ''; document.getElementById('ac-materials').value = c.materials || '';
+            document.getElementById('ac-btn-submit').innerText = 'Simpan Perubahan'; document.getElementById('ac-btn-cancel').classList.remove('hidden'); window.scrollTo(0,0);
+        };
+
+        // 4. Update Dropdown Filter User & Admin
+        const oldUpdateMaster = window.updateMasterDropdowns;
+        window.updateMasterDropdowns = function() {
+            if(oldUpdateMaster) oldUpdateMaster();
+            let pHtml = '<option value="">-- Semua Program --</option>';
+            dbMaster.programs.forEach(p => pHtml += `<option value="${p}">${p}</option>`); 
+            if(document.getElementById('ac-prog')) document.getElementById('ac-prog').innerHTML = pHtml.replace('<option value="">-- Semua Program --</option>', '<option value="" disabled selected>-- Pilih --</option>');
+            if(document.getElementById('class-filter-prog')) document.getElementById('class-filter-prog').innerHTML = pHtml;
+        };
+        
+        const oldInitUserDrop = window.initUserDropdowns;
+        window.initUserDropdowns = function() {
+            if(oldInitUserDrop) oldInitUserDrop();
+            let pHtml = '<option value="">-- Semua Program --</option>';
+            dbMaster.programs.forEach(p => pHtml += `<option value="${p}">${p}</option>`);
+            if(document.getElementById('class-filter-prog')) document.getElementById('class-filter-prog').innerHTML = pHtml;
+            renderUserClasses('active');
         };
     </script>
 </body>
