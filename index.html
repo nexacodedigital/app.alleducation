@@ -104,7 +104,7 @@
     <div id="print-container" class="hidden bg-white text-black p-8 relative"></div>
 
     <!-- Loading Screen Awal (Desain Baru Membesar Mengecil) -->
-    <div id="global-loader" class="fixed inset-0 z-[9999999] bg-[#f8fafc] flex flex-col items-center justify-center transition-opacity duration-200">
+    <div id="global-loader" class="hidden fixed inset-0 z-[9999999] bg-[#f8fafc] flex flex-col items-center justify-center transition-opacity duration-200">
         <!-- Logo Membesar Mengecil -->
         <div class="animate-scale-pulse mb-8 relative drop-shadow-xl">
             <img id="logo-img-loader" src="https://iili.io/CMttawP.md.png" class="h-28 w-auto object-contain">
@@ -1596,17 +1596,33 @@
         // =========================================================================
         // DOM LOAD & APP INIT (SPEED OPTIMIZED)
         // =========================================================================
-        document.addEventListener('DOMContentLoaded', async () => {
+       // Fungsi Inisialisasi User & Tryout (Mencegah Crash saat Login / Reload)
+        window.initUserDropdowns = function() {
+            const pSel = document.getElementById('user-filter-program');
+            if (pSel && dbMaster && dbMaster.programs) {
+                let htmlStr = '<option value="">-- Semua Program --</option>';
+                dbMaster.programs.forEach(p => htmlStr += `<option value="${p}">${p}</option>`);
+                pSel.innerHTML = htmlStr;
+            }
+            if (typeof renderUserTryouts === 'function') {
+                renderUserTryouts('active');
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
             const loader = document.getElementById('global-loader');
-            if(loader) loader.classList.remove('hidden');
+            // Pastikan loader langsung disembunyikan (0 detik tanpa loading)
+            if(loader) loader.classList.add('hidden');
             
-            // PERBAIKAN BUG: Selalu load data lokal (cache) DULUAN sebelum memanggil server.
-            // Memastikan data Logo, Pengaturan, dan Tryout sebelumnya TIDAK HILANG saat fitur GAS dihidupkan (true).
             loadLocalDB(); 
             
             const isGasConfigured = USE_GAS_DATABASE && GAS_SCRIPT_URL && GAS_SCRIPT_URL.startsWith('http');
             if(isGasConfigured) { 
-                fetchAllFromGAS(); 
+                // Sinkronisasi berjalan di background, setelah selesai otomatis update tampilan
+                fetchAllFromGAS().then(() => {
+                    applySettings();
+                    if (!currentUser) renderLandingArticles();
+                }); 
             } else { 
                 isGasReady = true; 
             }
@@ -1615,72 +1631,66 @@
             
             const savedUser = localStorage.getItem('bb_user');
             if(savedUser) {
-                currentUser = JSON.parse(savedUser);
-                const dbMatch = dbUsers.find(u => u.id === currentUser.id);
-                if(dbMatch && dbMatch.targetPtn) { currentUser.targetPtn = dbMatch.targetPtn; }
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    const dbMatch = dbUsers.find(u => u.id === currentUser.id);
+                    if(dbMatch && dbMatch.targetPtn) { currentUser.targetPtn = dbMatch.targetPtn; }
 
-                // Perbaikan Bug: Render UI Header & Target saat reload agar tidak hilang
-                const uNameDisplay = document.getElementById('user-name-display');
-                if(uNameDisplay) uNameDisplay.innerText = currentUser.nama;
-                const uSchoolDisplay = document.getElementById('user-school-display');
-                if(uSchoolDisplay) uSchoolDisplay.innerText = currentUser.sekolah;
-                
-                // Segera update target di tab dashboard
-                updateUserTargetStats();
+                    const uNameDisplay = document.getElementById('user-name-display');
+                    if(uNameDisplay) uNameDisplay.innerText = currentUser.nama;
+                    const uSchoolDisplay = document.getElementById('user-school-display');
+                    if(uSchoolDisplay) uSchoolDisplay.innerText = currentUser.sekolah;
+                    const uPremBadge = document.getElementById('user-premium-badge');
+                    if(uPremBadge) uPremBadge.classList.toggle('hidden', !currentUser.isPremium);
+                    
+                    updateUserTargetStats();
 
-                // Perbaikan Bug: Mencegah Keluar Sesi CBT saat Refresh F5
-                const savedCbt = sessionStorage.getItem('bb_cbt_state');
-                if(savedCbt) {
-                    try {
+                    // Restore Sesi CBT jika sedang ujian
+                    const savedCbt = sessionStorage.getItem('bb_cbt_state');
+                    if(savedCbt) {
                         const parsedCbt = JSON.parse(savedCbt);
                         if(parsedCbt && parsedCbt.tryout) {
                             cbtState = parsedCbt;
                             window.isCbtActive = true;
-                            
-                            // Re-bind tombol selesai
                             setTimeout(() => {
                                 const btnSelesai = Array.from(document.querySelectorAll('button')).find(el => el.textContent.trim() === 'Selesai');
                                 if(btnSelesai) btnSelesai.onclick = window.confirmSubmitSubtest;
                             }, 500);
-
                             router('cbt-engine', false);
                             startCBTTimer();
                             renderCBTQuestion();
                             renderCBTMap();
-                            
-                            if(loader) { loader.classList.add('opacity-0'); setTimeout(() => loader.classList.add('hidden'), 150); }
-                            return; // Hentikan routing agar tetap di layar ujian
+                            return;
                         }
-                    } catch(e) { console.error("Restore CBT Session error", e); }
-                }
-
-                if(currentUser.role === 'SUPER_ADMIN' || currentUser.role === 'SUB_ADMIN') { 
-                    router('dashboard-admin'); 
-                    if(currentUser.role === 'SUB_ADMIN') {
-                        document.getElementById('nav-adm-users').classList.add('hidden');
-                        document.getElementById('nav-adm-classes').classList.add('hidden');
-                        document.getElementById('nav-adm-master').classList.add('hidden');
-                        document.getElementById('nav-adm-tryouts').classList.add('hidden');
-                        document.getElementById('nav-adm-ptn').classList.add('hidden');
-                        document.getElementById('nav-adm-settings').classList.add('hidden');
-                        document.getElementById('admin-role-badge').innerText = 'SUB ADMIN (SOAL & ARTIKEL)';
-                        document.getElementById('admin-role-badge').className = 'text-green-400 text-[10px] font-bold bg-white/10 inline-block px-2 py-1 rounded tracking-widest border border-white/20';
-                        switchAdminTab('banksoal');
-                    } else {
-                        switchAdminTab('users'); 
                     }
-                } else { 
-                    router('dashboard-user'); 
-                    initUserDropdowns(); 
-                }
-            } else { router('landing'); }
 
-            if(loader) {
-                loader.classList.add('opacity-0');
-                setTimeout(() => loader.classList.add('hidden'), 150);
+                    if(currentUser.role === 'SUPER_ADMIN' || currentUser.role === 'SUB_ADMIN') { 
+                        router('dashboard-admin'); 
+                        if(currentUser.role === 'SUB_ADMIN') {
+                            document.getElementById('nav-adm-users').classList.add('hidden');
+                            document.getElementById('nav-adm-classes').classList.add('hidden');
+                            document.getElementById('nav-adm-master').classList.add('hidden');
+                            document.getElementById('nav-adm-tryouts').classList.add('hidden');
+                            document.getElementById('nav-adm-ptn').classList.add('hidden');
+                            document.getElementById('nav-adm-settings').classList.add('hidden');
+                            document.getElementById('admin-role-badge').innerText = 'SUB ADMIN (SOAL & ARTIKEL)';
+                            document.getElementById('admin-role-badge').className = 'text-green-400 text-[10px] font-bold bg-white/10 inline-block px-2 py-1 rounded tracking-widest border border-white/20';
+                            switchAdminTab('banksoal');
+                        } else {
+                            switchAdminTab('users'); 
+                        }
+                    } else { 
+                        router('dashboard-user'); 
+                        initUserDropdowns(); 
+                    }
+                } catch(err) {
+                    console.error("Init user error:", err);
+                    router('landing');
+                }
+            } else { 
+                router('landing'); 
             }
         });
-
         async function fetchAllFromGAS() {
             if(!USE_GAS_DATABASE || !GAS_SCRIPT_URL || !GAS_SCRIPT_URL.startsWith('http')) return;
             try {
