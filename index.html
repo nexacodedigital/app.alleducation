@@ -993,7 +993,6 @@
                         <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100">
                             <h2 class="text-2xl font-bold text-brand-navy mb-6"><i class="fa-solid fa-user-edit mr-2"></i>Edit Profil</h2>
                             <form onsubmit="saveProfile(event)" class="space-y-4">
-                                <div class="col-span-full md:col-span-1"><label class="block text-xs font-bold text-gray-500 mb-1">Program / Kategori</label><select id="ac-prog" required class="border p-3 rounded-xl outline-none bg-gray-50 w-full text-sm font-bold"></select></div>
                                 <div><label class="block text-sm font-bold text-gray-700 mb-1">Nama Lengkap</label><input type="text" id="prof-name" class="w-full px-4 py-3 bg-gray-50 border rounded-xl outline-none focus:border-brand-orange"></div>
                                 <div><label class="block text-sm font-bold text-gray-700 mb-1">Email (Read Only)</label><input type="text" id="prof-email" readonly class="w-full px-4 py-3 bg-gray-200 border rounded-xl outline-none text-gray-500"></div>
                                 <div><label class="block text-sm font-bold text-gray-700 mb-1">Asal Sekolah</label><input type="text" id="prof-school" class="w-full px-4 py-3 bg-gray-50 border rounded-xl outline-none focus:border-brand-orange"></div>
@@ -3436,7 +3435,7 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             cont.innerHTML = htmlStr;
         };
         // ==========================================
-        // OVERRIDE: LOGIKA KELAS ONLINE SEMPULNA
+        // OVERRIDE: LOGIKA KELAS ONLINE & SINKRONISASI MASTER DATA
         // ==========================================
         
         // 1. Variabel Filter Hari (1=Senin, 7=Minggu)
@@ -3447,16 +3446,88 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             renderUserClasses('active');
         };
 
-        // 2. Override Render Kelas User
+        // 2. Fungsi Sentral Sinkronisasi Dropdown Program (Admin & Peserta)
+        window.syncAllProgramDropdowns = function() {
+            if (!dbMaster || !Array.isArray(dbMaster.programs)) return;
+
+            let adminProgHtml = '<option value="" disabled selected>-- Pilih Program / Kategori --</option>';
+            let filterProgHtml = '<option value="">Semua Program</option>';
+
+            dbMaster.programs.forEach(p => {
+                adminProgHtml += `<option value="${p}">${p}</option>`;
+                filterProgHtml += `<option value="${p}">${p}</option>`;
+            });
+
+            // Isi semua elemen dengan id="ac-prog" (mengatasi jika masih ada duplikat ID)
+            document.querySelectorAll('#ac-prog').forEach(el => {
+                const currentVal = el.value;
+                el.innerHTML = adminProgHtml;
+                if (currentVal && dbMaster.programs.includes(currentVal)) {
+                    el.value = currentVal;
+                }
+            });
+
+            // Isi dropdown Bank Soal & Setup Tryout
+            const bsProg = document.getElementById('bs-sel-prog');
+            if (bsProg) bsProg.innerHTML = adminProgHtml;
+            const tsProg = document.getElementById('ts-prog');
+            if (tsProg) tsProg.innerHTML = adminProgHtml;
+
+            // Isi dropdown filter Kelas Online & Drill di halaman Peserta
+            const clsFilter = document.getElementById('class-filter-prog');
+            if (clsFilter) {
+                const currentFilter = clsFilter.value;
+                clsFilter.innerHTML = filterProgHtml;
+                if (currentFilter && dbMaster.programs.includes(currentFilter)) {
+                    clsFilter.value = currentFilter;
+                }
+            }
+            const drillFilter = document.getElementById('drill-filter-prog');
+            if (drillFilter) {
+                const currentDrill = drillFilter.value;
+                drillFilter.innerHTML = '<option value="">-- Semua Program --</option>' + dbMaster.programs.map(p => `<option value="${p}">${p}</option>`).join('');
+                if (currentDrill && dbMaster.programs.includes(currentDrill)) {
+                    drillFilter.value = currentDrill;
+                }
+            }
+        };
+
+        // Integrasikan ke fungsi updateMasterDropdowns bawaan
+        const oldUpdateMaster = window.updateMasterDropdowns;
+        window.updateMasterDropdowns = function() {
+            if (oldUpdateMaster) oldUpdateMaster();
+            window.syncAllProgramDropdowns();
+        };
+
+        // Integrasikan ke fungsi addMaster & renderMasterData agar saat tambah/hapus Master langsung update
+        const oldRenderMasterData = window.renderMasterData;
+        window.renderMasterData = function() {
+            if (oldRenderMasterData) oldRenderMasterData();
+            window.syncAllProgramDropdowns();
+        };
+
+        // Pastikan setelah fetch data dari Google Spreadsheet selesai, dropdown langsung terisi
+        const oldFetchAllFromGAS = window.fetchAllFromGAS;
+        window.fetchAllFromGAS = async function() {
+            if (oldFetchAllFromGAS) await oldFetchAllFromGAS();
+            window.syncAllProgramDropdowns();
+        };
+
+        // 3. Override Render Kelas Peserta (Support Filter Kategori & Hari)
         window.renderUserClasses = function(filter) {
             const btnAct = document.getElementById('btn-u-cls-act');
             const btnHis = document.getElementById('btn-u-cls-his');
             const daysCont = document.getElementById('class-days-container');
             const cont = document.getElementById('u-class-list'); 
-            const progFilter = document.getElementById('class-filter-prog') ? document.getElementById('class-filter-prog').value : '';
+            const progFilterEl = document.getElementById('class-filter-prog');
+            
+            // Pastikan opsi dropdown peserta selalu terisi dari Master Data
+            if (progFilterEl && progFilterEl.options.length <= 1 && dbMaster.programs.length > 0) {
+                window.syncAllProgramDropdowns();
+            }
+            const progFilter = progFilterEl ? progFilterEl.value : '';
             const now = new Date();
 
-            // Setup Tanggal Seminggu Kedepan
             if(btnAct) {
                 btnAct.className = filter === 'active' ? "font-black text-blue-600 border-b-[3px] border-blue-600 pb-3 px-4 transition w-1/2 text-center text-sm md:text-base" : "font-bold text-gray-400 border-b-[3px] border-transparent hover:text-blue-500 pb-3 px-4 transition w-1/2 text-center text-sm md:text-base";
                 
@@ -3473,7 +3544,6 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             }
             if(btnHis) btnHis.className = filter === 'history' ? "font-black text-blue-600 border-b-[3px] border-blue-600 pb-3 px-4 transition w-1/2 text-center text-sm md:text-base" : "font-bold text-gray-400 border-b-[3px] border-transparent hover:text-blue-500 pb-3 px-4 transition w-1/2 text-center text-sm md:text-base";
 
-            // Render Hari (Senin-Minggu Bisa Diklik)
             if(daysCont) {
                 if(filter === 'history') {
                     daysCont.innerHTML = ''; 
@@ -3492,39 +3562,43 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                 }
             }
 
-            // Logika Filter
             let filtered = dbClasses.filter(c => {
                 const cDate = new Date(c.date);
                 if(filter === 'active' && cDate < now) return false;
                 if(filter === 'history' && cDate >= now) return false;
-                if(progFilter && c.program !== progFilter) return false; // Filter Database Admin
+                if(progFilter && c.program !== progFilter) return false; 
                 
                 if(filter === 'active') {
                     let cDay = cDate.getDay() === 0 ? 7 : cDate.getDay();
-                    if(cDay !== window.currentClassDayFilter) return false; // Filter Hari
+                    if(cDay !== window.currentClassDayFilter) return false; 
                 }
                 return true;
             }).sort((a,b)=>new Date(a.date)-new Date(b.date));
             if(filter === 'history') filtered = filtered.reverse();
 
-            if(filtered.length === 0) { cont.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-3xl border text-gray-400 font-medium"><i class="fa-solid fa-video-slash text-4xl mb-4 block text-gray-200"></i>Belum ada kelas ${filter === 'active' ? 'di hari ini' : 'pada riwayat Anda'}.</div>`; return; }
+            if(filtered.length === 0) { 
+                cont.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-3xl border text-gray-400 font-medium"><i class="fa-solid fa-video-slash text-4xl mb-4 block text-gray-200"></i>Belum ada kelas ${progFilter ? `kategori <b>${progFilter}</b> ` : ''}${filter === 'active' ? 'di hari ini' : 'pada riwayat Anda'}.</div>`; 
+                return; 
+            }
             
-            // Render Card
             let htmlStr = '';
             filtered.forEach(c => {
                 const isPrem = c.type === 'PREMIUM'; 
-                const canJoin = !isPrem || currentUser.isPremium; 
                 const isPast = new Date(c.date) < now;
                 const d = new Date(c.date);
                 const timeStr = d.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) + ' WIB';
                 let lockIcon = (isPrem && !currentUser.isPremium) ? `<div class="absolute top-4 right-4 text-gray-500 bg-gray-100 w-8 h-8 rounded-lg flex items-center justify-center border border-gray-200 shadow-sm"><i class="fa-solid fa-lock text-sm"></i></div>` : '';
                 let statusBadge = isPast ? `<span class="bg-pink-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1.5 mt-2 shadow-sm"><div class="w-1.5 h-1.5 bg-white rounded-full"></div> Berakhir</span>` : `<span class="bg-green-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1.5 mt-2 shadow-sm"><div class="w-1.5 h-1.5 bg-white rounded-full"></div> Segera Mulai</span>`;
+                let progBadge = c.program ? `<span class="bg-blue-50 text-blue-600 border border-blue-200 text-[10px] font-bold px-2.5 py-0.5 rounded-md inline-block mb-1.5">${c.program}</span>` : '';
 
                 htmlStr += `
                 <div class="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-md hover:border-blue-200 transition cursor-pointer relative flex flex-col" onclick="openClassPreview('${c.id}', ${!isPast})">
                     ${lockIcon}
                     <div class="mb-5 flex-1">
-                        <span class="text-[11px] font-black uppercase tracking-wider ${isPrem?'text-pink-500':'text-blue-500'} block mb-2">${isPrem?'Premium Class':'Free Class'}</span>
+                        <div class="flex items-center gap-2 mb-1">
+                            ${progBadge}
+                            <span class="text-[10px] font-black uppercase tracking-wider ${isPrem?'text-pink-500':'text-blue-500'}">${isPrem?'• Premium Class':'• Free Class'}</span>
+                        </div>
                         <h4 class="font-extrabold text-brand-navy text-lg leading-snug pr-8 mb-2">${c.title}</h4>
                         <div class="text-xs text-gray-500 font-bold"><i class="fa-regular fa-clock mr-1"></i> ${timeStr}</div>
                         ${statusBadge}
@@ -3541,13 +3615,17 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             cont.innerHTML = htmlStr;
         };
 
-        // 3. Override Simpan Ke Database Admin (Menyimpan Kategori Program)
+        // 4. Override Simpan, Edit & Render Tabel Kelas di Admin
         window.adminAddClass = function(e) { 
             e.preventDefault(); 
             const id = document.getElementById('ac-id-edit').value || 'C' + Date.now();
+            // Ambil nilai program dari select yang ada di dalam form kelas
+            const progSelect = e.target.querySelector('#ac-prog') || document.getElementById('ac-prog');
+            const selectedProg = progSelect ? progSelect.value : '';
+
             const classData = { 
                 id: id,
-                program: document.getElementById('ac-prog') ? document.getElementById('ac-prog').value : '',
+                program: selectedProg,
                 title: document.getElementById('ac-title').value, 
                 banner: document.getElementById('ac-banner').value || 'https://via.placeholder.com/400x200/071B3A/FFFFFF?text=Class', 
                 zoom: document.getElementById('ac-zoom').value, 
@@ -3562,51 +3640,64 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             };
             const idx = dbClasses.findIndex(c => c.id === id);
             if(idx > -1) dbClasses[idx] = classData; else dbClasses.push(classData);
-            syncServerData('Classes'); e.target.reset(); resetClassForm(); renderAdminClasses(); 
+            syncServerData('Classes'); 
+            e.target.reset(); 
+            resetClassForm(); 
+            window.syncAllProgramDropdowns();
+            renderAdminClasses(); 
+            showToast('Kelas berhasil disimpan!', 'success');
         };
 
         window.editClass = function(id) {
             const c = dbClasses.find(x => x.id === id); if(!c) return;
+            window.syncAllProgramDropdowns();
             document.getElementById('ac-id-edit').value = c.id; 
-            if(document.getElementById('ac-prog')) document.getElementById('ac-prog').value = c.program || '';
-            document.getElementById('ac-title').value = c.title; document.getElementById('ac-banner').value = c.banner; document.getElementById('ac-zoom').value = c.zoom; document.getElementById('ac-meet-id').value = c.zoomId || ''; document.getElementById('ac-meet-pass').value = c.zoomPass || ''; document.getElementById('ac-date').value = c.date.slice(0,16); document.getElementById('ac-type').value = c.type; document.getElementById('ac-mentor-name').value = c.mentorName || ''; document.getElementById('ac-mentor-photo').value = c.mentorPhoto || ''; document.getElementById('ac-desc').value = c.desc || ''; document.getElementById('ac-materials').value = c.materials || '';
-            document.getElementById('ac-btn-submit').innerText = 'Simpan Perubahan'; document.getElementById('ac-btn-cancel').classList.remove('hidden'); window.scrollTo(0,0);
+            document.querySelectorAll('#ac-prog').forEach(el => el.value = c.program || '');
+            document.getElementById('ac-title').value = c.title; 
+            document.getElementById('ac-banner').value = c.banner; 
+            document.getElementById('ac-zoom').value = c.zoom; 
+            document.getElementById('ac-meet-id').value = c.zoomId || ''; 
+            document.getElementById('ac-meet-pass').value = c.zoomPass || ''; 
+            document.getElementById('ac-date').value = c.date.slice(0,16); 
+            document.getElementById('ac-type').value = c.type; 
+            document.getElementById('ac-mentor-name').value = c.mentorName || ''; 
+            document.getElementById('ac-mentor-photo').value = c.mentorPhoto || ''; 
+            document.getElementById('ac-desc').value = c.desc || ''; 
+            document.getElementById('ac-materials').value = c.materials || '';
+            document.getElementById('ac-btn-submit').innerText = 'Simpan Perubahan'; 
+            document.getElementById('ac-btn-cancel').classList.remove('hidden'); 
+            window.scrollTo(0,0);
         };
 
-        // 4. Update Dropdown Filter User & Admin
-        const oldUpdateMaster = window.updateMasterDropdowns;
-        window.updateMasterDropdowns = function() {
-            if(oldUpdateMaster) oldUpdateMaster();
-            let pHtml = '<option value="">-- Semua Program --</option>';
-            dbMaster.programs.forEach(p => pHtml += `<option value="${p}">${p}</option>`); 
-            if(document.getElementById('ac-prog')) document.getElementById('ac-prog').innerHTML = pHtml.replace('<option value="">-- Semua Program --</option>', '<option value="" disabled selected>-- Pilih --</option>');
-            if(document.getElementById('class-filter-prog')) document.getElementById('class-filter-prog').innerHTML = pHtml;
+        window.renderAdminClasses = function() { 
+            let html = ''; 
+            const now = new Date(); 
+            [...dbClasses].sort((a,b)=>new Date(b.date)-new Date(a.date)).forEach((c) => { 
+                const originalIdx = dbClasses.findIndex(x=>x.id===c.id); 
+                const isPast = new Date(c.date) < now; 
+                const progBadge = c.program ? `<span class="text-[10px] ml-1 bg-blue-50 text-blue-600 border border-blue-200 px-2 py-0.5 rounded font-bold">${c.program}</span>` : `<span class="text-[10px] ml-1 bg-red-50 text-red-500 border border-red-200 px-2 py-0.5 rounded font-bold">Tanpa Kategori</span>`;
+                html += `<tr class="border-b hover:bg-gray-50"><td class="py-3 px-3"><div class="font-bold text-brand-navy">${c.title} ${progBadge} <span class="text-[10px] ml-1 ${c.type==='PREMIUM'?'bg-yellow-100 text-yellow-700':'bg-gray-200 text-gray-700'} px-2 py-0.5 rounded border">${c.type}</span></div><div class="text-xs text-gray-500 mt-1"><i class="fa-solid fa-chalkboard-user mr-1"></i>${c.mentorName||'N/A'}</div></td><td class="py-3 px-3 text-xs text-gray-600 font-medium">${new Date(c.date).toLocaleString('id-ID', {dateStyle:'medium', timeStyle:'short'})}</td><td class="py-3 px-3 text-xs font-bold text-center ${isPast?'text-red-500':'text-green-500'}"><span class="bg-white px-2 py-1 rounded-full border shadow-sm">${isPast?'Selesai':'Mendatang'}</span></td><td class="py-3 px-3 text-center"><button onclick="editClass('${c.id}')" class="bg-yellow-100 text-yellow-700 p-1.5 rounded hover:bg-yellow-200 mr-1"><i class="fa-solid fa-edit"></i></button> <button onclick="deleteClass(${originalIdx})" class="bg-red-100 text-red-700 p-1.5 rounded hover:bg-red-200"><i class="fa-solid fa-trash"></i></button></td></tr>`; 
+            }); 
+            document.getElementById('adm-tbody-classes').innerHTML = html || '<tr><td colspan="4" class="text-center py-6 text-gray-500">Belum ada kelas.</td></tr>'; 
         };
-        
-        const oldInitUserDrop = window.initUserDropdowns;
-        window.initUserDropdowns = function() {
-            if(oldInitUserDrop) oldInitUserDrop();
-            let pHtml = '<option value="">-- Semua Program --</option>';
-            dbMaster.programs.forEach(p => pHtml += `<option value="${p}">${p}</option>`);
-            if(document.getElementById('class-filter-prog')) document.getElementById('class-filter-prog').innerHTML = pHtml;
-            renderUserClasses('active');
-        };
-        // 5. Pemicu Otomatis Dropdown Program di Admin Kelas
+
+        // 5. Pemicu Saat Pindah Tab Admin & User
         const oldSwitchAdminTabClasses = window.switchAdminTab;
         window.switchAdminTab = function(tab) {
             if (oldSwitchAdminTabClasses) oldSwitchAdminTabClasses(tab);
-            // Kalau admin ngeklik menu Kelas Online, otomatis muat data Master Program
-            if (tab === 'classes') {
-                if (typeof updateMasterDropdowns === 'function') {
-                    updateMasterDropdowns();
-                }
+            if (tab === 'classes' || tab === 'banksoal' || tab === 'tryouts') {
+                window.syncAllProgramDropdowns();
             }
         };
-        
-        // Panggil juga sekali untuk berjaga-jaga saat web selesai dimuat
-        setTimeout(() => { 
-            if (typeof updateMasterDropdowns === 'function') updateMasterDropdowns(); 
-        }, 1500);
+
+        const oldSwitchUserTabClasses = window.switchUserTab;
+        window.switchUserTab = function(tab) {
+            window.syncAllProgramDropdowns();
+            if (oldSwitchUserTabClasses) oldSwitchUserTabClasses(tab);
+        };
+
+        // Panggil langsung saat inisialisasi
+        window.syncAllProgramDropdowns();
     </script>
 </body>
 </html>
