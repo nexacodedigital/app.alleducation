@@ -48,6 +48,26 @@
         .animate-marquee-fast:hover, .animate-marquee-slow:hover {
             animation-play-state: paused;
         }
+        .slider-container::-webkit-scrollbar { display: none; }
+        .slider-container { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Animasi Card Berjalan Otomatis (Marquee) */
+        @keyframes scrollLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee-fast {
+            display: flex;
+            width: max-content;
+            animation: scrollLeft 25s linear infinite;
+        }
+        .animate-marquee-slow {
+            display: flex;
+            width: max-content;
+            animation: scrollLeft 40s linear infinite;
+        }
+        .animate-marquee-fast:hover, .animate-marquee-slow:hover {
+            animation-play-state: paused;
+        }
         /* Sembunyikan scrollbar bawaan di container slider */
         .slider-container::-webkit-scrollbar { display: none; }
         .slider-container { -ms-overflow-style: none; scrollbar-width: none; }
