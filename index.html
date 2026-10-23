@@ -5222,93 +5222,43 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             // -------------------------------------------------------------------------
             // 1. POP-UP KONFIRMASI TRYOUT (INFORMASI LENGKAP & KETENTUAN UJIAN)
             // -------------------------------------------------------------------------
-           window.initCBT = function(toId) {
-            // 1. CEK DULU: Apakah user sudah pernah menyelesaikan TO ini?
-            const isAlreadyDone = dbResults.find(r => r.toId === toId && r.userId === currentUser.id);
-            
-            if (isAlreadyDone) {
-                showModal(
-                    'Tryout Sudah Dikerjakan', 
-                    'Sistem mendeteksi Anda sudah menyelesaikan Tryout ini di perangkat lain. Data tidak dapat diulang.', 
-                    'error', 
-                    `<button onclick="location.reload()" class="w-full bg-brand-navy text-white py-3.5 rounded-xl font-bold text-lg hover:bg-opacity-90 shadow-lg transition">Muat Ulang Halaman</button>`
-                );
-                return;
-            }
-
-            // 2. Kalau belum dikerjakan, hitung rincian modul & tampilkan modal lengkap
-            const to = dbTryouts.find(t => t.id === toId);
-            if (!to) return;
-
-            let totalQ = 0;
-            let totalDur = 0;
-            let subtestListHtml = '';
-
-            (to.modules || []).forEach((mid, idx) => {
-                const m = dbModules.find(x => x.id === mid);
-                if (m) {
-                    const qCount = m.questions ? m.questions.length : 0;
-                    const dur = parseInt(m.duration) || 0;
-                    totalQ += qCount;
-                    totalDur += dur;
-                    subtestListHtml += `
-                    <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-gray-100 text-xs shadow-sm">
-                        <span class="font-bold text-brand-navy">${idx + 1}. ${m.subtest}</span>
-                        <span class="text-[10px] font-bold text-gray-500 bg-gray-50 px-2 py-0.5 rounded border">${qCount} Soal • ${dur} Menit</span>
-                    </div>`;
+            window.initCBT = function(toId) {
+                // 1. CEK DULU: Apakah user sudah pernah menyelesaikan TO ini?
+                const isAlreadyDone = dbResults.find(r => r.toId === toId && r.userId === currentUser.id);
+                
+                if (isAlreadyDone) {
+                    showModal(
+                        'Tryout Sudah Dikerjakan', 
+                        'Sistem mendeteksi Anda sudah menyelesaikan Tryout ini di perangkat lain. Data tidak dapat diulang.', 
+                        'error', 
+                        `<button onclick="location.reload()" class="w-full bg-brand-navy text-white py-3.5 rounded-xl font-bold text-lg hover:bg-opacity-90 shadow-lg transition">Muat Ulang Halaman</button>`
+                    );
+                    return;
                 }
-            });
 
-            const descHtml = `
-            <div class="text-left space-y-4">
-                <!-- Badge Nama Tryout -->
-                <div class="bg-gradient-to-r from-[#071B3A] to-[#1e3a8a] text-white p-4 rounded-2xl shadow-md relative overflow-hidden">
-                    <span class="text-[10px] font-black uppercase tracking-widest bg-brand-orange px-2.5 py-0.5 rounded-full">Simulasi Resmi CBT</span>
-                    <h4 class="font-black text-base md:text-lg mt-1.5 leading-snug">${to.program} - ${to.episode}</h4>
-                    <div class="flex gap-4 mt-3 pt-2.5 border-t border-white/15 text-xs font-bold text-blue-100">
-                        <span><i class="fa-solid fa-layer-group text-yellow-400 mr-1"></i> ${to.modules.length} Subtest</span>
-                        <span><i class="fa-solid fa-file-circle-question text-green-400 mr-1"></i> ${totalQ} Butir Soal</span>
-                        <span><i class="fa-regular fa-clock text-orange-400 mr-1"></i> ${totalDur} Menit</span>
-                    </div>
-                </div>
+                // 2. Kalau belum dikerjakan, hitung rincian modul & tampilkan modal lengkap
+                const to = dbTryouts.find(t => t.id === toId);
+                if (!to) return;
 
-                <!-- Rincian Subtest -->
-                <div>
-                    <p class="text-[11px] font-extrabold text-gray-500 uppercase tracking-wider mb-2"><i class="fa-solid fa-list-check mr-1 text-blue-500"></i> Rincian Modul Subtest:</p>
-                    <div class="space-y-1.5 max-h-32 overflow-y-auto pr-1 custom-scroll bg-gray-50 p-2 rounded-2xl border border-gray-100">
-                        ${subtestListHtml}
-                    </div>
-                </div>
+                let totalQ = 0;
+                let totalDur = 0;
+                let subtestListHtml = '';
 
-                <!-- Ketentuan & Aturan Lockdown -->
-                <div class="bg-amber-50 border border-amber-200/80 rounded-2xl p-3.5 text-xs text-amber-900 space-y-1.5">
-                    <div class="font-black text-amber-800 flex items-center gap-1.5 mb-1">
-                        <i class="fa-solid fa-shield-halved text-amber-600 text-sm"></i> KETENTUAN & ATURAN UJIAN (PENTING!)
-                    </div>
-                    <ul class="list-disc pl-4 space-y-1 text-[11px] font-medium leading-relaxed">
-                        <li><b>Sistem Terkunci (Lockdown):</b> Selama ujian berlangsung, Anda <b>tidak dapat keluar</b> dari halaman soal hingga seluruh subtest selesai.</li>
-                        <li><b>Anti-Pindah Tab:</b> Dilarang membuka tab baru, berpindah aplikasi, atau memperkecil browser. Anda hanya diperbolehkan melakukan <b>Refresh (Muat Ulang)</b> halaman soal jika terjadi kendala.</li>
-                        <li><b>Sistem Waktu Berjalan:</b> Setiap subtest memiliki batas waktu masing-masing dan tidak dapat kembali ke subtest sebelumnya.</li>
-                        <li><b>Penilaian IRT:</b> Tidak ada pengurangan nilai untuk jawaban salah (Skor 0). Jawablah seluruh soal secara optimal.</li>
-                    </ul>
-                </div>
-            </div>`;
+                (to.modules || []).forEach((mid, idx) => {
+                    const m = dbModules.find(x => x.id === mid);
+                    if (m) {
+                        const qCount = m.questions ? m.questions.length : 0;
+                        const dur = parseInt(m.duration) || 0;
+                        totalQ += qCount;
+                        totalDur += dur;
+                        subtestListHtml += `
+                        <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-gray-100 text-xs shadow-sm">
+                            <span class="font-bold text-brand-navy">${idx + 1}. ${m.subtest}</span>
+                            <span class="text-[10px] font-bold text-gray-500 bg-gray-50 px-2 py-0.5 rounded border">${qCount} Soal • ${dur} Menit</span>
+                        </div>`;
+                    }
+                });
 
-            const btnHtml = `
-            <div class="flex flex-col gap-2.5 pt-2">
-                <button onclick="startCBT('${toId}')" class="w-full bg-gradient-to-r from-brand-orange to-red-500 hover:from-orange-600 hover:to-red-600 text-white py-4 rounded-2xl font-black text-sm md:text-base shadow-lg shadow-orange-500/30 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer">
-                    <i class="fa-solid fa-rocket"></i> Saya Setuju, Mulai Ujian Sekarang
-                </button>
-                <button onclick="closeModal()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 py-3 rounded-2xl font-bold text-xs md:text-sm transition cursor-pointer">
-                    Batal, Persiapkan Diri Dulu
-                </button>
-            </div>`;
-
-            showModal('Konfirmasi & Ketentuan Tryout', descHtml, 'info', btnHtml);
-            
-            // Opsional: Jika fungsi setCustomModalIcon tidak ada, baris ini bisa dihapus atau di-comment
-            // setCustomModalIcon('fa-solid fa-file-shield', 'bg-gradient-to-br from-blue-600 to-indigo-700');
-        };
                 const descHtml = `
                 <div class="text-left space-y-4">
                     <!-- Badge Nama Tryout -->
@@ -5357,7 +5307,6 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                 showModal('Konfirmasi & Ketentuan Tryout', descHtml, 'info', btnHtml);
                 setCustomModalIcon('fa-solid fa-file-shield', 'bg-gradient-to-br from-blue-600 to-indigo-700');
             };
-
             // -------------------------------------------------------------------------
             // 2. SISTEM LOCKDOWN KETIKA MASUK SOAL TO (GAK BISA KELUAR & PINDAH TAB, CUMA BISA REFRESH)
             // -------------------------------------------------------------------------
