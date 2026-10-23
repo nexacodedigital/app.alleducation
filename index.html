@@ -2173,15 +2173,23 @@
         }
 
         window.addEventListener('popstate', (e) => {
-            if (window.isCbtActive) {
-                // Mencegah user kabur via tombol Back. Ujian langsung dikumpulkan.
-                window.isCbtActive = false;
-                finishCBT();
-                showModal('Peringatan Sistem', 'Anda terdeteksi menekan tombol kembali (Back) di Browser saat ujian berlangsung. Sesuai aturan, Tryout Anda otomatis dikumpulkan.', 'error');
-                return;
-            }
-            if(e.state && e.state.viewId) { router(e.state.viewId, false); } else { router('landing', false); }
-        });
+    if (window.isCbtActive) {
+        // Kembalikan history state agar halaman tidak benar-benar kembali (tetap stay di soal)
+        history.pushState({viewId: 'cbt-engine'}, "", "#cbt-engine");
+        
+        // Tampilkan modal konfirmasi, BUKAN langsung menjalankan finishCBT()
+        showModal('Peringatan Sistem', 
+            'Anda terdeteksi menekan tombol kembali (Back). Apakah Anda yakin ingin keluar? Ujian akan <b>otomatis dikumpulkan</b> jika Anda keluar sekarang.', 
+            'error',
+            `<div class="flex flex-col gap-3">
+                <button onclick="finishCBT()" class="w-full bg-red-600 text-white py-3.5 rounded-xl font-bold text-lg hover:bg-red-700 shadow-lg transition">Ya, Keluar & Kumpulkan</button>
+                <button onclick="closeModal()" class="w-full bg-gray-200 text-gray-700 py-3.5 rounded-xl font-bold hover:bg-gray-300 transition">Tidak, Kembali ke Soal</button>
+            </div>`
+        );
+        return;
+    }
+    if(e.state && e.state.viewId) { router(e.state.viewId, false); } else { router('landing', false); }
+});
 
         function toggleAuthMode(mode) { document.getElementById('form-login').classList.toggle('hidden', mode !== 'login'); document.getElementById('form-register').classList.toggle('hidden', mode !== 'register'); document.getElementById('tab-login').className = mode === 'login' ? "flex-1 py-2.5 rounded-lg bg-white shadow-sm text-brand-navy font-bold transition-all" : "flex-1 py-2.5 rounded-lg text-gray-500 font-bold hover:text-brand-navy transition-all"; document.getElementById('tab-register').className = mode === 'register' ? "flex-1 py-2.5 rounded-lg bg-white shadow-sm text-brand-navy font-bold transition-all" : "flex-1 py-2.5 rounded-lg text-gray-500 font-bold hover:text-brand-navy transition-all"; }
         
