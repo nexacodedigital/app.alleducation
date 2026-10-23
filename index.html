@@ -4844,6 +4844,80 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             
             modal.classList.remove('hidden');
         }
+        // ================= PERBAIKAN TOMBOL LEADERBOARD PESERTA =================
+        window.openUserLeaderboard = function() {
+            if (!window.currentViewedToId) {
+                showToast('ID Tryout tidak ditemukan. Silakan muat ulang hasil.', 'error');
+                return;
+            }
+            showLeaderboard(window.currentViewedToId);
+        };
+
+        // Override fungsi showLeaderboard agar lebih rapi, unik per peserta, & ada tombol Kembali
+        window.showLeaderboard = function(toId) { 
+            const to = dbTryouts.find(t => t.id === toId); 
+            if (!to) {
+                showToast('Data Tryout tidak ditemukan.', 'error');
+                return;
+            }
+
+            // Ambil skor tertinggi/terbaru untuk tiap peserta agar nama tidak duplikat di Leaderboard
+            const rawResults = dbResults.filter(r => r.toId === toId && !r.isDrillResult);
+            const uniqueResultsMap = new Map();
+            rawResults.forEach(r => {
+                if (!uniqueResultsMap.has(r.userId) || r.irtScore > uniqueResultsMap.get(r.userId).irtScore) {
+                    uniqueResultsMap.set(r.userId, r);
+                }
+            });
+
+            const results = Array.from(uniqueResultsMap.values()).sort((a, b) => b.irtScore - a.irtScore); 
+            
+            let h = `<div class="max-h-72 overflow-y-auto custom-scroll pr-1 mb-5 border rounded-2xl border-gray-100">
+                <table class="w-full text-left text-sm border-collapse">
+                    <thead class="sticky top-0 bg-gray-100 border-b z-10">
+                        <tr>
+                            <th class="p-3 text-gray-600 font-extrabold text-xs uppercase">Rank</th>
+                            <th class="p-3 text-gray-600 font-extrabold text-xs uppercase">Peserta</th>
+                            <th class="p-3 text-gray-600 font-extrabold text-xs uppercase text-right">Skor IRT</th>
+                        </tr>
+                    </thead>
+                    <tbody>`; 
+            
+            if (results.length === 0) {
+                h += `<tr><td colspan="3" class="text-center p-6 text-gray-400 font-medium">Belum ada peserta yang menyelesaikan Tryout ini.</td></tr>`; 
+            } else {
+                results.forEach((r, i) => { 
+                    const u = dbUsers.find(x => x.id === r.userId); 
+                    const isMe = currentUser && r.userId === currentUser.id;
+                    const rowBg = isMe ? 'bg-blue-50/80 border-l-4 border-l-blue-600' : 'hover:bg-gray-50';
+                    
+                    let rankBadge = `#${i+1}`;
+                    if (i === 0) rankBadge = `<span class="text-yellow-500 text-base"><i class="fa-solid fa-crown mr-1"></i>1</span>`;
+                    else if (i === 1) rankBadge = `<span class="text-gray-400 text-base"><i class="fa-solid fa-medal mr-1"></i>2</span>`;
+                    else if (i === 2) rankBadge = `<span class="text-amber-600 text-base"><i class="fa-solid fa-medal mr-1"></i>3</span>`;
+
+                    h += `<tr class="border-b border-gray-100 transition ${rowBg}">
+                        <td class="p-3 font-black text-gray-700 whitespace-nowrap">${rankBadge}</td>
+                        <td class="p-3">
+                            <div class="font-bold text-gray-800 leading-tight">${u ? u.nama : 'Peserta'} ${isMe ? '<span class="ml-1 text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded-full font-bold">Kamu</span>' : ''}</div>
+                            <div class="text-[10px] text-gray-400 font-medium mt-0.5">${u && u.sekolah ? u.sekolah : '-'}</div>
+                        </td>
+                        <td class="p-3 font-black text-brand-orange text-right text-base">${r.irtScore}</td>
+                    </tr>`; 
+                }); 
+            }
+            
+            h += `</tbody></table></div>`; 
+            
+            // Tombol Kembali / Tutup Leaderboard
+            const btnHtml = `
+                <button onclick="closeModal()" class="w-full bg-[#3b5998] hover:bg-blue-800 text-white py-3.5 rounded-xl font-bold text-sm shadow-md transition flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Hasil Tryout
+                </button>
+            `;
+            
+            showModal(`<i class="fa-solid fa-ranking-star text-yellow-500 mr-2"></i>Leaderboard Nasional`, `<span class="text-xs font-bold text-gray-400 block -mt-2 mb-3">${to.program} - ${to.episode}</span>` + h, 'info', btnHtml); 
+        };
     </script>
 </body>
 </html>
