@@ -5610,40 +5610,36 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                 origShowModal(title, desc, type, customHtml);
             };
         })();
+       // =========================================================================
+        // REAL-TIME AUTO-SYNC ENGINE (UNTUK UPDATE DATA & CEK MULTI-DEVICE)
         // =========================================================================
-// REAL-TIME AUTO-SYNC ENGINE (UNTUK UPDATE DATA & CEK MULTI-DEVICE)
-// =========================================================================
-setInterval(() => {
-    // Hanya berjalan jika user sudah login, terhubung dengan GAS, dan TIDAK SEDANG UJIAN (CBT)
-    if (currentUser && USE_GAS_DATABASE && isGasReady && !window.isCbtActive) {
-        fetchAllFromGAS().then(() => {
-            // Update tampilan TO jika user sedang berada di Dashboard Peserta
-            const dashboardUser = document.getElementById('view-dashboard-user');
-            if (dashboardUser && !dashboardUser.classList.contains('hidden')) {
-                // Update tampilan berdasarkan tab yang sedang aktif
-                if (!document.getElementById('u-tab-tryout').classList.contains('hidden')) {
-                    if (!document.getElementById('tryout-main-view').classList.contains('hidden')) {
-                        renderTryoutCategories();
-                        renderUserTryouts(currentUserTryoutFilter);
-                    } else if (!document.getElementById('tryout-history-view').classList.contains('hidden')) {
-                        renderUserTryouts('history');
-                    } else if (!document.getElementById('tryout-category-detail-view').classList.contains('hidden')) {
-                        renderCategoryDetailTryouts(currentCategoryDetailStatus);
+        setInterval(() => {
+            if (currentUser && USE_GAS_DATABASE && isGasReady && !window.isCbtActive) {
+                fetchAllFromGAS().then(() => {
+                    const dashboardUser = document.getElementById('view-dashboard-user');
+                    if (dashboardUser && !dashboardUser.classList.contains('hidden')) {
+                        if (!document.getElementById('u-tab-tryout').classList.contains('hidden')) {
+                            if (!document.getElementById('tryout-main-view').classList.contains('hidden')) {
+                                renderTryoutCategories();
+                                renderUserTryouts(currentUserTryoutFilter);
+                            } else if (!document.getElementById('tryout-history-view').classList.contains('hidden')) {
+                                renderUserTryouts('history');
+                            } else if (!document.getElementById('tryout-category-detail-view').classList.contains('hidden')) {
+                                renderCategoryDetailTryouts(currentCategoryDetailStatus);
+                            }
+                        }
+                        updateUserTargetStats();
                     }
-                }
-                updateUserTargetStats();
+                    
+                    const dashboardAdmin = document.getElementById('view-dashboard-admin');
+                    if (dashboardAdmin && !dashboardAdmin.classList.contains('hidden')) {
+                        if (!document.getElementById('a-tab-tryouts').classList.contains('hidden')) {
+                            renderTryoutHistory();
+                        }
+                    }
+                });
             }
-            
-            // Update tampilan jika admin sedang di Dashboard Admin (Tab Tryout)
-            const dashboardAdmin = document.getElementById('view-dashboard-admin');
-            if (dashboardAdmin && !dashboardAdmin.classList.contains('hidden')) {
-                if (!document.getElementById('a-tab-tryouts').classList.contains('hidden')) {
-                    renderTryoutHistory();
-                }
-            }
-        });
-    }
-}, 10000); // 10000 ms = 10 detik (Bisa disesuaikan, jangan terlalu cepat agar server GAS tidak limit)
+        }, 10000);
     </script>
 </body>
 </html>
