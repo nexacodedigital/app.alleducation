@@ -4958,6 +4958,207 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                 btnHtml
             ); 
         };
+        // =========================================================================
+        // AUTO-UPGRADE UI: FITUR BELAJAR, BANNER YOUTUBE, & DRILL SOAL BERWARNA
+        // =========================================================================
+        (function upgradeVisualUI() {
+            // 1. UPGRADE MENU FITUR BELAJAR & BANNER YOUTUBE
+            const styleMenuAndBanner = () => {
+                // A. Buat Menu Fitur Belajar Berwarna & Beranimasi
+                const fiturConfigs = [
+                    { tab: 'classes', title: 'Kelas<br>Online', icon: 'fa-laptop-code', grad: 'from-blue-500 to-indigo-600', bgHover: 'hover:border-blue-400 hover:bg-blue-50/40', shadow: 'shadow-blue-500/30', badge: 'BARU' },
+                    { tab: 'tryout', title: 'Tryout<br>IRT', icon: 'fa-file-signature', grad: 'from-orange-500 to-red-500', bgHover: 'hover:border-orange-400 hover:bg-orange-50/40', shadow: 'shadow-orange-500/30' },
+                    { tab: 'drill', title: 'Drill<br>Soal', icon: 'fa-bullseye', grad: 'from-emerald-500 to-teal-600', bgHover: 'hover:border-emerald-400 hover:bg-emerald-50/40', shadow: 'shadow-emerald-500/30' },
+                    { tab: 'ptn', title: 'Cek<br>Peluang', icon: 'fa-building-columns', grad: 'from-purple-500 to-violet-600', bgHover: 'hover:border-purple-400 hover:bg-purple-50/40', shadow: 'shadow-purple-500/30' },
+                    { tab: 'profile', title: 'Profil<br>Saya', icon: 'fa-user-astronaut', grad: 'from-pink-500 to-rose-500', bgHover: 'hover:border-pink-400 hover:bg-pink-50/40', shadow: 'shadow-pink-500/30' }
+                ];
+
+                fiturConfigs.forEach(cfg => {
+                    const btn = document.querySelector(`button[onclick="switchUserTab('${cfg.tab}')"]`);
+                    if (btn) {
+                        btn.className = `flex-1 min-w-[145px] md:min-w-0 bg-white border-2 border-gray-100 ${cfg.bgHover} hover:shadow-xl hover:-translate-y-1.5 p-3.5 md:p-4 rounded-2xl flex items-center gap-3.5 transition-all duration-300 group relative overflow-visible mt-2 cursor-pointer`;
+                        btn.innerHTML = `
+                            ${cfg.badge ? `<span class="absolute -top-3 right-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full shadow-md z-10 animate-bounce">${cfg.badge}</span>` : ''}
+                            <div class="w-11 h-11 md:w-12 md:h-12 bg-gradient-to-br ${cfg.grad} rounded-xl flex items-center justify-center text-white text-lg md:text-xl shadow-lg ${cfg.shadow} group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 flex-shrink-0">
+                                <i class="fa-solid ${cfg.icon}"></i>
+                            </div>
+                            <span class="font-extrabold text-xs md:text-sm text-brand-navy group-hover:text-gray-900 text-left leading-tight">${cfg.title}</span>
+                        `;
+                    }
+                });
+
+                // B. Buat Banner YouTube Profesional (Tanpa Gambar Pecah)
+                const ytBanner = document.getElementById('yt-banner-container');
+                if (ytBanner) {
+                    const currentLink = (dbSettings && dbSettings.ytLink) ? dbSettings.ytLink : 'https://youtube.com';
+                    ytBanner.className = "w-full rounded-[26px] overflow-hidden mb-8 shadow-xl relative group cursor-pointer border border-blue-900/20 bg-gradient-to-r from-[#071B3A] via-[#1e3a8a] to-[#0f172a] p-6 md:p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1";
+                    ytBanner.innerHTML = `
+                        <!-- Efek Cahaya Dekoratif Profesional -->
+                        <div class="absolute -right-12 -top-16 w-64 h-64 bg-red-600/25 rounded-full blur-3xl pointer-events-none group-hover:bg-red-500/35 transition duration-500"></div>
+                        <div class="absolute left-1/3 -bottom-20 w-72 h-72 bg-blue-400/15 rounded-full blur-3xl pointer-events-none"></div>
+                        <i class="fa-brands fa-youtube absolute -right-4 -bottom-8 text-[130px] md:text-[160px] text-white/5 transform -rotate-12 pointer-events-none group-hover:scale-110 transition duration-700"></i>
+
+                        <div class="relative z-20 flex flex-col md:flex-row items-center justify-between gap-5">
+                            <div class="text-center md:text-left">
+                                <div class="inline-flex items-center gap-2 bg-red-500/20 border border-red-400/30 text-red-200 text-[10px] md:text-xs font-extrabold px-3.5 py-1 rounded-full uppercase tracking-widest mb-3 backdrop-blur-md">
+                                    <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                                    <span class="w-2 h-2 rounded-full bg-red-500 -ml-3"></span>
+                                    Official YouTube Channel
+                                </div>
+                                <h3 class="text-white font-black text-xl md:text-3xl tracking-tight drop-shadow-sm">
+                                    Tonton Video <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-orange-300 to-brand-orange">Pembelajaran</span>
+                                </h3>
+                                <p class="text-blue-100/80 text-xs md:text-sm font-medium mt-1.5 max-w-xl">
+                                    Kupas tuntas trik cepat, strategi manajemen waktu, dan pembahasan soal HOTS terbaru langsung dari Master Teacher PRIME.
+                                </p>
+                            </div>
+
+                            <!-- Tombol Play Beranimasi -->
+                            <a id="yt-banner-link" href="${currentLink}" target="_blank" onclick="event.stopPropagation()" class="relative flex items-center gap-3 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-orange-500 text-white px-6 py-3.5 md:px-7 md:py-4 rounded-2xl font-extrabold text-xs md:text-sm shadow-[0_10px_25px_rgba(239,68,68,0.4)] transition-all duration-300 transform group-hover:scale-105 flex-shrink-0 border border-red-400/40">
+                                <div class="w-8 h-8 rounded-full bg-white text-red-600 flex items-center justify-center shadow-inner">
+                                    <i class="fa-solid fa-play text-xs ml-0.5"></i>
+                                </div>
+                                <span>Tonton Sekarang</span>
+                            </a>
+                        </div>
+                    `;
+                }
+
+                // C. Percantik Header Kotak Filter di Halaman Drill Soal
+                const drillHeader = document.querySelector('#u-tab-drill > div:first-child');
+                if (drillHeader) {
+                    drillHeader.className = "bg-gradient-to-r from-[#071B3A] via-[#1d4ed8] to-[#3b82f6] p-6 md:p-8 rounded-3xl shadow-xl mb-8 text-white relative overflow-hidden border border-blue-400/30";
+                    const titleH2 = drillHeader.querySelector('h2');
+                    if (titleH2) {
+                        titleH2.className = "text-2xl md:text-3xl font-black text-white mb-2 flex items-center gap-3";
+                        titleH2.innerHTML = `<span class="w-11 h-11 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-inner"><i class="fa-solid fa-bullseye text-yellow-300"></i></span> <div>Drill Soal & Latihan Mandiri<span class="block text-xs font-normal text-blue-100 mt-0.5">Pilih program dan mata pelajaran untuk mengasah kecepatan menjawab soal</span></div>`;
+                    }
+                    drillHeader.querySelectorAll('label').forEach(lbl => {
+                        lbl.className = "block text-xs font-extrabold text-blue-100 uppercase tracking-wider mb-1.5 mt-2";
+                    });
+                    drillHeader.querySelectorAll('select').forEach(sel => {
+                        sel.className = "w-full border-2 border-white/20 p-3.5 rounded-2xl bg-white/95 text-brand-navy outline-none focus:border-yellow-400 font-bold text-sm shadow-md transition cursor-pointer";
+                    });
+                }
+            };
+
+            // Jalankan saat pertama kali muat
+            setTimeout(styleMenuAndBanner, 100);
+
+            // Pastikan link YouTube tetap sinkron kalau applySettings dipanggil ulang
+            const origApplySettings = window.applySettings;
+            if (typeof origApplySettings === 'function') {
+                window.applySettings = function() {
+                    origApplySettings();
+                    styleMenuAndBanner();
+                };
+            }
+
+            // 2. UPGRADE KARTU DRILL SOAL JADI BERWARNA-WARNI & INTERAKTIF
+            const drillCardThemes = [
+                { grad: 'from-blue-600 to-indigo-600', lightBg: 'bg-blue-50', text: 'text-blue-600', border: 'hover:border-blue-400', icon: 'fa-book-open-reader', btn: 'from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-blue-500/25' },
+                { grad: 'from-orange-500 to-red-500', lightBg: 'bg-orange-50', text: 'text-orange-600', border: 'hover:border-orange-400', icon: 'fa-bolt-lightning', btn: 'from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 shadow-orange-500/25' },
+                { grad: 'from-emerald-500 to-teal-600', lightBg: 'bg-emerald-50', text: 'text-emerald-600', border: 'hover:border-emerald-400', icon: 'fa-brain', btn: 'from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 shadow-emerald-500/25' },
+                { grad: 'from-purple-600 to-violet-600', lightBg: 'bg-purple-50', text: 'text-purple-600', border: 'hover:border-purple-400', icon: 'fa-compass-drafting', btn: 'from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 shadow-purple-500/25' },
+                { grad: 'from-pink-500 to-rose-500', lightBg: 'bg-pink-50', text: 'text-pink-600', border: 'hover:border-pink-400', icon: 'fa-pen-nib', btn: 'from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-pink-500/25' }
+            ];
+
+            window.renderDrillModules = function() {
+                const prog = document.getElementById('drill-filter-prog').value;
+                const sub = document.getElementById('drill-filter-sub').value;
+                const cont = document.getElementById('drill-module-list');
+
+                let filtered = dbModules.filter(m => m.modType === 'DRILL'); 
+                if (prog) filtered = filtered.filter(m => m.program === prog);
+                if (sub) filtered = filtered.filter(m => m.subtest === sub);
+
+                if (filtered.length === 0) {
+                    cont.innerHTML = `
+                    <div class="col-span-full text-center py-16 bg-white rounded-3xl border-2 border-dashed border-gray-200 text-gray-500">
+                        <div class="w-16 h-16 bg-orange-50 text-brand-orange rounded-2xl flex items-center justify-center mx-auto mb-3 text-3xl shadow-inner">
+                            <i class="fa-solid fa-folder-open"></i>
+                        </div>
+                        <h4 class="font-extrabold text-brand-navy text-base">Belum Ada Modul Latihan</h4>
+                        <p class="text-xs text-gray-400 mt-1">Silakan pilih filter program atau mata pelajaran lainnya.</p>
+                    </div>`;
+                    return;
+                }
+
+                let html = '';
+                filtered.forEach((m, idx) => {
+                    const theme = drillCardThemes[idx % drillCardThemes.length];
+                    const mAcc = m.access || 'FREE';
+                    const isPrem = mAcc === 'PREMIUM';
+                    const canJoin = !isPrem || (currentUser && currentUser.isPremium);
+
+                    // Cek apakah user pernah mengerjakan drill ini
+                    const prevRes = currentUser ? [...dbResults].reverse().find(r => r.toId === 'DRILL_' + m.id && r.userId === currentUser.id) : null;
+
+                    let btnHtml = '';
+                    if (canJoin) {
+                        btnHtml = `
+                        <button onclick="startDrill('${m.id}')" class="mt-auto w-full bg-gradient-to-r ${theme.btn} text-white py-3.5 rounded-2xl font-extrabold text-sm shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group-hover:scale-[1.02] cursor-pointer">
+                            <i class="fa-solid fa-play text-xs"></i> ${prevRes ? 'Kerjakan Ulang' : 'Mulai Latihan'}
+                        </button>`;
+                    } else {
+                        btnHtml = `
+                        <button onclick="showModal('Akses Ditolak','Modul latihan ini khusus untuk member PREMIUM. Silakan upgrade akun Anda untuk mengakses semua bank soal.','error')" class="mt-auto w-full bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-brand-navy py-3.5 rounded-2xl font-extrabold text-sm shadow-lg shadow-yellow-500/20 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-lock"></i> Upgrade ke Premium
+                        </button>`;
+                    }
+
+                    html += `
+                    <div class="bg-white rounded-3xl border-2 border-gray-100 ${theme.border} shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col overflow-hidden group relative">
+                        <!-- Garis Warna Atas -->
+                        <div class="h-2.5 w-full bg-gradient-to-r ${theme.grad}"></div>
+
+                        <div class="p-6 flex-1 flex flex-col">
+                            <!-- Header Badge & Icon -->
+                            <div class="flex justify-between items-start gap-2 mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br ${theme.grad} text-white flex items-center justify-center text-xl shadow-md group-hover:rotate-6 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                                        <i class="fa-solid ${theme.icon}"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${theme.lightBg} ${theme.text} inline-block mb-1">${m.program}</span>
+                                        <h3 class="font-extrabold text-brand-navy text-base md:text-lg leading-snug">${m.subtest}</h3>
+                                    </div>
+                                </div>
+                                ${isPrem 
+                                    ? `<span class="text-[10px] font-black text-amber-800 bg-gradient-to-r from-yellow-200 to-amber-300 px-2.5 py-1 rounded-full shadow-sm flex items-center gap-1 flex-shrink-0"><i class="fa-solid fa-crown text-amber-600"></i> PRO</span>` 
+                                    : `<span class="text-[10px] font-extrabold text-emerald-700 bg-emerald-100 border border-emerald-200 px-2.5 py-1 rounded-full flex-shrink-0">FREE</span>`
+                                }
+                            </div>
+
+                            <!-- Info Box (Kode, Jumlah Soal, Durasi) -->
+                            <div class="grid grid-cols-3 gap-2 my-4 p-3 rounded-2xl bg-gray-50 border border-gray-100 text-center">
+                                <div>
+                                    <span class="block text-[9px] text-gray-400 font-bold uppercase">Kode</span>
+                                    <span class="text-xs font-extrabold text-gray-700">${m.moduleCode || 'MOD'}</span>
+                                </div>
+                                <div class="border-x border-gray-200">
+                                    <span class="block text-[9px] text-gray-400 font-bold uppercase">Soal</span>
+                                    <span class="text-xs font-extrabold ${theme.text}">${m.questions.length} Butir</span>
+                                </div>
+                                <div>
+                                    <span class="block text-[9px] text-gray-400 font-bold uppercase">Durasi</span>
+                                    <span class="text-xs font-extrabold text-gray-700">${m.duration} Menit</span>
+                                </div>
+                            </div>
+
+                            ${prevRes ? `
+                            <div class="mb-4 px-3.5 py-2 rounded-xl bg-green-50 border border-green-200 flex justify-between items-center text-xs">
+                                <span class="font-bold text-green-700"><i class="fa-solid fa-circle-check mr-1"></i> Skor Terakhir: <b>${prevRes.irtScore}/100</b></span>
+                                <button onclick="openDiscussionEngine('DRILL_${m.id}', 0, 0)" class="font-extrabold text-green-700 underline hover:text-green-900 cursor-pointer">Pembahasan</button>
+                            </div>` : ''}
+
+                            ${btnHtml}
+                        </div>
+                    </div>`;
+                });
+                cont.innerHTML = html;
+            };
+        })();
     </script>
 </body>
 </html>
