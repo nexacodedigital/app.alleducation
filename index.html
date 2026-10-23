@@ -1744,19 +1744,35 @@
                     <div id="a-tab-banksoal" class="hidden">
                         <div id="view-bs-list">
                             <div class="bg-white rounded-2xl shadow-sm border p-6 mb-6">
-                                <h3 class="font-bold text-lg mb-4 border-b pb-2 text-brand-navy"><i class="fa-solid fa-folder-plus mr-2"></i>Buat Modul Soal Baru</h3>
-                               <form onsubmit="createModule(event)" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-3 items-end">
-                                    <div class="lg:col-span-1"><label class="text-[10px] font-bold text-gray-500 mb-1 block">Program</label><select id="bs-sel-prog" required class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange text-xs font-bold"></select></div>
-                                    <div class="lg:col-span-1"><label class="text-[10px] font-bold text-gray-500 mb-1 block">Episode</label><select id="bs-sel-eps" required class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange text-xs font-bold"></select></div>
-                                    <div class="lg:col-span-1"><label class="text-[10px] font-bold text-gray-500 mb-1 block">Mata Pelajaran</label><select id="bs-sel-sub" required class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange text-xs font-bold"></select></div>
-                                    <div class="lg:col-span-1"><label class="text-[10px] font-bold text-gray-500 mb-1 block">Durasi (Menit)</label><input type="number" id="bs-inp-dur" required value="15" class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange text-xs font-bold text-center"></div>
-                                    
-                                    <!-- INI DROPDOWN BARUNYA BRO -->
-                                    <div class="lg:col-span-1"><label class="text-[10px] font-bold text-gray-500 mb-1 block">Tipe Modul</label><select id="bs-sel-type" required class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange text-xs font-bold"><option value="DRILL">Latihan (Drill)</option><option value="TRYOUT">Khusus Tryout</option></select></div>
-                                    <div class="lg:col-span-1"><label class="text-[10px] font-bold text-gray-500 mb-1 block">Akses</label><select id="bs-sel-access" required class="w-full border p-2.5 rounded-xl bg-gray-50 outline-none focus:border-brand-orange text-xs font-bold"><option value="FREE">FREE</option><option value="PREMIUM">PREMIUM</option></select></div>
-                                    
-                                    <button type="submit" class="lg:col-span-1 bg-brand-navy text-white px-2 py-2.5 rounded-xl font-bold h-fit w-full shadow border border-brand-navy hover:bg-gray-800 transition text-xs"><i class="fa-solid fa-save mr-1"></i>Simpan</button>
-                                </form>
+                                function renderBankSoalModules() { 
+            const q = document.getElementById('bs-search').value.toLowerCase();
+            const cont = document.getElementById('bs-module-container'); 
+            const filtered = dbModules.filter(m => (m.moduleCode && m.moduleCode.toLowerCase().includes(q)) || m.subtest.toLowerCase().includes(q) || m.program.toLowerCase().includes(q));
+            if(filtered.length === 0) { cont.innerHTML = `<div class="col-span-full py-10 text-center text-gray-500 border rounded-2xl bg-white">Modul tidak ditemukan.</div>`; return; }
+            
+            let htmlStr = '';
+            filtered.forEach(m => { 
+                const modCode = m.moduleCode || 'MOD-LEGACY';
+                htmlStr += `<div class="bg-white border shadow-sm p-5 rounded-2xl flex flex-col hover:border-brand-orange cursor-pointer transition relative group" onclick="openModuleEditor('${m.id}')">
+                    <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition flex gap-1 z-10">
+                        <button onclick="event.stopPropagation(); editModuleInfo('${m.id}')" title="Edit Kategori & Nama" class="text-yellow-600 bg-yellow-50 hover:bg-yellow-500 hover:text-white p-1.5 rounded-lg text-xs shadow-sm"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="event.stopPropagation(); duplicateModule('${m.id}')" title="Duplikat Modul" class="text-blue-600 bg-blue-50 hover:bg-blue-500 hover:text-white p-1.5 rounded-lg text-xs shadow-sm"><i class="fa-solid fa-copy"></i></button>
+                        <button onclick="event.stopPropagation(); deleteModule('${m.id}')" title="Hapus Modul" class="text-red-500 bg-red-50 hover:bg-red-500 hover:text-white p-1.5 rounded-lg text-xs shadow-sm"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded border">${modCode}</span>
+                        <span class="text-[10px] bg-blue-50 text-blue-600 font-bold px-2 py-0.5 rounded border border-blue-100 mr-20">${m.episode}</span>
+                    </div>
+                    <h4 class="font-bold text-brand-navy text-base leading-tight mb-1 pr-6">${m.subtest}</h4>
+                    <p class="text-[10px] text-gray-500 mb-4">${m.program}</p>
+                    <div class="mt-auto flex justify-between text-xs text-gray-500 bg-gray-50 p-2.5 rounded-xl border font-bold">
+                        <span><i class="fa-solid fa-layer-group text-brand-orange mr-1"></i> ${m.questions.length} Soal</span>
+                        <span><i class="fa-solid fa-clock text-blue-500 mr-1"></i> ${m.duration} Min</span>
+                    </div>
+                </div>`; 
+            }); 
+            cont.innerHTML = htmlStr;
+        }
                             </div>
                             
                             <div class="flex justify-between items-center mb-4 gap-4">
@@ -2733,20 +2749,99 @@
             cont.innerHTML = htmlStr;
         }
         function createModule(e) { 
-            e.preventDefault(); const id = 'M' + Date.now(); 
-            const modCode = 'MOD-' + Math.random().toString(36).substr(2, 5).toUpperCase();
-            dbModules.push({ 
-                id: id, 
-                moduleCode: modCode, 
-                program: document.getElementById('bs-sel-prog').value, 
-                episode: document.getElementById('bs-sel-eps').value, 
-                subtest: document.getElementById('bs-sel-sub').value, 
-                duration: parseInt(document.getElementById('bs-inp-dur').value), 
-                modType: document.getElementById('bs-sel-type').value, // Tipe: Drill atau Tryout
-                access: document.getElementById('bs-sel-access').value, // Akses: Free atau Premium
-                questions: [] 
-            }); 
-            syncServerData('Modules'); document.getElementById('bs-search').value = ''; renderBankSoalModules(); openModuleEditor(id); 
+            e.preventDefault(); 
+            const idToEdit = document.getElementById('bs-mod-id').value;
+            
+            if (idToEdit) {
+                // Proses Update Data Modul
+                const idx = dbModules.findIndex(m => m.id === idToEdit);
+                if (idx > -1) {
+                    dbModules[idx].program = document.getElementById('bs-sel-prog').value;
+                    dbModules[idx].episode = document.getElementById('bs-sel-eps').value;
+                    dbModules[idx].subtest = document.getElementById('bs-sel-sub').value;
+                    dbModules[idx].duration = parseInt(document.getElementById('bs-inp-dur').value);
+                    dbModules[idx].modType = document.getElementById('bs-sel-type').value;
+                    dbModules[idx].access = document.getElementById('bs-sel-access').value;
+                    syncServerData('Modules'); 
+                    renderBankSoalModules();
+                    resetModuleForm();
+                    showToast('Info Modul berhasil diperbarui!', 'success');
+                }
+            } else {
+                // Proses Buat Modul Baru
+                const id = 'M' + Date.now(); 
+                const modCode = 'MOD-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+                dbModules.push({ 
+                    id: id, 
+                    moduleCode: modCode, 
+                    program: document.getElementById('bs-sel-prog').value, 
+                    episode: document.getElementById('bs-sel-eps').value, 
+                    subtest: document.getElementById('bs-sel-sub').value, 
+                    duration: parseInt(document.getElementById('bs-inp-dur').value), 
+                    modType: document.getElementById('bs-sel-type').value,
+                    access: document.getElementById('bs-sel-access').value,
+                    questions: [] 
+                }); 
+                syncServerData('Modules'); 
+                document.getElementById('bs-search').value = ''; 
+                renderBankSoalModules(); 
+                resetModuleForm();
+                openModuleEditor(id); 
+            }
+        }
+
+        function editModuleInfo(id) {
+            const m = dbModules.find(x => x.id === id);
+            if(!m) return;
+            document.getElementById('bs-mod-id').value = m.id;
+            document.getElementById('bs-sel-prog').value = m.program;
+            document.getElementById('bs-sel-eps').value = m.episode;
+            document.getElementById('bs-sel-sub').value = m.subtest;
+            document.getElementById('bs-inp-dur').value = m.duration;
+            document.getElementById('bs-sel-type').value = m.modType || 'DRILL';
+            document.getElementById('bs-sel-access').value = m.access || 'FREE';
+
+            document.getElementById('bs-form-title').innerHTML = '<i class="fa-solid fa-edit mr-2 text-brand-orange"></i>Edit Kategori & Info Modul';
+            document.getElementById('bs-mod-submit').innerHTML = '<i class="fa-solid fa-save mr-1"></i>Update';
+            document.getElementById('bs-mod-cancel').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetModuleForm() {
+            document.getElementById('bs-mod-id').value = '';
+            document.getElementById('form-create-module').reset();
+            document.getElementById('bs-form-title').innerHTML = '<i class="fa-solid fa-folder-plus mr-2"></i>Buat Modul Soal Baru';
+            document.getElementById('bs-mod-submit').innerHTML = '<i class="fa-solid fa-save mr-1"></i>Simpan';
+            document.getElementById('bs-mod-cancel').classList.add('hidden');
+        }
+
+        function duplicateModule(id) {
+            const m = dbModules.find(x => x.id === id);
+            if(!m) return;
+            
+            if(confirm(`Duplikat modul ${m.subtest} (${m.program}) beserta seluruh isinya?`)) {
+                const newId = 'M' + Date.now();
+                const newModCode = 'MOD-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+                
+                // Deep Copy Object
+                const cloned = JSON.parse(JSON.stringify(m));
+                cloned.id = newId;
+                cloned.moduleCode = newModCode;
+                cloned.subtest = cloned.subtest + ' (Copy)';
+                
+                // Pastikan struktur valid
+                if (!cloned.questions) cloned.questions = [];
+                
+                // Regenerate Question Code agar tidak bentrok
+                cloned.questions.forEach(q => {
+                    q.qCode = 'Q-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+                });
+
+                dbModules.unshift(cloned); // Masukkan ke urutan paling atas
+                syncServerData('Modules');
+                renderBankSoalModules();
+                showToast('Modul berhasil diduplikat!', 'success');
+            }
         }
         function deleteModule(id) { if(confirm("Yakin hapus modul soal ini seluruhnya?")) { dbModules = dbModules.filter(m => m.id !== id); syncServerData('Modules'); renderBankSoalModules(); } }
         
