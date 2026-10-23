@@ -907,29 +907,6 @@
                         </div>
                     </div>
                 </div>
-
-                    <div class="lg:col-span-2 bg-white rounded-3xl p-6 border shadow-sm flex flex-col md:flex-row items-center gap-6">
-                        <div class="w-16 h-16 bg-orange-100 text-brand-orange rounded-full flex items-center justify-center text-3xl flex-shrink-0"><i class="fa-solid fa-bullseye"></i></div>
-                        <div class="flex-1 w-full">
-                            <div class="flex justify-between items-start mb-2">
-                                <div>
-                                    <h3 class="font-bold text-brand-navy text-lg leading-tight">Target PTN Impian</h3>
-                                    <p class="text-xs text-gray-500" id="u-target-text">Pilih universitas dan prodi target Anda.</p>
-                                </div>
-                                <button onclick="switchUserTab('ptn')" class="bg-gray-100 hover:bg-gray-200 text-brand-navy px-3 py-1.5 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-pencil mr-1"></i>Edit Target</button>
-                            </div>
-                            <div class="mt-4 bg-gray-100 rounded-full h-3 overflow-hidden relative">
-                                <div id="u-target-bar" class="absolute top-0 left-0 h-full bg-brand-orange transition-all duration-1000" style="width: 0%;"></div>
-                            </div>
-                            <div class="flex justify-between mt-2 text-[10px] font-bold text-gray-500">
-                                <span>Skor Anda: <span id="u-target-myscore" class="text-brand-navy">0</span></span>
-                                <span>Passing Grade: <span id="u-target-pg">0</span></span>
-                            </div>
-                            <div id="u-target-status" class="mt-2 text-xs font-bold text-center p-1.5 rounded-lg bg-gray-100 text-gray-500">Belum ada target dipilih</div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- ================= FITUR BELAJAR (DESAIN BARU UI BERSIH) ================= -->
                 <div class="bg-white p-5 md:p-6 rounded-[24px] shadow-sm border border-gray-100 mb-6">
                     <h3 class="font-extrabold text-brand-navy mb-4 text-sm md:text-base ml-1">Fitur Belajar</h3>
@@ -2976,6 +2953,9 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                 if (activeTab) {
                     activeTab.classList.remove('hidden'); 
                 }
+                
+                // Mulus ke atas kayak pindah page beneran
+                window.scrollTo({ top: 0, behavior: 'smooth' });
                 
                 // Jalankan fungsi sesuai tab
                 if(tab === 'tryout') {
