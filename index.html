@@ -3194,16 +3194,27 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
         let cbtState = { tryout: null, modules: [], currModIdx: 0, currQIdx: 0, ans: {}, doubt: {}, timer: null, endTime: null, fontSize: 15 };
 
         function initCBT(toId) {
-            const to = dbTryouts.find(t => t.id === toId);
-            if(!to) return;
-            showModal(
-                'Konfirmasi Tryout', 
-                `Anda akan memulai Tryout <b>${to.program} - ${to.episode}</b>.<br><br>Waktu akan terus berjalan meskipun Anda keluar dari browser. Pastikan koneksi internet Anda stabil.`, 
-                'info', 
-                `<button onclick="startCBT('${toId}')" class="w-full bg-brand-orange text-white py-3.5 rounded-xl font-bold text-lg hover:bg-orange-600 shadow-lg transition">Mulai Ujian Sekarang</button>
-                 <button onclick="closeModal()" class="w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-bold mt-2 hover:bg-gray-300 transition">Batal</button>`
-            );
-        }
+    // Cek ulang apakah user sudah menyelesaikan Tryout ini di perangkat lain secara realtime
+    const isAlreadyDone = dbResults.find(r => r.toId === toId && r.userId === currentUser.id);
+    if(isAlreadyDone) {
+        showModal('Tryout Sudah Dikerjakan', 'Sistem mendeteksi Anda sudah menyelesaikan Tryout ini di perangkat lain. Halaman akan dimuat ulang untuk memperbarui data.', 'error', 
+        `<button onclick="location.reload()" class="w-full bg-brand-navy text-white py-3.5 rounded-xl font-bold text-lg hover:bg-opacity-90 shadow-lg transition">Muat Ulang Halaman</button>`);
+        return;
+    }
+
+    const to = dbTryouts.find(t => t.id === toId);
+    if(!to) return;
+    
+    showModal(
+        'Konfirmasi Tryout', 
+        `Anda akan memulai Tryout <b>${to.program} - ${to.episode}</b>.<br><br>Waktu akan terus berjalan meskipun Anda keluar dari browser. Pastikan koneksi internet Anda stabil.`, 
+        'info', 
+        `<div class="flex flex-col gap-3">
+            <button onclick="startCBT('${toId}')" class="w-full bg-brand-orange text-white py-3.5 rounded-xl font-bold text-lg hover:bg-orange-600 shadow-lg transition">Mulai Ujian Sekarang</button>
+            <button onclick="closeModal()" class="w-full bg-gray-200 text-gray-700 py-3.5 rounded-xl font-bold hover:bg-gray-300 transition">Batal</button>
+         </div>`
+    );
+}
 
         function startCBT(toId) {
             closeModal();
@@ -3258,8 +3269,16 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
         }
 
         function confirmExitCBT() {
-            showModal('Keluar Ujian?', 'Jawaban akan disimpan sementara, tapi waktu ujian akan <b>terus berjalan</b>. Yakin ingin keluar dari layar ujian?', 'error', `<button onclick="exitCBT()" class="w-full bg-red-600 text-white py-3.5 rounded-xl font-bold text-lg hover:bg-red-700 shadow-lg transition">Ya, Keluar Sementara</button>`);
-        }
+    // Menampilkan modal konfirmasi dengan 2 pilihan (Batal atau Ya & Kumpulkan)
+    showModal('Keluar & Kumpulkan Ujian?', 
+        'Apakah kamu yakin ingin keluar? Ujian akan <b>otomatis dikumpulkan</b> dan kamu tidak bisa kembali mengubah jawaban.', 
+        'error', 
+        `<div class="flex flex-col gap-3">
+            <button onclick="finishCBT()" class="w-full bg-red-600 text-white py-3.5 rounded-xl font-bold text-lg hover:bg-red-700 shadow-lg transition">Ya, Keluar & Kumpulkan</button>
+            <button onclick="closeModal()" class="w-full bg-gray-200 text-gray-700 py-3.5 rounded-xl font-bold hover:bg-gray-300 transition">Batal, Lanjut Ujian</button>
+        </div>`
+    );
+}
 
         function exitCBT() {
             closeModal();
@@ -5575,6 +5594,40 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                 origShowModal(title, desc, type, customHtml);
             };
         })();
+        // =========================================================================
+// REAL-TIME AUTO-SYNC ENGINE (UNTUK UPDATE DATA & CEK MULTI-DEVICE)
+// =========================================================================
+setInterval(() => {
+    // Hanya berjalan jika user sudah login, terhubung dengan GAS, dan TIDAK SEDANG UJIAN (CBT)
+    if (currentUser && USE_GAS_DATABASE && isGasReady && !window.isCbtActive) {
+        fetchAllFromGAS().then(() => {
+            // Update tampilan TO jika user sedang berada di Dashboard Peserta
+            const dashboardUser = document.getElementById('view-dashboard-user');
+            if (dashboardUser && !dashboardUser.classList.contains('hidden')) {
+                // Update tampilan berdasarkan tab yang sedang aktif
+                if (!document.getElementById('u-tab-tryout').classList.contains('hidden')) {
+                    if (!document.getElementById('tryout-main-view').classList.contains('hidden')) {
+                        renderTryoutCategories();
+                        renderUserTryouts(currentUserTryoutFilter);
+                    } else if (!document.getElementById('tryout-history-view').classList.contains('hidden')) {
+                        renderUserTryouts('history');
+                    } else if (!document.getElementById('tryout-category-detail-view').classList.contains('hidden')) {
+                        renderCategoryDetailTryouts(currentCategoryDetailStatus);
+                    }
+                }
+                updateUserTargetStats();
+            }
+            
+            // Update tampilan jika admin sedang di Dashboard Admin (Tab Tryout)
+            const dashboardAdmin = document.getElementById('view-dashboard-admin');
+            if (dashboardAdmin && !dashboardAdmin.classList.contains('hidden')) {
+                if (!document.getElementById('a-tab-tryouts').classList.contains('hidden')) {
+                    renderTryoutHistory();
+                }
+            }
+        });
+    }
+}, 10000); // 10000 ms = 10 detik (Bisa disesuaikan, jangan terlalu cepat agar server GAS tidak limit)
     </script>
 </body>
 </html>
