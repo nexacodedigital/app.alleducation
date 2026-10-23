@@ -210,7 +210,7 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between items-center h-20">
                         <div class="flex items-center gap-3">
-    <img id="logo-img-nav" src="https://iili.io/ndS44YG.md.png" class="h-10 w-auto max-w-[120px] rounded-lg object-contain bg-white">
+    <img id="logo-img-nav" src="https://iili.io/ndS44YG.md.png" class="h-12 w-auto max-w-[150px] object-contain py-1">
     <span class="font-bold text-2xl text-brand-navy hidden sm:inline">PRIME<span class="text-brand-orange"> By All Education</span></span>
 </div>
                         <div class="flex gap-3 md:gap-4 items-center">
@@ -787,7 +787,7 @@
                 <div class="absolute -bottom-20 left-20 w-72 h-72 bg-pink-400 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-4000"></div>
                 
                 <div class="relative z-10 text-center text-white max-w-lg">
-                    <img src="https://iili.io/ndS44YG.md.png" class="h-20 mb-8 mx-auto object-contain bg-white/10 p-2 rounded-2xl backdrop-blur-sm border border-white/20">
+                    <img src="https://iili.io/ndS44YG.md.png" class="h-24 mb-8 mx-auto object-contain bg-white/10 p-3 rounded-2xl backdrop-blur-sm border border-white/20">
                     <h2 class="text-4xl font-extrabold mb-4 leading-tight">Belajar di PRIME, Raih Impian Jadi Lebih Seru!</h2>
                     <p class="text-lg text-blue-100 mb-8">Platform persiapan UTBK dan Ujian Mandiri terlengkap dengan sistem penilaian IRT yang akurat.</p>
                     <img src="https://iili.io/CMttawP.md.png" class="max-w-full h-auto mx-auto drop-shadow-2xl rounded-xl">
@@ -803,7 +803,7 @@
                 
                 <div class="w-full max-w-sm mt-10 md:mt-0">
                     <div class="text-center mb-8">
-                        <img id="logo-img-auth" src="https://iili.io/ndS44YG.md.png" class="h-14 w-auto mx-auto rounded-lg object-contain mb-6 md:hidden">
+                        <img id="logo-img-auth" src="https://iili.io/ndS44YG.md.png" class="h-16 w-auto mx-auto object-contain mb-6 md:hidden py-1">
                         <h2 class="text-2xl font-extrabold text-brand-navy mb-2">Yuk, daftar atau masuk sekarang.</h2>
                         <p class="text-gray-500 text-sm">GRATIS mencoba fitur-fitur dasar PRIME!</p>
                     </div>
@@ -861,9 +861,9 @@
                             </select>
                         </div>
                         <label class="flex items-start gap-3 mt-4 mb-6 cursor-pointer bg-orange-50/50 p-3 rounded-xl border border-orange-100">
-                            <input type="checkbox" id="reg-snk" required class="mt-1 w-4 h-4 accent-brand-orange">
-                            <span class="text-[11px] md:text-xs text-gray-600 leading-relaxed">Saya menyetujui <button type="button" onclick="showTermsModal()" class="text-brand-orange font-bold hover:underline">Syarat & Ketentuan</button> serta <button type="button" onclick="showTermsModal()" class="text-brand-orange font-bold hover:underline">Kebijakan Privasi</button> PRIME By All Education.</span>
-                        </label>
+    <input type="checkbox" id="reg-snk" required class="mt-1 w-4 h-4 accent-brand-orange">
+    <span class="text-[11px] md:text-xs text-gray-600 leading-relaxed">Saya menyetujui <button type="button" onclick="showTermsModal('snk')" class="text-brand-orange font-bold hover:underline">Syarat & Ketentuan</button> serta <button type="button" onclick="showTermsModal('privasi')" class="text-brand-orange font-bold hover:underline">Kebijakan Privasi</button> PRIME By All Education.</span>
+</label>
                         <button type="submit" class="w-full bg-[#E57A3C] text-white py-4 rounded-xl font-bold text-sm md:text-base shadow-md mt-2 hover:bg-[#d66a2c] transition">Daftar Akun</button>
                     </form>
                 </div>
@@ -2246,48 +2246,260 @@
             
             modal.classList.remove('hidden');
         }
-        window.showTermsModal = function() {
+        window.showTermsModal = function(type) {
             const modal = document.getElementById('custom-modal');
             const iconCont = document.getElementById('modal-icon-container');
             const icon = document.getElementById('modal-icon');
             
-            document.getElementById('modal-title').innerHTML = 'Syarat & Ketentuan';
-            
-            // Teks Syarat & Ketentuan Panjang
-            const termsText = `
-<div class="text-left text-sm text-gray-600 space-y-4 max-h-[50vh] overflow-y-auto pr-2 custom-scroll">
-    <p>Selamat datang di PRIME By All Education. Dengan mendaftar dan menggunakan layanan kami, Anda menyetujui Syarat dan Ketentuan berikut:</p>
+            let modalTitle = '';
+            let termsText = '';
+
+            if (type === 'snk') {
+                modalTitle = 'Syarat dan Ketentuan';
+                termsText = `
+<div class="text-left text-sm text-gray-600 space-y-3 max-h-[60vh] overflow-y-auto pr-3 custom-scroll">
+    <div class="border-b pb-3 mb-3">
+        <h3 class="font-black text-brand-navy text-lg">PRIME by All Education</h3>
+        <p class="text-xs text-gray-400 font-bold mt-1">Terakhir diperbarui: 23 Oktober 2026</p>
+    </div>
+    <p>Selamat datang di PRIME by All Education! PRIME by All Education merupakan platform pembelajaran digital yang dikembangkan dan dikelola oleh <b>PT All Education Indonesia</b> untuk mendukung kegiatan belajar online, latihan soal, Try Out, evaluasi pembelajaran, serta persiapan berbagai ujian akademik.</p>
+    <p>Dengan mengakses, mendaftar, atau menggunakan layanan PRIME by All Education, pengguna dianggap telah membaca, memahami, dan menyetujui Syarat dan Ketentuan berikut.</p>
     
-    <h4 class="font-bold text-brand-navy mt-4 mb-2">1. Layanan dan Akses</h4>
-    <p>Kami menyediakan platform Try Out Online, materi pembelajaran, dan kelas interaktif. Akses terhadap fitur Premium memerlukan langganan berbayar sesuai paket yang dipilih.</p>
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 1 — Definisi</h4>
+    <ol class="list-decimal pl-5 space-y-1.5">
+        <li><b>PRIME by All Education</b> adalah platform pembelajaran digital yang menyediakan layanan pendidikan berbasis teknologi.</li>
+        <li><b>Pengelola</b> adalah PT All Education Indonesia selaku penyedia dan pengelola platform.</li>
+        <li><b>Pengguna</b> adalah setiap individu yang mengakses atau menggunakan layanan PRIME by All Education.</li>
+        <li><b>Akun</b> adalah identitas digital yang digunakan pengguna untuk mengakses fitur platform.</li>
+        <li><b>Layanan</b> adalah seluruh fitur yang disediakan, termasuk pembelajaran online, Try Out, latihan soal, materi pembelajaran, dan evaluasi hasil belajar.</li>
+        <li><b>Konten Pembelajaran</b> adalah seluruh materi, soal, pembahasan, video, dokumen, dan informasi pendidikan yang tersedia pada platform.</li>
+    </ol>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 2 — Ketentuan Penggunaan</h4>
+    <ol class="list-decimal pl-5 space-y-1.5">
+        <li>Pengguna wajib memberikan informasi yang benar, akurat, dan sesuai saat melakukan pendaftaran.</li>
+        <li>Pengguna bertanggung jawab menjaga kerahasiaan informasi akun dan kata sandi.</li>
+        <li>Pengguna dilarang memberikan akses akun kepada pihak lain tanpa izin.</li>
+        <li>Pengguna wajib menggunakan platform untuk kegiatan pembelajaran yang sah.</li>
+        <li>Pengguna dilarang melakukan tindakan yang mengganggu keamanan, stabilitas, dan operasional platform.</li>
+        <li>Pengguna yang belum memenuhi usia persetujuan yang berlaku wajib memperoleh persetujuan orang tua atau wali sesuai ketentuan hukum.</li>
+    </ol>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 3 — Layanan Pembelajaran Online</h4>
+    <ol class="list-decimal pl-5 space-y-1.5">
+        <li>PRIME by All Education menyediakan layanan pembelajaran online melalui materi digital, latihan soal, pembahasan, dan fitur pendidikan lainnya.</li>
+        <li>Ketersediaan materi dan fitur dapat berbeda berdasarkan jenis program yang dipilih pengguna.</li>
+        <li>Pengelola berhak melakukan pembaruan materi, kurikulum, fitur, serta metode pembelajaran untuk meningkatkan kualitas layanan.</li>
+        <li>Pengguna bertanggung jawab menyediakan perangkat dan koneksi internet yang memadai.</li>
+        <li>Materi pembelajaran hanya diperuntukkan bagi penggunaan pribadi dan kegiatan belajar yang sah.</li>
+    </ol>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 4 — Layanan Try Out</h4>
+    <ol class="list-decimal pl-5 space-y-1.5">
+        <li>Try Out merupakan layanan simulasi ujian untuk membantu pengguna mengukur kemampuan akademik dan kesiapan menghadapi ujian.</li>
+        <li>Setiap Try Out dapat memiliki ketentuan tersendiri mengenai durasi, jumlah soal, jadwal, sistem penilaian, dan kesempatan pengerjaan.</li>
+        <li>Pengguna wajib mengerjakan Try Out secara mandiri, jujur, dan sesuai aturan yang berlaku.</li>
+        <li>Pengguna dilarang menggunakan sistem otomatis, memanipulasi jawaban, atau melakukan tindakan kecurangan.</li>
+        <li>Hasil Try Out, skor, peringkat, dan analisis kemampuan merupakan bentuk evaluasi pembelajaran dan bukan hasil ujian resmi.</li>
+        <li>Hasil Try Out tidak menjamin kelulusan, penerimaan di perguruan tinggi, atau keberhasilan dalam ujian tertentu.</li>
+        <li>Pengelola dapat melakukan koreksi hasil apabila ditemukan kesalahan teknis, kesalahan penilaian, atau indikasi kecurangan.</li>
+        <li>Gangguan teknis selama pelaksanaan Try Out akan ditangani berdasarkan kondisi dan kebijakan operasional yang berlaku.</li>
+    </ol>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 5 — Akun dan Keamanan</h4>
+    <ol class="list-decimal pl-5 space-y-1.5">
+        <li>Setiap pengguna bertanggung jawab atas aktivitas yang dilakukan melalui akunnya.</li>
+        <li>Pengguna wajib menjaga keamanan kredensial login.</li>
+        <li>Pengguna dilarang menggunakan identitas palsu atau mengakses akun milik orang lain tanpa izin.</li>
+        <li>Pengelola berhak membatasi atau menangguhkan akun apabila ditemukan pelanggaran keamanan, penyalahgunaan layanan, atau aktivitas yang merugikan pengguna lain.</li>
+        <li>Pengguna dapat menghubungi layanan bantuan resmi apabila mengalami kendala akses akun.</li>
+    </ol>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 6 — Hak Kekayaan Intelektual</h4>
+    <ol class="list-decimal pl-5 space-y-1.5">
+        <li>Materi, soal, pembahasan, desain, logo, tampilan, dan konten yang tersedia pada platform merupakan milik PT All Education Indonesia atau pihak pemberi lisensi yang sah.</li>
+        <li>Pengguna dilarang memperbanyak, mendistribusikan, memperjualbelikan, atau mempublikasikan konten tanpa izin tertulis.</li>
+        <li>Pengguna dilarang merekam, mengambil, atau menyebarluaskan bank soal dan pembahasan untuk kepentingan komersial tanpa persetujuan.</li>
+        <li>Pelanggaran hak kekayaan intelektual dapat ditindaklanjuti sesuai peraturan perundang-undangan yang berlaku.</li>
+    </ol>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 7 — Pembayaran dan Layanan Berbayar</h4>
+    <ol class="list-decimal pl-5 space-y-1.5">
+        <li>Sebagian layanan PRIME by All Education dapat tersedia secara gratis maupun berbayar.</li>
+        <li>Harga, fasilitas, masa aktif, dan ketentuan program berbayar akan diinformasikan sebelum pengguna melakukan pembelian.</li>
+        <li>Pembayaran dilakukan melalui metode resmi yang disediakan atau ditunjuk oleh pengelola.</li>
+        <li>Akses layanan berbayar diberikan setelah pembayaran berhasil diverifikasi sesuai ketentuan program.</li>
+        <li>Permohonan pembatalan atau pengembalian dana diproses berdasarkan kebijakan refund yang diinformasikan saat transaksi serta hak konsumen berdasarkan hukum yang berlaku.</li>
+        <li>Pengelola berhak memperbarui harga dan paket layanan tanpa mengubah hak pengguna atas transaksi yang telah diselesaikan, kecuali berdasarkan ketentuan yang disepakati secara sah.</li>
+    </ol>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 8 — Larangan Penggunaan</h4>
+    <p>Pengguna dilarang:</p>
+    <ol class="list-decimal pl-5 space-y-1.5">
+        <li>Melakukan peretasan atau mencoba mengakses sistem tanpa izin.</li>
+        <li>Menggunakan bot, script, atau sistem otomatis untuk memanipulasi Try Out.</li>
+        <li>Menyebarkan materi atau soal berbayar tanpa izin.</li>
+        <li>Menggunakan platform untuk tindakan penipuan atau aktivitas melanggar hukum.</li>
+        <li>Mengganggu kenyamanan dan keamanan pengguna lain.</li>
+        <li>Menyalahgunakan data atau informasi yang diperoleh dari platform.</li>
+    </ol>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 9 — Pembatasan Tanggung Jawab</h4>
+    <ol class="list-decimal pl-5 space-y-1.5">
+        <li>Pengelola berupaya menyediakan layanan yang aman, stabil, dan dapat diakses secara optimal.</li>
+        <li>Pengelola tidak menjamin layanan selalu bebas dari gangguan teknis atau pemeliharaan sistem.</li>
+        <li>Pengelola akan melakukan penanganan yang wajar terhadap gangguan yang memengaruhi akses pembelajaran maupun Try Out.</li>
+        <li>Pengelola tidak menjamin hasil akademik tertentu, termasuk nilai ujian, kelulusan, atau penerimaan di institusi pendidikan.</li>
+        <li>Ketentuan pembatasan tanggung jawab ini tidak mengurangi hak pengguna yang dilindungi oleh peraturan perundang-undangan.</li>
+    </ol>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 10 — Penangguhan dan Penghentian Akun</h4>
+    <p>Pengelola dapat memberikan peringatan, membatasi akses, menangguhkan, atau menghentikan akun apabila pengguna terbukti melanggar ketentuan. Tindakan dilakukan secara proporsional berdasarkan tingkat pelanggaran, dengan tetap memperhatikan hak pengguna dan ketentuan hukum yang berlaku.</p>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 11 — Perubahan Layanan dan Ketentuan</h4>
+    <ol class="list-decimal pl-5 space-y-1.5">
+        <li>Pengelola dapat memperbarui fitur, sistem, serta Syarat dan Ketentuan untuk meningkatkan kualitas layanan.</li>
+        <li>Perubahan material akan diinformasikan melalui platform atau saluran komunikasi resmi.</li>
+        <li>Pengguna disarankan meninjau Syarat dan Ketentuan secara berkala.</li>
+        <li>Apabila perubahan memerlukan persetujuan baru berdasarkan hukum, pengelola akan meminta persetujuan yang diperlukan.</li>
+    </ol>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 12 — Hukum yang Berlaku</h4>
+    <p>Syarat dan Ketentuan ini tunduk pada hukum yang berlaku di Republik Indonesia. Perselisihan akan diupayakan penyelesaiannya terlebih dahulu melalui musyawarah. Apabila tidak tercapai kesepakatan, penyelesaian dilakukan melalui mekanisme yang tersedia berdasarkan hukum Indonesia.</p>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 13 — Kontak Resmi</h4>
+    <p>Untuk pertanyaan, pengaduan, atau bantuan terkait penggunaan layanan, pengguna dapat menghubungi saluran bantuan resmi yang dicantumkan pada website atau aplikasi PRIME by All Education.</p>
     
-    <h4 class="font-bold text-brand-navy mt-4 mb-2">2. Akun Pengguna</h4>
-    <p>Anda bertanggung jawab untuk menjaga kerahasiaan kata sandi akun Anda. Anda setuju untuk memberikan informasi yang akurat, lengkap, dan terkini saat pendaftaran.</p>
-    
-    <h4 class="font-bold text-brand-navy mt-4 mb-2">3. Penggunaan Platform</h4>
-    <ul class="list-disc pl-5 space-y-2">
-        <li>Dilarang menyalin, merekam, atau menyebarluaskan materi pembelajaran berhak cipta tanpa izin.</li>
-        <li>Dilarang melakukan kecurangan (cheat/joki) saat mengikuti Try Out.</li>
-        <li>Pelanggaran dapat mengakibatkan penangguhan atau penghapusan akun secara permanen.</li>
+    <div class="mt-6 pt-4 border-t text-center font-bold text-gray-500 text-xs">
+        <p>PT All Education Indonesia</p>
+        <p>PRIME by All Education</p>
+        <p class="italic text-brand-orange mt-1">Learn, Practice, Achieve.</p>
+    </div>
+</div>`;
+            } else if (type === 'privasi') {
+                modalTitle = 'Kebijakan Privasi';
+                termsText = `
+<div class="text-left text-sm text-gray-600 space-y-3 max-h-[60vh] overflow-y-auto pr-3 custom-scroll">
+    <div class="border-b pb-3 mb-3">
+        <h3 class="font-black text-brand-navy text-lg">PRIME by All Education</h3>
+        <p class="text-xs text-gray-400 font-bold mt-1">Terakhir diperbarui: 23 Oktober 2026</p>
+    </div>
+    <p><b>PT All Education Indonesia</b> berkomitmen untuk melindungi privasi dan keamanan data pribadi setiap pengguna PRIME by All Education.</p>
+    <p>Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, menyimpan, melindungi, dan mengelola data pribadi pengguna dalam penyelenggaraan layanan pembelajaran online dan Try Out. Kebijakan ini disusun dengan memperhatikan ketentuan peraturan perundang-undangan Indonesia, termasuk Undang-Undang Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi.</p>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 1 — Informasi yang Dikumpulkan</h4>
+    <p>Dalam menyediakan layanan, kami dapat mengumpulkan kategori data berikut sesuai kebutuhan dan fitur yang digunakan.</p>
+    <p class="font-bold mt-3 text-gray-700">A. Informasi Identitas Pengguna</p>
+    <ul class="list-disc pl-5 space-y-1">
+        <li>Nama lengkap</li>
+        <li>Alamat email</li>
+        <li>Nomor telepon</li>
+        <li>Jenjang pendidikan</li>
+        <li>Nama sekolah atau institusi pendidikan</li>
+        <li>Kelas atau tingkat pendidikan</li>
+        <li>Informasi akun dan profil pengguna</li>
     </ul>
+    <p class="font-bold mt-3 text-gray-700">B. Informasi Aktivitas Pembelajaran</p>
+    <ul class="list-disc pl-5 space-y-1">
+        <li>Riwayat akses materi & pengerjaan latihan soal</li>
+        <li>Jawaban dan hasil Try Out</li>
+        <li>Nilai, skor, dan peringkat</li>
+        <li>Analisis kemampuan akademik</li>
+        <li>Riwayat program pembelajaran & progres belajar</li>
+    </ul>
+    <p class="font-bold mt-3 text-gray-700">C. Informasi Teknis</p>
+    <ul class="list-disc pl-5 space-y-1">
+        <li>Alamat IP, jenis perangkat, dan sistem operasi</li>
+        <li>Jenis browser dan log aktivitas sistem</li>
+        <li>Cookies atau teknologi serupa apabila digunakan</li>
+    </ul>
+    <p class="font-bold mt-3 text-gray-700">D. Informasi Transaksi</p>
+    <p>Untuk layanan berbayar, kami dapat memproses informasi seperti riwayat pembelian, status pembayaran, nominal transaksi, dan identitas transaksi. Data pembayaran tertentu dapat diproses secara langsung oleh penyedia layanan pembayaran resmi.</p>
 
-    <h4 class="font-bold text-brand-navy mt-4 mb-2">4. Kebijakan Privasi</h4>
-    <p>Kami menghormati privasi Anda. Data pribadi seperti nama, email, dan nilai try out hanya digunakan untuk keperluan evaluasi akademik dan peningkatan layanan internal kami.</p>
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 2 — Tujuan Penggunaan Data</h4>
+    <p>Data pribadi pengguna diproses untuk:</p>
+    <ol class="list-decimal pl-5 space-y-1.5">
+        <li>Membuat, memverifikasi, dan mengelola akun.</li>
+        <li>Memberikan akses ke layanan pembelajaran online dan Try Out.</li>
+        <li>Menyimpan progres dan riwayat pembelajaran.</li>
+        <li>Menghitung skor, nilai, dan hasil evaluasi.</li>
+        <li>Menampilkan analisis kemampuan akademik serta hasil Try Out.</li>
+        <li>Mengelola transaksi dan akses program berbayar.</li>
+        <li>Menyampaikan informasi layanan dan pemberitahuan penting.</li>
+        <li>Menangani pengaduan dan permintaan bantuan.</li>
+        <li>Meningkatkan keamanan, stabilitas, dan kualitas platform.</li>
+        <li>Mengembangkan fitur pembelajaran berdasarkan analisis penggunaan yang sesuai hukum.</li>
+        <li>Menyampaikan informasi promosi apabila terdapat dasar pemrosesan yang sah.</li>
+    </ol>
 
-    <h4 class="font-bold text-brand-navy mt-4 mb-2">5. Perubahan Ketentuan</h4>
-    <p>PRIME By All Education berhak mengubah Syarat & Ketentuan ini kapan saja. Perubahan akan diinformasikan melalui website atau email.</p>
-</div>
-            `;
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 3 — Dasar Pemrosesan Data Pribadi</h4>
+    <ol class="list-decimal pl-5 space-y-1.5">
+        <li>Persetujuan pengguna untuk tujuan tertentu.</li>
+        <li>Pelaksanaan perjanjian atau penyediaan layanan yang diminta pengguna.</li>
+        <li>Pemenuhan kewajiban hukum pengelola.</li>
+        <li>Kepentingan sah lainnya yang diperbolehkan hukum dengan mempertimbangkan hak pengguna.</li>
+    </ol>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 4 — Perlindungan Data Pengguna Anak</h4>
+    <ol class="list-decimal pl-5 space-y-1.5">
+        <li>Pemrosesan data pribadi dilakukan dengan memperhatikan kepentingan terbaik anak.</li>
+        <li>Persetujuan orang tua atau wali diperoleh apabila diwajibkan berdasarkan peraturan yang berlaku.</li>
+        <li>Data pribadi anak tidak digunakan untuk tujuan yang bertentangan dengan perlindungan anak.</li>
+        <li>Akses terhadap data pribadi anak dibatasi sesuai kebutuhan layanan.</li>
+    </ol>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 5 — Penggunaan Data Try Out dan Hasil Belajar</h4>
+    <ol class="list-decimal pl-5 space-y-1.5">
+        <li>Jawaban dan hasil Try Out diproses untuk memberikan penilaian serta evaluasi kemampuan pengguna.</li>
+        <li>Riwayat pengerjaan dapat disimpan agar pengguna dapat melihat perkembangan belajar.</li>
+        <li>Analisis hasil dapat digunakan untuk memberikan rekomendasi pembelajaran.</li>
+        <li>Data hasil belajar dapat digunakan dalam bentuk agregat atau anonim untuk peningkatan kualitas layanan.</li>
+        <li>Apabila platform menyediakan leaderboard publik, informasi yang ditampilkan akan dibatasi.</li>
+        <li>Hasil Try Out individu tidak akan dipublikasikan secara terbuka tanpa dasar pemrosesan yang sah.</li>
+    </ol>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 6 — Penyimpanan dan Keamanan Data</h4>
+    <p>Kami berupaya melindungi data pengguna melalui langkah keamanan teknis dan organisasi, antara lain: pengendalian akses, pengamanan sistem autentikasi, pembatasan akses, dan evaluasi keamanan berkala. Apabila terjadi insiden pelindungan data pribadi, kami akan melakukan penanganan dan pemberitahuan sesuai ketentuan hukum yang berlaku.</p>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 7 — Pembagian Data kepada Pihak Ketiga</h4>
+    <p>Kami tidak menjual data pribadi pengguna kepada pihak lain. Data dapat dibagikan secara terbatas kepada pihak yang memiliki kebutuhan sah, seperti penyedia layanan hosting, pembayaran, autentikasi, dan instansi berwenang apabila diwajibkan hukum.</p>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 8 — Cookies dan Teknologi Pelacakan</h4>
+    <p>Website atau aplikasi PRIME by All Education dapat menggunakan cookies atau teknologi serupa untuk menjaga sesi login, mengingat preferensi, dan mendukung keamanan sistem. Pengguna dapat mengatur cookies melalui browser.</p>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 9 — Hak Pengguna atas Data Pribadi</h4>
+    <p>Sesuai ketentuan hukum, pengguna berhak memperoleh informasi, mengakses, memperbaiki, meminta penghapusan, menarik persetujuan, mengajukan keberatan pemrosesan, dan mengajukan pengaduan terkait pelindungan data pribadi.</p>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 10 & 11 — Penghapusan Akun & Masa Penyimpanan Data</h4>
+    <p>Pengguna dapat mengajukan permintaan penghapusan akun melalui saluran resmi. Data pribadi disimpan selama diperlukan untuk memenuhi tujuan pemrosesan atau diwajibkan oleh undang-undang. Setelah masa berakhir, data akan dihapus, dimusnahkan, atau dianonimkan.</p>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 12 & 13 — Tautan Eksternal & Perubahan Kebijakan</h4>
+    <p>Platform dapat menyediakan tautan eksternal yang tunduk pada kebijakan privasi masing-masing pihak ketiga. Kami dapat memperbarui Kebijakan Privasi ini menyesuaikan teknologi dan ketentuan hukum, perubahan material akan diinformasikan melalui saluran resmi.</p>
+
+    <h4 class="font-bold text-brand-navy mt-5">Pasal 14 — Kontak dan Pengaduan Privasi</h4>
+    <p>Pengguna dapat mengajukan pertanyaan, permintaan hak, maupun pengaduan privasi melalui saluran resmi.</p>
+
+    <div class="mt-6 pt-4 border-t text-center font-bold text-gray-500 text-xs leading-relaxed">
+        <p>Pengendali Data Pribadi: PT All Education Indonesia</p>
+        <p>Layanan: PRIME by All Education</p>
+        <p>Website resmi: <a href="https://alleducenter.com" class="text-brand-orange hover:underline">https://alleducenter.com</a></p>
+        <p class="mt-3">© 2026 PT All Education Indonesia. All Rights Reserved.</p>
+    </div>
+</div>`;
+            }
             
+            document.getElementById('modal-title').innerHTML = modalTitle;
             document.getElementById('modal-desc').innerHTML = termsText;
             
-            // Icon Dokumen
-            iconCont.className="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 flex-shrink-0 bg-orange-100 text-brand-orange shadow-inner";
-            icon.className="fa-solid fa-file-contract text-2xl";
+            // Icon Dokumen / Shield
+            iconCont.className = type === 'snk' 
+                ? "w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 flex-shrink-0 bg-orange-100 text-brand-orange shadow-inner" 
+                : "w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 flex-shrink-0 bg-blue-100 text-blue-500 shadow-inner";
+            icon.className = type === 'snk' ? "fa-solid fa-file-contract text-2xl" : "fa-solid fa-shield-halved text-2xl";
             
             const btnCont = document.getElementById('modal-btn-container');
             btnCont.innerHTML = `
-                <button onclick="closeModal()" class="w-full bg-brand-navy text-white py-3.5 rounded-xl font-bold text-sm hover:bg-gray-800 shadow-md transition mt-2">Saya Mengerti</button>
+                <button onclick="closeModal()" class="w-full bg-brand-navy text-white py-3.5 rounded-xl font-bold text-sm hover:bg-gray-800 shadow-md transition mt-2">Saya Mengerti & Menyetujui</button>
             `;
             
             modal.classList.remove('hidden');
