@@ -1,2 +1,2 @@
-# app.alleducation
+# prime.alleducation
 All Education Indonesia
