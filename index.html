@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">All Education Indonesia | Platform Edutech Masa Depan</title>
+    <title id="page-title">Prime by All Education | TRY OUT SNBT DAN TKA 2027 LIVE CLASS DAN PENILIAN IRT TERBARU SOAL UPDATE</title>
+    <meta name="description" content="Prime by All Education. Platform Try Out SNBT dan TKA 2027, Live Class, dengan sistem Penilaian IRT Terbaru dan Update Soal terlengkap.">
     
-    <link id="dynamic-favicon" rel="icon" type="image/x-icon" href="https://iili.io/CMttawP.md.png">
+    <link id="dynamic-favicon" rel="icon" type="image/x-icon" href="https://iili.io/ndS44YG.md.png">
     
     <!-- Preconnect untuk mempercepat loading aset -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -221,11 +222,18 @@
             </header>
             
             <main class="pt-32 pb-20 px-4 max-w-7xl mx-auto text-center flex-1 w-full">
-                <div class="bg-brand-navy text-white rounded-3xl p-8 md:p-20 shadow-2xl relative overflow-hidden mb-16">
+               <div class="bg-brand-navy text-white rounded-3xl p-8 md:p-20 shadow-2xl relative overflow-hidden mb-16">
                     <div class="absolute -top-24 -right-24 w-64 h-64 bg-brand-orange rounded-full opacity-20 blur-3xl pointer-events-none"></div>
                     <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-blue-500 rounded-full opacity-20 blur-3xl pointer-events-none"></div>
                     
-                    <h1 id="ld-title" class="text-4xl md:text-6xl font-extrabold mb-6 relative z-10 whitespace-pre-wrap">Platform Belajar Online <br><span class="text-brand-orange">Masa Depan</span></h1>
+                    <!-- Penambahan Logo PRIME di Tengah Banner -->
+                    <div class="flex justify-center mb-8 relative z-10">
+                        <div class="bg-white p-3 md:p-4 rounded-3xl shadow-[0_0_40px_rgba(255,122,0,0.4)] border-2 border-brand-orange/30 transform hover:scale-105 transition duration-300">
+                            <img src="https://iili.io/ndS44YG.md.png" class="h-16 md:h-24 w-auto object-contain">
+                        </div>
+                    </div>
+
+                    <h1 id="ld-title" class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 relative z-10 whitespace-pre-wrap leading-tight">Platform Belajar Online <br><span class="text-brand-orange">Masa Depan</span></h1>
                     <p id="ld-desc" class="text-lg text-gray-300 mb-10 max-w-2xl mx-auto relative z-10 whitespace-pre-wrap">Lolos PTN impian dengan sistem CBT IRT paling akurat, Kelas Online interaktif, dan modul Bank Soal terlengkap se-Indonesia.</p>
                     
                     <button onclick="router('auth'); toggleAuthMode('register')" class="bg-brand-orange text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-orange-500 shadow-xl relative z-10 w-full md:w-auto">Mulai Belajar Sekarang</button>
@@ -1943,7 +1951,7 @@
         let dbUsers = [{id:'U0', nama:'Super Admin', email:'admin', pass:'edudigital', telp:'081', sekolah:'Pusat', status:'Admin', role:'SUPER_ADMIN', isPremium:true, targetPtn:null}, {id:'U1', nama:'Ahmad Peserta', email:'peserta', pass:'edudigital', telp:'082', sekolah:'SMAN 1', status:'Siswa Aktif', role:'PESERTA', isPremium:true, targetPtn:null}];
         let dbMaster = { programs: ['UTBK SNBT', 'SIMAK UI', 'UM UGM'], episodes: ['Episode 1', 'Episode 2', 'Premium Modul'], subtests: ['Penalaran Umum', 'Kemampuan Kuantitatif', 'Literasi Bahasa Indonesia', 'Literasi Bahasa Inggris'] };
         let dbModules = []; let dbTryouts = []; let dbResults = []; let dbClasses = []; let dbPtn = []; let dbArticles = [];
-        let dbSettings = { logo: 'https://iili.io/CMttawP.md.png', landingTitle: 'Platform Belajar Online <br><span class="text-brand-orange">Masa Depan</span>', landingDesc: 'Lolos PTN impian dengan sistem CBT IRT paling akurat, Kelas Online interaktif, dan modul Bank Soal terlengkap se-Indonesia.', footerText: '© 2026 Belajar Bareng Edutech. Semua Hak Cipta Dilindungi.', ytImg: 'https://via.placeholder.com/800x200/071B3A/FFFFFF?text=Youtube+Banner', ytLink: 'https://youtube.com' };
+       let dbSettings = { logo: 'https://iili.io/ndS44YG.md.png', landingTitle: 'Platform Belajar Online <br><span class="text-brand-orange">Masa Depan</span>', landingDesc: 'Lolos PTN impian dengan sistem CBT IRT paling akurat, Kelas Online interaktif, dan modul Bank Soal terlengkap se-Indonesia.', footerText: '© 2026 Belajar Bareng Edutech. Semua Hak Cipta Dilindungi.', ytImg: 'https://via.placeholder.com/800x200/071B3A/FFFFFF?text=Youtube+Banner', ytLink: 'https://youtube.com' };
 
         window.isCbtActive = false;
 
