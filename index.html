@@ -976,12 +976,24 @@
                     </div>
                 </div>
 
-                <!-- ================= BANNER YOUTUBE ================= -->
-                <div id="yt-banner-container" class="w-full bg-brand-navy rounded-[24px] overflow-hidden mb-8 shadow-sm relative group border border-gray-100">
-                    <img id="yt-banner-img" src="https://via.placeholder.com/800x200/071B3A/FFFFFF?text=Banner" class="w-full h-24 md:h-32 object-cover opacity-60 group-hover:scale-105 transition duration-500">
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <a id="yt-banner-link" href="#" target="_blank" class="pointer-events-auto bg-[#e52d27] hover:bg-[#c92420] text-white px-5 md:px-6 py-2.5 rounded-full font-bold flex items-center gap-2 shadow-lg transition transform hover:-translate-y-1 text-sm md:text-base">
-                            <i class="fa-brands fa-youtube text-xl"></i> Tonton Video Pembelajaran
+               <!-- ================= BANNER YOUTUBE ================= -->
+                <div id="yt-banner-container" class="w-full rounded-[24px] overflow-hidden mb-8 shadow-md relative group border border-gray-100 cursor-pointer" onclick="window.open(document.getElementById('yt-banner-link').href, '_blank')">
+                    <!-- Overlay Gradasi Gelap -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-gray-900/30 z-10 transition duration-500 group-hover:from-gray-900/90 group-hover:to-gray-900/40"></div>
+                    
+                    <img id="yt-banner-img" src="https://via.placeholder.com/800x200/071B3A/FFFFFF?text=Banner" class="w-full h-28 md:h-36 object-cover transform group-hover:scale-105 transition duration-700">
+                    
+                    <!-- Konten Banner -->
+                    <div class="absolute inset-0 z-20 flex flex-col md:flex-row items-center justify-center md:justify-between px-6 md:px-10 h-full pointer-events-none">
+                        <div class="text-center md:text-left mb-3 md:mb-0">
+                            <span class="bg-[#ff0000] text-white text-[9px] md:text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-lg inline-block mb-2 border border-red-400">Live Update</span>
+                            <h3 class="text-white font-extrabold text-lg md:text-2xl drop-shadow-md">Tonton Video Pembelajaran</h3>
+                            <p class="text-gray-200 text-xs md:text-sm font-medium drop-shadow-sm hidden md:block mt-1">Tips, trik, dan pembahasan soal ter-update dari Master Teacher.</p>
+                        </div>
+                        
+                        <!-- Tombol Play Keren -->
+                        <a id="yt-banner-link" href="#" target="_blank" class="pointer-events-auto bg-white/20 backdrop-blur-md border border-white/40 hover:bg-white hover:text-[#ff0000] text-white w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,0,0,0.4)] transition-all duration-300 transform group-hover:scale-110">
+                            <i class="fa-solid fa-play text-xl md:text-3xl ml-1"></i>
                         </a>
                     </div>
                 </div>
@@ -1320,10 +1332,10 @@
                         <!-- ================= HALAMAN DETAIL KATEGORI PROGRAM (SEPERTI GAMBAR KE-3) ================= -->
                         <div id="tryout-category-detail-view" class="hidden">
                             <!-- Header Biru Melengkung & Card Putih Kategori -->
-                            <div class="bg-[#4f8bea] -mx-4 px-4 pt-5 pb-14 rounded-t-3xl relative mb-12 shadow-sm">
-                                <div class="max-w-5xl mx-auto">
-                                    <button onclick="closeCategoryDetailView()" class="text-white hover:text-blue-100 text-xl font-bold flex items-center gap-2 transition">
-                                        <i class="fa-solid fa-arrow-left"></i>
+                            <div class="bg-[#4f8bea] -mx-4 px-4 pt-6 pb-16 rounded-t-3xl relative mb-12 shadow-sm mt-2">
+                                <div class="max-w-5xl mx-auto flex items-center">
+                                    <button onclick="closeCategoryDetailView()" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition backdrop-blur-sm border border-white/20 shadow-sm">
+                                        <i class="fa-solid fa-arrow-left"></i> Kembali
                                     </button>
                                 </div>
                                 <!-- Card Putih Mengambang -->
@@ -2918,8 +2930,26 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
         function editTryout(id) { const t = dbTryouts.find(x => x.id === id); if(!t) return; document.getElementById('ts-id').value = t.id; document.getElementById('ts-prog').value = t.program; document.getElementById('ts-eps').value = t.episode; document.getElementById('ts-img').value = t.img; document.getElementById('ts-start').value = t.start.slice(0,16); document.getElementById('ts-end').value = t.end.slice(0,16); document.getElementById('ts-rel-score').value = t.relScore.slice(0,16); document.getElementById('ts-type').value = t.type; document.getElementById('ts-form-title').innerHTML = '<i class="fa-solid fa-edit mr-2 text-brand-orange"></i>Edit Tryout Terpublikasi'; document.getElementById('ts-btn-submit').innerText = 'Simpan Perubahan'; document.getElementById('ts-btn-cancel').classList.remove('hidden'); loadModulesForTryout(); setTimeout(() => { t.modules.forEach(mid => { const cb = document.querySelector(`.cb-ts-mod[value="${mid}"]`); if(cb) cb.checked = true; }); calcToTime(); }, 100); window.scrollTo(0,0); }
         function renderTryoutHistory() { let html = ''; dbTryouts.forEach((t, idx) => { const pCount = dbResults.filter(r => r.toId === t.id).length; html += `<tr class="border-b hover:bg-gray-50"><td class="py-3 px-3"><div class="font-bold text-brand-navy">${t.program} - ${t.episode}</div><div class="text-[10px] ${t.type==='PREMIUM'?'bg-yellow-100 text-yellow-700 border-yellow-300':'bg-gray-100 border-gray-300 text-gray-600'} px-2 py-0.5 rounded border inline-block mt-1 font-bold tracking-wider">${t.type}</div></td><td class="py-3 px-3 text-xs text-gray-600 font-medium">${new Date(t.start).toLocaleString('id-ID',{dateStyle:'short',timeStyle:'short'})} <br> <span class="text-gray-400">s/d</span> <br> ${new Date(t.end).toLocaleString('id-ID',{dateStyle:'short',timeStyle:'short'})}</td><td class="py-3 px-3 text-center"><span class="font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">${pCount} Orang</span></td><td class="py-3 px-3 text-center"><button onclick="showLeaderboard('${t.id}')" class="bg-blue-100 text-blue-700 p-1.5 rounded hover:bg-blue-200 mr-1" title="Leaderboard"><i class="fa-solid fa-trophy"></i></button> <button onclick="editTryout('${t.id}')" class="bg-yellow-100 text-yellow-700 p-1.5 rounded hover:bg-yellow-200 mr-1" title="Edit"><i class="fa-solid fa-edit"></i></button> <button onclick="deleteTryout(${idx})" class="bg-red-100 text-red-700 p-1.5 rounded hover:bg-red-200" title="Hapus"><i class="fa-solid fa-trash"></i></button></td></tr>`; }); document.getElementById('adm-tbody-to-history').innerHTML = html || '<tr><td colspan="4" class="text-center py-6 text-gray-500 bg-white">Belum ada riwayat tryout.</td></tr>'; }
         function deleteTryout(idx) { if(confirm("Yakin hapus tryout ini? Data pengerjaan peserta tidak akan hilang.")) { dbTryouts.splice(idx, 1); syncServerData('Tryouts'); renderTryoutHistory(); } }
-        function showLeaderboard(toId) { const results = dbResults.filter(r => r.toId === toId).sort((a,b) => b.irtScore - a.irtScore); const to = dbTryouts.find(t => t.id === toId); let h = `<div class="max-h-60 overflow-y-auto custom-scroll pr-2"><table class="w-full text-left text-sm border-collapse"><thead><tr class="bg-gray-100 border-y"><th class="p-2 text-gray-600">Rank</th><th class="p-2 text-gray-600">Nama Peserta</th><th class="p-2 text-gray-600 text-right">Skor IRT</th></tr></thead><tbody>`; if(results.length === 0) h += `<tr><td colspan="3" class="text-center p-4 text-gray-500 border-b">Belum ada peserta yang selesai.</td></tr>`; results.forEach((r, i) => { const u = dbUsers.find(x => x.id === r.userId); h += `<tr class="border-b"><td class="p-2 font-black ${i===0?'text-yellow-500 text-lg':i===1?'text-gray-400':i===2?'text-orange-400':'text-gray-600'}">#${i+1}</td><td class="p-2 font-bold text-gray-800">${u?u.nama:'Unknown'}</td><td class="p-2 font-black text-brand-orange text-right">${r.irtScore}</td></tr>`; }); h += `</tbody></table></div>`; showModal(`<i class="fa-solid fa-trophy text-yellow-500 mr-2"></i>Leaderboard: ${to.program} - ${to.episode}`, '', 'info', h); }
-        function openUserLeaderboard() { if(window.currentViewedToId) showLeaderboard(window.currentViewedToId); }
+        function showLeaderboard(toId) { 
+            const results = dbResults.filter(r => r.toId === toId).sort((a,b) => b.irtScore - a.irtScore); 
+            const to = dbTryouts.find(t => t.id === toId); 
+            
+            // Tambahkan margin bottom (mb-4) agar ada jarak dengan tombol tutup
+            let h = `<div class="max-h-60 overflow-y-auto custom-scroll pr-2 mb-4"><table class="w-full text-left text-sm border-collapse"><thead><tr class="bg-gray-100 border-y"><th class="p-2 text-gray-600">Rank</th><th class="p-2 text-gray-600">Nama Peserta</th><th class="p-2 text-gray-600 text-right">Skor IRT</th></tr></thead><tbody>`; 
+            
+            if(results.length === 0) h += `<tr><td colspan="3" class="text-center p-4 text-gray-500 border-b">Belum ada peserta yang selesai.</td></tr>`; 
+            
+            results.forEach((r, i) => { 
+                const u = dbUsers.find(x => x.id === r.userId); 
+                h += `<tr class="border-b"><td class="p-2 font-black ${i===0?'text-yellow-500 text-lg':i===1?'text-gray-400':i===2?'text-orange-400':'text-gray-600'}">#${i+1}</td><td class="p-2 font-bold text-gray-800">${u?u.nama:'Unknown'}</td><td class="p-2 font-black text-brand-orange text-right">${r.irtScore}</td></tr>`; 
+            }); 
+            h += `</tbody></table></div>`; 
+            
+            // INI TAMBAHAN TOMBOL TUTUPNYA BRO:
+            h += `<button onclick="closeModal()" class="w-full bg-brand-navy text-white py-3.5 rounded-xl font-bold text-base hover:bg-gray-800 shadow-md transition">Tutup Leaderboard</button>`;
+            
+            showModal(`<i class="fa-solid fa-trophy text-yellow-500 mr-2"></i>Leaderboard: ${to.program} - ${to.episode}`, '', 'info', h); 
+        }
 
         function renderPtnData() { document.getElementById('ptn-count').innerText = dbPtn.length; let html = ''; dbPtn.slice(0, 100).forEach((p,i) => { html += `<tr class="border-b hover:bg-gray-50"><td class="py-2 px-3 font-bold text-brand-navy">${p.univ}<div class="text-xs text-gray-500 font-normal">${p.prodi}</div></td><td class="py-2 px-3 text-right font-medium">${p.daya}/${p.peminat}</td><td class="py-2 px-3 text-right font-black text-red-500 bg-red-50 border-l">1:${Math.round(p.peminat/p.daya)}</td><td class="py-2 px-3 text-center border-l"><button onclick="dbPtn.splice(${i},1); syncServerData('PTN'); renderPtnData();" class="text-red-500 hover:bg-red-100 px-2 rounded"><i class="fa-solid fa-trash text-xs"></i></button></td></tr>`; }); if(dbPtn.length>100) html += `<tr><td colspan="4" class="text-center py-4 text-xs text-gray-400 bg-white">Menampilkan 100 data teratas...</td></tr>`; document.getElementById('adm-tbody-ptn').innerHTML = html; }
         function addPtnData(e) { e.preventDefault(); dbPtn.push({ univ: document.getElementById('ap-univ').value, prodi: document.getElementById('ap-prodi').value, daya: parseInt(document.getElementById('ap-daya').value), peminat: parseInt(document.getElementById('ap-peminat').value) }); syncServerData('PTN'); e.target.reset(); renderPtnData(); }
@@ -4051,10 +4081,8 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
 
             programs.forEach((prog, idx) => {
                 const st = categoryStyles[idx % categoryStyles.length];
-                const count = dbTryouts.filter(t => t.program === prog).length;
                 html += `
-                <button onclick="openCategoryDetailView('${prog}', ${idx})" class="flex-shrink-0 w-[125px] md:w-[135px] ${st.bg} border ${st.border} rounded-2xl p-3.5 flex flex-col items-center justify-center gap-2 hover:-translate-y-1 hover:shadow-md transition relative group">
-                    <div class="absolute -top-2 -right-1.5 bg-[#ff7f3f] text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full shadow-sm">${count} TO</div>
+                <button onclick="openCategoryDetailView('${prog}', ${idx})" class="flex-shrink-0 w-[125px] md:w-[135px] ${st.bg} border ${st.border} rounded-2xl p-3.5 flex flex-col items-center justify-center gap-2 hover:-translate-y-1 hover:shadow-md transition group">
                     <div class="w-11 h-11 rounded-xl bg-white/80 flex items-center justify-center shadow-sm group-hover:scale-110 transition">
                         <i class="fa-solid ${st.icon} text-2xl ${st.iconColor}"></i>
                     </div>
