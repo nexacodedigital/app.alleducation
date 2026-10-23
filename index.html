@@ -889,13 +889,24 @@
             </header>
 
             <div id="u-home-view" class="max-w-7xl mx-auto px-4 mt-6">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-gradient-to-br from-brand-navy to-blue-900 rounded-3xl p-6 text-white shadow-lg flex flex-col justify-center relative overflow-hidden">
-                        <i class="fa-solid fa-chart-line absolute -right-4 -bottom-4 text-8xl opacity-10"></i>
-                        <h3 class="text-sm text-blue-200 font-medium mb-1">Rata-rata Skor IRT Anda</h3>
-                        <div class="text-5xl font-black text-brand-orange" id="u-stat-score">0</div>
-                        <p class="text-xs mt-2 text-blue-100">Berdasarkan seluruh Tryout yang dikerjakan.</p>
+                <!-- ================= BANNER SELAMAT DATANG (BARU) ================= -->
+                <div class="bg-gradient-to-r from-[#4481eb] to-[#04befe] rounded-[24px] p-6 md:p-8 text-white shadow-lg flex items-center gap-5 md:gap-6 mb-8 relative overflow-hidden">
+                    <div class="absolute right-0 top-0 opacity-20 pointer-events-none">
+                        <i class="fa-solid fa-graduation-cap text-9xl -mt-6 -mr-6 transform rotate-12"></i>
                     </div>
+                    <!-- Avatar Lingkaran Animasi -->
+                    <div class="w-16 h-16 md:w-20 md:h-20 bg-white/20 rounded-full flex items-center justify-center border-4 border-white/30 flex-shrink-0 z-10 backdrop-blur-sm relative shadow-inner">
+                        <div class="absolute inset-0 border-2 border-white/50 rounded-full animate-[spin_4s_linear_infinite] border-t-transparent"></div>
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=transparent" class="w-full h-full rounded-full">
+                    </div>
+                    <div class="z-10 flex-1">
+                        <h2 class="text-xl md:text-3xl font-black drop-shadow-md mb-1">Halo, <span id="greet-name">Sobat PRIME</span>! 👋</h2>
+                        <div class="flex flex-wrap items-center gap-2 mt-2">
+                            <span class="bg-[#facc15] text-yellow-900 text-[10px] md:text-xs font-black px-3 py-1 rounded-full shadow-sm"><i class="fa-solid fa-bolt mr-1"></i> Level IRT: <span id="u-stat-score">0</span> XP</span>
+                            <span class="bg-white/20 text-white text-[10px] md:text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm border border-white/30">Pejuang PTN Impian</span>
+                        </div>
+                    </div>
+                </div>
 
                     <div class="lg:col-span-2 bg-white rounded-3xl p-6 border shadow-sm flex flex-col md:flex-row items-center gap-6">
                         <div class="w-16 h-16 bg-orange-100 text-brand-orange rounded-full flex items-center justify-center text-3xl flex-shrink-0"><i class="fa-solid fa-bullseye"></i></div>
@@ -919,13 +930,48 @@
                     </div>
                 </div>
 
-                <div id="yt-banner-container" class="w-full bg-brand-navy rounded-2xl overflow-hidden mb-8 shadow-lg relative group">
-                    <img id="yt-banner-img" src="https://via.placeholder.com/800x200/071B3A/FFFFFF?text=Banner" class="w-full h-32 md:h-48 object-cover opacity-60 group-hover:scale-105 transition duration-500">
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <a id="yt-banner-link" href="#" target="_blank" class="pointer-events-auto bg-red-600 hover:bg-red-700 text-white px-6 py-2 md:py-3 rounded-full font-bold flex items-center gap-2 shadow-xl transition transform hover:-translate-y-1 text-sm md:text-base"><i class="fa-brands fa-youtube text-xl"></i> Tonton Video Pembelajaran</a>
+                <!-- ================= FITUR BELAJAR (DESAIN BARU UI BERSIH) ================= -->
+                <div class="bg-white p-5 md:p-6 rounded-[24px] shadow-sm border border-gray-100 mb-6">
+                    <h3 class="font-extrabold text-brand-navy mb-4 text-sm md:text-base ml-1">Fitur Belajar</h3>
+                    <div class="flex overflow-x-auto hide-scroll pb-2 gap-3 md:gap-4">
+                        
+                        <button onclick="switchUserTab('classes')" class="flex-1 min-w-[140px] md:min-w-0 bg-white border border-gray-100 hover:border-brand-orange hover:shadow-md p-3 md:p-4 rounded-2xl flex items-center gap-3 md:gap-4 transition group relative">
+                            <span class="absolute -top-2 -right-2 bg-brand-orange text-white text-[9px] font-black px-2 py-0.5 rounded shadow-sm">BARU</span>
+                            <div class="w-10 h-10 md:w-12 md:h-12 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center text-gray-700 text-lg md:text-xl group-hover:bg-orange-50 group-hover:text-brand-orange transition flex-shrink-0"><i class="fa-solid fa-laptop"></i></div>
+                            <span class="font-bold text-xs md:text-sm text-brand-navy text-left leading-tight">Kelas<br>Online</span>
+                        </button>
+
+                        <button onclick="switchUserTab('tryout')" class="flex-1 min-w-[140px] md:min-w-0 bg-white border border-gray-100 hover:border-brand-orange hover:shadow-md p-3 md:p-4 rounded-2xl flex items-center gap-3 md:gap-4 transition group">
+                            <div class="w-10 h-10 md:w-12 md:h-12 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center text-gray-700 text-lg md:text-xl group-hover:bg-orange-50 group-hover:text-brand-orange transition flex-shrink-0"><i class="fa-solid fa-file-signature"></i></div>
+                            <span class="font-bold text-xs md:text-sm text-brand-navy text-left leading-tight">Tryout</span>
+                        </button>
+
+                        <button onclick="switchUserTab('drill')" class="flex-1 min-w-[140px] md:min-w-0 bg-white border border-gray-100 hover:border-brand-orange hover:shadow-md p-3 md:p-4 rounded-2xl flex items-center gap-3 md:gap-4 transition group">
+                            <div class="w-10 h-10 md:w-12 md:h-12 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center text-gray-700 text-lg md:text-xl group-hover:bg-orange-50 group-hover:text-brand-orange transition flex-shrink-0"><i class="fa-solid fa-bullseye"></i></div>
+                            <span class="font-bold text-xs md:text-sm text-brand-navy text-left leading-tight">Drill<br>Soal</span>
+                        </button>
+
+                        <button onclick="switchUserTab('ptn')" class="flex-1 min-w-[140px] md:min-w-0 bg-white border border-gray-100 hover:border-brand-orange hover:shadow-md p-3 md:p-4 rounded-2xl flex items-center gap-3 md:gap-4 transition group">
+                            <div class="w-10 h-10 md:w-12 md:h-12 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center text-gray-700 text-lg md:text-xl group-hover:bg-orange-50 group-hover:text-brand-orange transition flex-shrink-0"><i class="fa-solid fa-school"></i></div>
+                            <span class="font-bold text-xs md:text-sm text-brand-navy text-left leading-tight">Cek<br>Peluang</span>
+                        </button>
+
+                        <button onclick="switchUserTab('profile')" class="flex-1 min-w-[140px] md:min-w-0 bg-white border border-gray-100 hover:border-brand-orange hover:shadow-md p-3 md:p-4 rounded-2xl flex items-center gap-3 md:gap-4 transition group">
+                            <div class="w-10 h-10 md:w-12 md:h-12 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center text-gray-700 text-lg md:text-xl group-hover:bg-orange-50 group-hover:text-brand-orange transition flex-shrink-0"><i class="fa-solid fa-user"></i></div>
+                            <span class="font-bold text-xs md:text-sm text-brand-navy text-left leading-tight">Profil<br>Saya</span>
+                        </button>
                     </div>
                 </div>
 
+                <!-- ================= BANNER YOUTUBE (PINDAHAN DARI ATAS) ================= -->
+                <div id="yt-banner-container" class="w-full bg-brand-navy rounded-[24px] overflow-hidden mb-8 shadow-sm relative group border border-gray-100">
+                    <img id="yt-banner-img" src="https://via.placeholder.com/800x200/071B3A/FFFFFF?text=Banner" class="w-full h-24 md:h-32 object-cover opacity-60 group-hover:scale-105 transition duration-500">
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <a id="yt-banner-link" href="#" target="_blank" class="pointer-events-auto bg-[#e52d27] hover:bg-[#c92420] text-white px-5 md:px-6 py-2.5 rounded-full font-bold flex items-center gap-2 shadow-lg transition transform hover:-translate-y-1 text-sm md:text-base">
+                            <i class="fa-brands fa-youtube text-xl"></i> Tonton Video Pembelajaran
+                        </a>
+                    </div>
+                </div>
                <!-- ================= BANNER PROMO (ANIMASI BERJALAN) ================= -->
                 <div class="mb-8 relative rounded-[24px] overflow-hidden shadow-sm border border-gray-100 group">
                     <div class="animate-scroll-banner flex h-32 md:h-48">
@@ -1418,7 +1464,33 @@
 
                     </div>
 
-                    <div id="u-tab-ptn" class="hidden max-w-3xl mx-auto">
+                   <div id="u-tab-ptn" class="hidden max-w-3xl mx-auto">
+                        
+                        <!-- KARTU TARGET PTN IMPIAN (Pindahan dari Halaman Depan) -->
+                        <div class="bg-gradient-to-br from-brand-navy to-[#1e3a8a] rounded-3xl p-6 md:p-8 shadow-xl border border-blue-800 mb-8 relative overflow-hidden flex flex-col md:flex-row items-center gap-6">
+                            <!-- Animasi / Icon Gedung PTN -->
+                            <div class="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0 relative">
+                                <div class="absolute inset-0 border-4 border-dashed border-white/30 rounded-full animate-[spin_6s_linear_infinite]"></div>
+                                <i class="fa-solid fa-building-columns text-4xl text-yellow-400 drop-shadow-lg animate-bounce" style="animation-duration: 2s;"></i>
+                            </div>
+                            <!-- Info Target -->
+                            <div class="flex-1 w-full text-center md:text-left text-white">
+                                <h3 class="font-black text-xl md:text-2xl mb-1">Target PTN Impian</h3>
+                                <p class="text-blue-200 text-sm mb-4" id="u-target-text">Pilih universitas dan prodi target Anda.</p>
+                                
+                                <div class="bg-black/20 p-4 rounded-2xl border border-white/10">
+                                    <div class="flex justify-between mt-1 text-[11px] md:text-xs font-bold text-blue-100 mb-2">
+                                        <span>Skor IRT Anda: <span id="u-target-myscore" class="text-yellow-400 text-sm">0</span></span>
+                                        <span>Passing Grade: <span id="u-target-pg" class="text-green-400 text-sm">0</span></span>
+                                    </div>
+                                    <div class="bg-white/20 rounded-full h-3 overflow-hidden relative mb-2">
+                                        <div id="u-target-bar" class="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-400 to-brand-orange transition-all duration-1000 shadow-[0_0_10px_rgba(255,122,0,0.8)]" style="width: 0%;"></div>
+                                    </div>
+                                    <div id="u-target-status" class="text-[11px] md:text-xs font-bold text-center text-blue-200">Belum ada target dipilih</div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100">
                             <h2 class="text-2xl font-bold text-brand-navy mb-6 text-center">Kalkulator Keketatan PTN</h2>
                             <div class="space-y-6">
@@ -3145,6 +3217,9 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             updateUserTargetStats();
         }
       function updateUserTargetStats() {
+          // Update nama panggilan di banner ucapan selamat datang
+            const greetNameEl = document.getElementById('greet-name');
+            if (greetNameEl) greetNameEl.innerText = currentUser.nama.split(' ')[0];
             if(!currentUser) return;
             // Rata-rata Skor: HANYA mengambil Tryout (bukan Drill)
             const myResults = dbResults.filter(r => r.userId === currentUser.id && !r.isDrillResult);
