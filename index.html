@@ -897,13 +897,49 @@
                     <!-- Avatar Lingkaran Animasi -->
                     <div class="w-16 h-16 md:w-20 md:h-20 bg-white/20 rounded-full flex items-center justify-center border-4 border-white/30 flex-shrink-0 z-10 backdrop-blur-sm relative shadow-inner">
                         <div class="absolute inset-0 border-2 border-white/50 rounded-full animate-[spin_4s_linear_infinite] border-t-transparent"></div>
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=transparent" class="w-full h-full rounded-full">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jessica&hairColor=2c1b18&skinColor=f8d25c&backgroundColor=transparent" class="w-full h-full rounded-full">
                     </div>
                     <div class="z-10 flex-1">
                         <h2 class="text-xl md:text-3xl font-black drop-shadow-md mb-1">Halo, <span id="greet-name">Sobat PRIME</span>! 👋</h2>
                         <div class="flex flex-wrap items-center gap-2 mt-2">
                             <span class="bg-[#facc15] text-yellow-900 text-[10px] md:text-xs font-black px-3 py-1 rounded-full shadow-sm"><i class="fa-solid fa-bolt mr-1"></i> Level IRT: <span id="u-stat-score">0</span> XP</span>
                             <span class="bg-white/20 text-white text-[10px] md:text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm border border-white/30">Pejuang PTN Impian</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- ================= SMART ANALYSIS & TARGET PTN ================= -->
+                <div class="bg-white rounded-[24px] p-5 md:p-6 shadow-sm border border-gray-100 mb-6 relative overflow-hidden group hover:shadow-md hover:border-brand-orange transition cursor-pointer" onclick="switchUserTab('ptn')">
+                    <div class="absolute right-0 top-0 w-32 h-32 bg-blue-50 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+                    <div class="flex flex-col md:flex-row items-center gap-5 md:gap-6 relative z-10">
+                        <!-- Animasi / Icon Gedung PTN -->
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-blue-50 rounded-full flex items-center justify-center flex-shrink-0 relative border border-blue-100">
+                            <div class="absolute inset-0 border-4 border-dashed border-blue-200 rounded-full animate-[spin_6s_linear_infinite]"></div>
+                            <i class="fa-solid fa-building-columns text-2xl md:text-3xl text-blue-600 drop-shadow-sm animate-bounce" style="animation-duration: 2s;"></i>
+                        </div>
+                        <!-- Info Target -->
+                        <div class="flex-1 w-full text-center md:text-left">
+                            <div class="flex justify-center md:justify-start items-center gap-2 mb-1">
+                                <h3 class="font-extrabold text-brand-navy text-lg">Smart Analysis Peluang PTN</h3>
+                                <span class="bg-green-100 text-green-700 text-[9px] font-bold px-2 py-0.5 rounded shadow-sm hidden md:inline-block">AUTO-SYNC</span>
+                            </div>
+                            <p class="text-gray-500 text-xs mb-3" id="u-target-text">Pilih universitas dan prodi target Anda.</p>
+                            
+                            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-100">
+                                <div class="flex justify-between items-center text-[10px] md:text-xs font-bold text-gray-500 mb-2">
+                                    <span>Rata-rata Skor Tryout: <span id="u-target-myscore" class="text-brand-navy text-sm">0</span></span>
+                                    <span>Target Passing Grade: <span id="u-target-pg" class="text-brand-orange text-sm">0</span></span>
+                                </div>
+                                <div class="bg-gray-200 rounded-full h-2.5 overflow-hidden relative mb-2">
+                                    <div id="u-target-bar" class="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-400 to-brand-orange transition-all duration-1000 shadow-sm" style="width: 0%;"></div>
+                                </div>
+                                <div id="u-target-status" class="text-[10px] md:text-xs font-bold text-center text-gray-400">Silakan set target PTN Anda melalui menu Kalkulator Keketatan</div>
+                            </div>
+                        </div>
+                        <!-- Tombol Aksi Kanan -->
+                        <div class="hidden md:flex items-center justify-center pl-2">
+                            <div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition shadow-sm">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1338,32 +1374,6 @@
                     </div>
 
                    <div id="u-tab-ptn" class="hidden max-w-3xl mx-auto">
-                        
-                        <!-- KARTU TARGET PTN IMPIAN (Pindahan dari Halaman Depan) -->
-                        <div class="bg-gradient-to-br from-brand-navy to-[#1e3a8a] rounded-3xl p-6 md:p-8 shadow-xl border border-blue-800 mb-8 relative overflow-hidden flex flex-col md:flex-row items-center gap-6">
-                            <!-- Animasi / Icon Gedung PTN -->
-                            <div class="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0 relative">
-                                <div class="absolute inset-0 border-4 border-dashed border-white/30 rounded-full animate-[spin_6s_linear_infinite]"></div>
-                                <i class="fa-solid fa-building-columns text-4xl text-yellow-400 drop-shadow-lg animate-bounce" style="animation-duration: 2s;"></i>
-                            </div>
-                            <!-- Info Target -->
-                            <div class="flex-1 w-full text-center md:text-left text-white">
-                                <h3 class="font-black text-xl md:text-2xl mb-1">Target PTN Impian</h3>
-                                <p class="text-blue-200 text-sm mb-4" id="u-target-text">Pilih universitas dan prodi target Anda.</p>
-                                
-                                <div class="bg-black/20 p-4 rounded-2xl border border-white/10">
-                                    <div class="flex justify-between mt-1 text-[11px] md:text-xs font-bold text-blue-100 mb-2">
-                                        <span>Skor IRT Anda: <span id="u-target-myscore" class="text-yellow-400 text-sm">0</span></span>
-                                        <span>Passing Grade: <span id="u-target-pg" class="text-green-400 text-sm">0</span></span>
-                                    </div>
-                                    <div class="bg-white/20 rounded-full h-3 overflow-hidden relative mb-2">
-                                        <div id="u-target-bar" class="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-400 to-brand-orange transition-all duration-1000 shadow-[0_0_10px_rgba(255,122,0,0.8)]" style="width: 0%;"></div>
-                                    </div>
-                                    <div id="u-target-status" class="text-[11px] md:text-xs font-bold text-center text-blue-200">Belum ada target dipilih</div>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100">
                             <h2 class="text-2xl font-bold text-brand-navy mb-6 text-center">Kalkulator Keketatan PTN</h2>
                             <div class="space-y-6">
@@ -1376,21 +1386,16 @@
                                     <div id="ptn-ratio-display" class="text-4xl font-black text-brand-orange mb-4">1 : 0</div>
                                     <p id="ptn-ratio-text" class="text-sm bg-white/10 inline-block px-4 py-1.5 rounded-full"></p>
                                     <div class="grid grid-cols-2 gap-4 mt-6 text-left">
-    <div class="bg-white/10 p-3 rounded-xl"><span class="block text-xs text-gray-400">Daya Tampung</span><span class="font-bold text-xl" id="ptn-res-daya"></span></div>
-    <div class="bg-white/10 p-3 rounded-xl"><span class="block text-xs text-gray-400">Peminat</span><span class="font-bold text-xl" id="ptn-res-peminat"></span></div>
-</div>
-
-<!-- INI KOTAK SEMANGAT BARUNYA BRO -->
-<div id="ptn-motivation-box" class="mt-4 bg-white/5 border border-white/10 rounded-xl p-3 text-sm font-medium italic text-left flex items-start gap-2 shadow-inner">
-    <!-- Nanti diisi teks otomatis sama Javascript -->
-</div>
-
-<button onclick="setAsTarget()" class="w-full bg-brand-orange text-white py-3 rounded-xl font-bold mt-6 hover:bg-orange-600 transition">Jadikan Target PTN Impian</button>
+                                        <div class="bg-white/10 p-3 rounded-xl"><span class="block text-xs text-gray-400">Daya Tampung</span><span class="font-bold text-xl" id="ptn-res-daya"></span></div>
+                                        <div class="bg-white/10 p-3 rounded-xl"><span class="block text-xs text-gray-400">Peminat</span><span class="font-bold text-xl" id="ptn-res-peminat"></span></div>
+                                    </div>
+                                    <div id="ptn-motivation-box" class="mt-4 bg-white/5 border border-white/10 rounded-xl p-3 text-sm font-medium italic text-left flex items-start gap-2 shadow-inner">
+                                    </div>
+                                    <button onclick="setAsTarget()" class="w-full bg-brand-orange text-white py-3 rounded-xl font-bold mt-6 hover:bg-orange-600 transition">Jadikan Target PTN Impian</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div id="u-tab-profile" class="hidden max-w-2xl mx-auto">
                         <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100">
                             <h2 class="text-2xl font-bold text-brand-navy mb-6"><i class="fa-solid fa-user-edit mr-2"></i>Edit Profil</h2>
