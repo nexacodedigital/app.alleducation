@@ -4002,8 +4002,9 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
             const isPrem = c.type === 'PREMIUM';
             const canJoin = !isPrem || currentUser.isPremium;
 
-            if(!canJoin) {
-                btnHtml = `<button onclick="showModal('Akses Ditolak','Khusus PREMIUM.','error')" class="bg-yellow-400 text-brand-navy px-8 py-4 rounded-2xl font-black shadow-lg transition text-sm md:text-base border border-yellow-500"><i class="fa-solid fa-lock mr-2"></i>Upgrade untuk Akses Kelas</button>`;
+           if(!canJoin) {
+                // Ganti showModal 'Akses Ditolak' jadi memanggil showPremiumModal()
+                btnHtml = `<button onclick="showPremiumModal()" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-8 py-4 rounded-2xl font-black shadow-lg transition-transform hover:-translate-y-1 text-sm md:text-base border border-yellow-300 flex items-center justify-center gap-2"><i class="fa-solid fa-crown text-xl"></i> Upgrade untuk Akses Kelas</button>`;
             } else if(active) {
                 btnHtml = `<button onclick="window.open('${c.zoom}', '_blank')" class="bg-white text-orange-600 px-8 py-4 rounded-2xl font-black shadow-xl hover:bg-orange-50 transition border border-gray-100 flex items-center text-sm md:text-base"><i class="fa-solid fa-video mr-2 text-xl"></i> Masuk Ruang Kelas Sekarang</button>`;
             } else {
@@ -4793,6 +4794,30 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
 
         // Panggil langsung saat inisialisasi
         window.syncAllProgramDropdowns();
+        // ================= FUNGSI POP-UP PREMIUM BARU =================
+        window.showPremiumModal = function() {
+            const modal = document.getElementById('custom-modal');
+            const iconCont = document.getElementById('modal-icon-container');
+            const icon = document.getElementById('modal-icon');
+            
+            document.getElementById('modal-title').innerHTML = 'Ups, Fitur Premium! 👑';
+            document.getElementById('modal-desc').innerHTML = 'Kelas Online ini eksklusif untuk pengguna <b>PREMIUM</b>. Yuk upgrade akun kamu sekarang buat dapetin akses ke seluruh live class, bank soal lengkap, dan tryout akurat!';
+            
+            // Icon Crown Emas Bercahaya
+            iconCont.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6 flex-shrink-0 bg-gradient-to-br from-yellow-300 to-yellow-500 text-white shadow-[0_4px_15px_rgba(234,179,8,0.4)]";
+            icon.className = "fa-solid fa-crown text-4xl";
+            
+            // Tombol diarahkan ke pay.alleducenter.com
+            const btnCont = document.getElementById('modal-btn-container');
+            btnCont.innerHTML = `
+                <a href="https://pay.alleducenter.com" target="_blank" onclick="closeModal()" class="w-full bg-gradient-to-r from-[#FF7A00] to-[#ff4500] text-white py-4 rounded-xl font-black text-lg shadow-[0_10px_20px_rgba(255,122,0,0.3)] hover:scale-[1.02] transition-transform duration-300 flex items-center justify-center gap-2 mb-3">
+                    <i class="fa-solid fa-rocket"></i> Langganan Sekarang
+                </a>
+                <button onclick="closeModal()" class="w-full text-gray-500 py-3 bg-gray-50 border border-gray-200 rounded-xl font-bold text-sm hover:bg-gray-100 transition">Kembali</button>
+            `;
+            
+            modal.classList.remove('hidden');
+        }
     </script>
 </body>
 </html>
