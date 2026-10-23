@@ -871,11 +871,11 @@
         </div>
         <!-- ================= DASHBOARD PESERTA ================= -->
         <div id="view-dashboard-user" class="hidden bg-gray-50 min-h-screen pb-24 relative">
-            <header class="bg-white shadow-sm sticky top-0 z-40 border-b">
+           <header class="bg-white shadow-sm sticky top-0 z-40 border-b">
                 <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
                     <div class="font-bold text-brand-navy flex items-center gap-2 cursor-pointer" onclick="goUserHome()">
-                        <img id="logo-img-dash" src="https://via.placeholder.com/64x64/FF7A00/FFFFFF?text=BB" class="h-8 w-auto max-w-[100px] rounded object-contain bg-white">
-                        <span class="hidden sm:inline">Dashboard <span class="text-brand-orange">Peserta</span></span>
+                        <img id="logo-img-dash" src="https://iili.io/ndS44YG.md.png" class="h-8 w-auto max-w-[100px] rounded object-contain bg-white">
+                        <span class="hidden sm:inline">PRIME <span class="text-brand-orange">By All Education</span></span>
                     </div>
                     <div class="flex items-center gap-4">
                         <span id="user-premium-badge" class="hidden bg-yellow-400 text-brand-navy text-xs font-bold px-3 py-1 rounded-full shadow-sm"><i class="fa-solid fa-crown mr-1"></i>PREMIUM</span>
@@ -935,8 +935,8 @@
                     <h3 class="font-extrabold text-brand-navy mb-4 text-sm md:text-base ml-1">Fitur Belajar</h3>
                     <div class="flex overflow-x-auto hide-scroll pb-2 gap-3 md:gap-4">
                         
-                        <button onclick="switchUserTab('classes')" class="flex-1 min-w-[140px] md:min-w-0 bg-white border border-gray-100 hover:border-brand-orange hover:shadow-md p-3 md:p-4 rounded-2xl flex items-center gap-3 md:gap-4 transition group relative">
-                            <span class="absolute -top-2 -right-2 bg-brand-orange text-white text-[9px] font-black px-2 py-0.5 rounded shadow-sm">BARU</span>
+                        <button onclick="switchUserTab('classes')" class="flex-1 min-w-[140px] md:min-w-0 bg-white border border-gray-100 hover:border-brand-orange hover:shadow-md p-3 md:p-4 rounded-2xl flex items-center gap-3 md:gap-4 transition group relative overflow-visible mt-2">
+                            <span class="absolute -top-3 right-0 bg-brand-orange text-white text-[9px] font-black px-2 py-0.5 rounded shadow-sm z-10">BARU</span>
                             <div class="w-10 h-10 md:w-12 md:h-12 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center text-gray-700 text-lg md:text-xl group-hover:bg-orange-50 group-hover:text-brand-orange transition flex-shrink-0"><i class="fa-solid fa-laptop"></i></div>
                             <span class="font-bold text-xs md:text-sm text-brand-navy text-left leading-tight">Kelas<br>Online</span>
                         </button>
@@ -2964,22 +2964,28 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                 const contentView = document.getElementById('u-content-view');
                 if (contentView) contentView.classList.remove('hidden');
 
-                // Sembunyikan semua tab dengan AMAN (nggak bakal crash kalau HTML-nya kelewat)
-                ['classes', 'tryout', 'ptn', 'profile', 'drill'].forEach(t => {
-                    const tabEl = document.getElementById('u-tab-' + t);
-                    if (tabEl) tabEl.classList.add('hidden');
-                }); 
+                // Sembunyikan SEMUA tab
+                document.getElementById('u-tab-classes')?.classList.add('hidden');
+                document.getElementById('u-tab-tryout')?.classList.add('hidden');
+                document.getElementById('u-tab-ptn')?.classList.add('hidden');
+                document.getElementById('u-tab-profile')?.classList.add('hidden');
+                document.getElementById('u-tab-drill')?.classList.add('hidden');
                 
                 // Tampilkan tab yang lagi diklik
                 const activeTab = document.getElementById('u-tab-' + tab);
                 if (activeTab) {
                     activeTab.classList.remove('hidden'); 
-                } else {
-                    console.log("Bro, HTML untuk tab " + tab + " belum dimasukin!");
                 }
                 
                 // Jalankan fungsi sesuai tab
-                if(tab === 'tryout') renderUserTryouts(); 
+                if(tab === 'tryout') {
+                    // Reset view tryout ke main view dulu biar nggak bentrok
+                    document.getElementById('tryout-history-view')?.classList.add('hidden');
+                    document.getElementById('tryout-category-detail-view')?.classList.add('hidden');
+                    document.getElementById('tryout-hero-banner')?.classList.remove('hidden');
+                    document.getElementById('tryout-main-view')?.classList.remove('hidden');
+                    renderUserTryouts('active'); 
+                }
                 if(tab === 'classes') renderUserClasses('active'); 
                 if(tab === 'drill') { initDrillDropdowns(); renderDrillModules(); } 
                 
