@@ -1633,14 +1633,21 @@
         </div>
 
         <!-- ================= DASHBOARD ADMIN ================= -->
-        <div id="view-dashboard-admin" class="hidden bg-gray-50 min-h-screen">
-            <div class="flex flex-col md:flex-row min-h-screen">
-                <aside class="w-full md:w-64 bg-brand-navy text-white flex-shrink-0 relative z-20 overflow-y-auto custom-scroll shadow-xl">
-                    <div class="p-6 text-center border-b border-white/10 bg-[#05142b]">
-                        <h2 class="font-black text-xl mb-1 text-white">Panel Admin</h2>
-                        <p id="admin-role-badge" class="text-brand-orange text-xs font-bold bg-white/10 inline-block px-2 py-1 rounded tracking-widest border border-white/20">SUPER ADMIN</p>
+        <div id="view-dashboard-admin" class="hidden bg-gray-50 h-screen overflow-hidden">
+            <div class="flex h-full w-full">
+                <!-- Overlay Mobile -->
+                <div id="admin-sidebar-overlay" onclick="toggleAdminSidebar()" class="hidden fixed inset-0 bg-black/50 z-[55] md:hidden"></div>
+
+                <!-- Sidebar Kiri -->
+                <aside id="admin-sidebar" class="bg-brand-navy text-white flex-shrink-0 z-[60] h-full overflow-y-auto custom-scroll shadow-xl transition-all duration-300 absolute md:relative w-64 md:w-64 -translate-x-full md:translate-x-0">
+                    <div class="p-6 text-center border-b border-white/10 bg-[#05142b] flex justify-between items-center md:block">
+                        <div class="w-full">
+                            <h2 class="font-black text-xl mb-1 text-white">Panel Admin</h2>
+                            <p id="admin-role-badge" class="text-brand-orange text-xs font-bold bg-white/10 inline-block px-2 py-1 rounded tracking-widest border border-white/20 mx-auto">SUPER ADMIN</p>
+                        </div>
+                        <button onclick="toggleAdminSidebar()" class="md:hidden text-white hover:text-gray-300 p-2"><i class="fa-solid fa-xmark text-2xl"></i></button>
                     </div>
-                    <nav class="flex md:flex-col gap-1 p-4 overflow-x-auto md:overflow-visible">
+                    <nav class="flex flex-col gap-1 p-4">
                         <button onclick="switchAdminTab('users')" class="nav-adm-btn flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 text-left transition w-full text-sm md:text-base whitespace-nowrap" id="nav-adm-users"><i class="fa-solid fa-users w-5"></i> Kelola Pengguna</button>
                         <button onclick="switchAdminTab('classes')" class="nav-adm-btn flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 text-left transition w-full text-sm md:text-base whitespace-nowrap" id="nav-adm-classes"><i class="fa-solid fa-video w-5"></i> Kelas Online</button>
                         <button onclick="switchAdminTab('master')" class="nav-adm-btn flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 text-left transition w-full text-sm md:text-base whitespace-nowrap" id="nav-adm-master"><i class="fa-solid fa-server w-5"></i> Master Data</button>
@@ -1652,13 +1659,20 @@
                     </nav>
                 </aside>
 
-                <main class="flex-1 p-4 md:p-8 w-full overflow-x-hidden">
-                    <div class="flex justify-between items-center mb-6 bg-white p-4 rounded-2xl shadow-sm border">
-                        <h1 class="text-xl md:text-2xl font-bold text-brand-navy" id="admin-page-title">Dashboard</h1>
+                <!-- Konten Utama Kanan -->
+                <main class="flex-1 flex flex-col h-full overflow-hidden relative w-full">
+                    <!-- Header dengan Tombol Toggle -->
+                    <div class="flex justify-between items-center bg-white p-4 shadow-sm border-b z-20 shrink-0">
+                        <div class="flex items-center gap-3">
+                            <button onclick="toggleAdminSidebar()" class="text-brand-navy hover:bg-gray-100 px-3 py-2 rounded-lg transition shadow-sm border border-gray-200" title="Tampilkan/Sembunyikan Menu"><i class="fa-solid fa-bars text-lg"></i></button>
+                            <h1 class="text-xl md:text-2xl font-bold text-brand-navy" id="admin-page-title">Dashboard</h1>
+                        </div>
                         <button onclick="logout()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-sm hover:bg-red-100 transition border border-red-100"><i class="fa-solid fa-power-off"></i> <span class="hidden md:inline">Keluar</span></button>
                     </div>
 
-                    <div id="a-tab-users" class="hidden">
+                    <!-- Area Konten (Bisa di-scroll) -->
+                    <div class="flex-1 p-4 md:p-6 overflow-y-auto custom-scroll w-full">
+                        <div id="a-tab-users" class="hidden">
                         <div class="bg-white rounded-2xl shadow-sm border p-4 md:p-6">
                             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-3 border-b pb-4">
                                 <h3 class="font-bold text-lg text-brand-navy"><i class="fa-solid fa-users-gear mr-2"></i>Daftar Pengguna</h3>
@@ -5744,6 +5758,26 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
                 });
             }
         }, 10000);
+        // Fungsi memunculkan / menyembunyikan Sidebar Admin
+        window.toggleAdminSidebar = function() {
+            const sidebar = document.getElementById('admin-sidebar');
+            const overlay = document.getElementById('admin-sidebar-overlay');
+            
+            if (window.innerWidth < 768) {
+                // Perilaku di Layar HP (Mobile)
+                sidebar.classList.toggle('-translate-x-full');
+                overlay.classList.toggle('hidden');
+            } else {
+                // Perilaku di Layar Komputer / Tablet (Desktop)
+                if (sidebar.classList.contains('md:w-64')) {
+                    sidebar.classList.remove('md:w-64');
+                    sidebar.classList.add('md:w-0', 'md:overflow-hidden'); // Sembunyikan ke kiri
+                } else {
+                    sidebar.classList.add('md:w-64');
+                    sidebar.classList.remove('md:w-0', 'md:overflow-hidden'); // Munculkan normal
+                }
+            }
+        };
     </script>
 </body>
 </html>
