@@ -1660,7 +1660,7 @@
                 </aside>
 
                 <!-- Konten Utama Kanan -->
-                <main class="flex-1 flex flex-col h-full overflow-hidden relative w-full">
+                <main class="flex-1 flex flex-col min-w-0 min-h-0 h-full relative w-full">
                     <!-- Header dengan Tombol Toggle -->
                     <div class="flex justify-between items-center bg-white p-4 shadow-sm border-b z-20 shrink-0">
                         <div class="flex items-center gap-3">
@@ -1669,6 +1669,10 @@
                         </div>
                         <button onclick="logout()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-sm hover:bg-red-100 transition border border-red-100"><i class="fa-solid fa-power-off"></i> <span class="hidden md:inline">Keluar</span></button>
                     </div>
+
+                    <!-- Area Konten (Bisa di-scroll) -->
+                    <div class="flex-1 min-h-0 p-4 md:p-6 overflow-y-auto custom-scroll w-full relative">
+                        <div id="a-tab-users" class="hidden">
 
                     <!-- Area Konten (Bisa di-scroll) -->
                     <div class="flex-1 p-4 md:p-6 overflow-y-auto custom-scroll w-full">
