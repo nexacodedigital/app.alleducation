@@ -2718,16 +2718,16 @@
                 } 
             }); 
         }
-        unction addMaster(k, id) { 
-            const v = document.getElementById(id).value.trim(); 
-            if(v && !dbMaster[k].includes(v)) { 
-                dbMaster[k].push(v); 
-                syncServerData('Master'); 
-                document.getElementById(id).value = ''; 
-                renderMasterData(); 
-                updateMasterDropdowns(true); // Langsung sinkronkan ke semua dropdown Admin
-            } 
-        }
+        function addMaster(k, id) { 
+         const v = document.getElementById(id).value.trim(); 
+         if(v && !dbMaster[k].includes(v)) { 
+             dbMaster[k].push(v); 
+             syncServerData('Master'); 
+             document.getElementById(id).value = ''; 
+             renderMasterData(); 
+             updateMasterDropdowns(true); // Langsung sinkronkan ke semua dropdown Admin
+         } 
+     }
         function updateMasterDropdowns(preserveSelection = true) { 
             const progList = (dbMaster && Array.isArray(dbMaster.programs)) ? dbMaster.programs : [];
             const epsList = (dbMaster && Array.isArray(dbMaster.episodes)) ? dbMaster.episodes : [];
