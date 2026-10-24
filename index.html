@@ -2048,11 +2048,12 @@
             
             loadLocalDB(); 
             
-            const isGasConfigured = USE_GAS_DATABASE && GAS_SCRIPT_URL && GAS_SCRIPT_URL.startsWith('http');
+           const isGasConfigured = USE_GAS_DATABASE && GAS_SCRIPT_URL && GAS_SCRIPT_URL.startsWith('http');
             if(isGasConfigured) { 
                 // Sinkronisasi berjalan di background, setelah selesai otomatis update tampilan
                 fetchAllFromGAS().then(() => {
                     applySettings();
+                    updateMasterDropdowns(true); // <-- NAH, TAMBAHKAN BARIS INI DI SINI BRO
                     if (!currentUser) renderLandingArticles();
                 }); 
             } else { 
@@ -2717,21 +2718,55 @@
                 } 
             }); 
         }
-        function addMaster(k, id) { const v = document.getElementById(id).value.trim(); if(v && !dbMaster[k].includes(v)) { dbMaster[k].push(v); syncServerData('Master'); document.getElementById(id).value=''; renderMasterData(); } }
-        
-        function updateMasterDropdowns() { 
-            let pHtml = '<option value="" disabled selected>-- Pilih --</option>';
-            let eHtml = '<option value="" disabled selected>-- Pilih --</option>';
-            let sHtml = '<option value="" disabled selected>-- Pilih --</option>';
-            dbMaster.programs.forEach(p => pHtml += `<option value="${p}">${p}</option>`); 
-            dbMaster.episodes.forEach(e => eHtml += `<option value="${e}">${e}</option>`); 
-            dbMaster.subtests.forEach(s => sHtml += `<option value="${s}">${s}</option>`);
-            
-            document.getElementById('bs-sel-prog').innerHTML = pHtml;
-            document.getElementById('ts-prog').innerHTML = pHtml;
-            document.getElementById('bs-sel-eps').innerHTML = eHtml;
-            document.getElementById('ts-eps').innerHTML = eHtml;
-            document.getElementById('bs-sel-sub').innerHTML = sHtml;
+        unction addMaster(k, id) { 
+            const v = document.getElementById(id).value.trim(); 
+            if(v && !dbMaster[k].includes(v)) { 
+                dbMaster[k].push(v); 
+                syncServerData('Master'); 
+                document.getElementById(id).value = ''; 
+                renderMasterData(); 
+                updateMasterDropdowns(true); // Langsung sinkronkan ke semua dropdown Admin
+            } 
+        }
+        function updateMasterDropdowns(preserveSelection = true) { 
+            const progList = (dbMaster && Array.isArray(dbMaster.programs)) ? dbMaster.programs : [];
+            const epsList = (dbMaster && Array.isArray(dbMaster.episodes)) ? dbMaster.episodes : [];
+            const subList = (dbMaster && Array.isArray(dbMaster.subtests)) ? dbMaster.subtests : [];
+
+            // Helper untuk mengisi <select> tanpa menghilangkan pilihan yang sedang aktif
+            const populateSelect = (elId, items, placeholder = '-- Pilih --') => {
+                const el = document.getElementById(elId);
+                if (!el) return;
+                
+                const currentVal = preserveSelection ? el.value : '';
+                let html = `<option value="" disabled ${!currentVal ? 'selected' : ''}>${placeholder}</option>`;
+                
+                // Buat daftar unik yang sudah dibersihkan spasinya
+                const cleanItems = [...new Set(items.map(x => String(x).trim()).filter(Boolean))];
+                
+                // Jika nilai yang sedang aktif belum ada di Master (misal data lama), tetap masukkan agar tidak hilang!
+                if (currentVal && !cleanItems.some(x => x.toLowerCase() === currentVal.trim().toLowerCase())) {
+                    cleanItems.unshift(currentVal.trim());
+                }
+
+                cleanItems.forEach(item => {
+                    const isSelected = currentVal && item.toLowerCase() === currentVal.trim().toLowerCase();
+                    html += `<option value="${item}" ${isSelected ? 'selected' : ''}>${item}</option>`;
+                });
+                
+                el.innerHTML = html;
+                if (currentVal) {
+                    const matched = cleanItems.find(x => x.toLowerCase() === currentVal.trim().toLowerCase());
+                    if (matched) el.value = matched;
+                }
+            };
+
+            populateSelect('bs-sel-prog', progList, '-- Pilih Program --');
+            populateSelect('ts-prog', progList, '-- Pilih Program / Kategori --');
+            populateSelect('ac-prog', progList, '-- Pilih Program / Kategori --');
+            populateSelect('bs-sel-eps', epsList, '-- Pilih Episode --');
+            populateSelect('ts-eps', epsList, '-- Pilih Episode --');
+            populateSelect('bs-sel-sub', subList, '-- Pilih Mata Pelajaran --');
         }
 
         let activeEditMod = null;
@@ -2806,13 +2841,23 @@
             }
         }
 
-        function editModuleInfo(id) {
+       function editModuleInfo(id) {
             const m = dbModules.find(x => x.id === id);
             if(!m) return;
+            
+            // Pastikan opsi dropdown terisi lengkap sebelum mengeset value
+            updateMasterDropdowns(true);
+
+            // Jika program/episode modul belum ada di Master, tambahkan sementara agar tetap muncul di dropdown
+            if (m.program && !dbMaster.programs.includes(m.program)) dbMaster.programs.push(m.program);
+            if (m.episode && !dbMaster.episodes.includes(m.episode)) dbMaster.episodes.push(m.episode);
+            if (m.subtest && !dbMaster.subtests.includes(m.subtest)) dbMaster.subtests.push(m.subtest);
+            updateMasterDropdowns(false);
+
             document.getElementById('bs-mod-id').value = m.id;
-            document.getElementById('bs-sel-prog').value = m.program;
-            document.getElementById('bs-sel-eps').value = m.episode;
-            document.getElementById('bs-sel-sub').value = m.subtest;
+            document.getElementById('bs-sel-prog').value = m.program.trim();
+            document.getElementById('bs-sel-eps').value = m.episode.trim();
+            document.getElementById('bs-sel-sub').value = m.subtest.trim();
             document.getElementById('bs-inp-dur').value = m.duration;
             document.getElementById('bs-sel-type').value = m.modType || 'DRILL';
             document.getElementById('bs-sel-access').value = m.access || 'FREE';
@@ -2822,7 +2867,6 @@
             document.getElementById('bs-mod-cancel').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
         function resetModuleForm() {
             document.getElementById('bs-mod-id').value = '';
             document.getElementById('form-create-module').reset();
@@ -3030,15 +3074,35 @@
         }
 
         function loadModulesForTryout() { 
-            const prog = document.getElementById('ts-prog').value; const eps = document.getElementById('ts-eps').value; 
+            const prog = (document.getElementById('ts-prog').value || '').trim().toLowerCase(); 
+            const eps = (document.getElementById('ts-eps').value || '').trim().toLowerCase(); 
             const container = document.getElementById('ts-module-list'); 
-            // Filter: Cuma ambil modul yang BUKAN DRILL (Khusus Tryout)
-const filtered = dbModules.filter(m => m.program === prog && m.episode === eps && m.modType !== 'DRILL');
-            if(filtered.length === 0) { container.innerHTML = '<span class="text-sm text-red-500 italic font-medium bg-red-50 p-2 rounded w-full">Tidak ada modul Bank Soal untuk parameter ini.</span>'; return; } 
+            
+            if (!prog || !eps) {
+                container.innerHTML = '<span class="text-sm text-gray-500 italic">Pilih Program & Episode terlebih dahulu.</span>';
+                return;
+            }
+
+            // Simpan modul yang sudah tercentang sebelumnya agar tidak hilang
+            const checkedIds = Array.from(document.querySelectorAll('.cb-ts-mod:checked')).map(cb => cb.value);
+
+            // Filter aman dari spasi / huruf besar-kecil
+            const filtered = dbModules.filter(m => 
+                (m.program || '').trim().toLowerCase() === prog && 
+                (m.episode || '').trim().toLowerCase() === eps && 
+                m.modType !== 'DRILL'
+            );
+            
+            if(filtered.length === 0) { 
+                container.innerHTML = '<span class="text-sm text-red-500 italic font-medium bg-red-50 p-2 rounded w-full">Tidak ada modul Bank Soal (Tipe Tryout) untuk Program & Episode ini.</span>'; 
+                calcToTime();
+                return; 
+            } 
             
             let htmlStr = '';
             filtered.forEach(m => { 
-                htmlStr += `<label class="flex items-center gap-3 bg-white p-3 border rounded-xl shadow-sm cursor-pointer hover:border-brand-orange transition"><input type="checkbox" class="cb-ts-mod w-5 h-5 accent-brand-orange rounded" value="${m.id}" data-dur="${m.duration}" onchange="calcToTime()"><div class="flex-1"><div class="text-sm font-bold text-gray-700 leading-tight">${m.subtest}</div><div class="text-[10px] text-gray-400 font-bold mt-1 bg-gray-50 inline-block px-1 rounded">${m.moduleCode||'MOD'} | ${m.duration} Min</div></div></label>`; 
+                const isChecked = checkedIds.includes(m.id) ? 'checked' : '';
+                htmlStr += `<label class="flex items-center gap-3 bg-white p-3 border rounded-xl shadow-sm cursor-pointer hover:border-brand-orange transition"><input type="checkbox" class="cb-ts-mod w-5 h-5 accent-brand-orange rounded" value="${m.id}" data-dur="${m.duration}" ${isChecked} onchange="calcToTime()"><div class="flex-1"><div class="text-sm font-bold text-gray-700 leading-tight">${m.subtest}</div><div class="text-[10px] text-gray-400 font-bold mt-1 bg-gray-50 inline-block px-1 rounded">${m.moduleCode||'MOD'} | ${m.duration} Min</div></div></label>`; 
             }); 
             container.innerHTML = htmlStr;
             calcToTime(); 
@@ -3046,7 +3110,36 @@ const filtered = dbModules.filter(m => m.program === prog && m.episode === eps &
         function calcToTime() { let total = 0; document.querySelectorAll('.cb-ts-mod:checked').forEach(cb => total += parseInt(cb.getAttribute('data-dur'))); document.getElementById('ts-total-time').innerText = total; }
         function resetTryoutForm() { document.getElementById('form-setup-tryout').reset(); document.getElementById('ts-id').value = ''; document.getElementById('ts-form-title').innerHTML = '<i class="fa-solid fa-gears mr-2"></i>Form Setup Publikasi Tryout'; document.getElementById('ts-btn-submit').innerText = 'Terbitkan Tryout ke Peserta'; document.getElementById('ts-btn-cancel').classList.add('hidden'); document.getElementById('ts-module-list').innerHTML = ''; document.getElementById('ts-total-time').innerText = "0"; }
         function saveTryoutSetup(e) { e.preventDefault(); const mods = Array.from(document.querySelectorAll('.cb-ts-mod:checked')).map(cb => cb.value); if(mods.length === 0) return showModal('Gagal', 'Ceklis minimal satu Modul Soal.', 'error'); const id = document.getElementById('ts-id').value || 'TO' + Date.now(); const toData = { id: id, program: document.getElementById('ts-prog').value, episode: document.getElementById('ts-eps').value, modules: mods, img: document.getElementById('ts-img').value || 'https://via.placeholder.com/400x200/071B3A/FFFFFF?text=Tryout', start: document.getElementById('ts-start').value, end: document.getElementById('ts-end').value, relScore: document.getElementById('ts-rel-score').value, type: document.getElementById('ts-type').value }; const idx = dbTryouts.findIndex(x => x.id === id); if(idx > -1) dbTryouts[idx] = toData; else dbTryouts.push(toData); syncServerData('Tryouts'); resetTryoutForm(); renderTryoutHistory(); }
-        function editTryout(id) { const t = dbTryouts.find(x => x.id === id); if(!t) return; document.getElementById('ts-id').value = t.id; document.getElementById('ts-prog').value = t.program; document.getElementById('ts-eps').value = t.episode; document.getElementById('ts-img').value = t.img; document.getElementById('ts-start').value = t.start.slice(0,16); document.getElementById('ts-end').value = t.end.slice(0,16); document.getElementById('ts-rel-score').value = t.relScore.slice(0,16); document.getElementById('ts-type').value = t.type; document.getElementById('ts-form-title').innerHTML = '<i class="fa-solid fa-edit mr-2 text-brand-orange"></i>Edit Tryout Terpublikasi'; document.getElementById('ts-btn-submit').innerText = 'Simpan Perubahan'; document.getElementById('ts-btn-cancel').classList.remove('hidden'); loadModulesForTryout(); setTimeout(() => { t.modules.forEach(mid => { const cb = document.querySelector(`.cb-ts-mod[value="${mid}"]`); if(cb) cb.checked = true; }); calcToTime(); }, 100); window.scrollTo(0,0); }
+        function editTryout(id) { 
+            const t = dbTryouts.find(x => x.id === id); 
+            if(!t) return; 
+
+            if (t.program && !dbMaster.programs.includes(t.program)) dbMaster.programs.push(t.program);
+            if (t.episode && !dbMaster.episodes.includes(t.episode)) dbMaster.episodes.push(t.episode);
+            updateMasterDropdowns(false);
+
+            document.getElementById('ts-id').value = t.id; 
+            document.getElementById('ts-prog').value = (t.program || '').trim(); 
+            document.getElementById('ts-eps').value = (t.episode || '').trim(); 
+            document.getElementById('ts-img').value = t.img; 
+            document.getElementById('ts-start').value = t.start.slice(0,16); 
+            document.getElementById('ts-end').value = t.end.slice(0,16); 
+            document.getElementById('ts-rel-score').value = t.relScore.slice(0,16); 
+            document.getElementById('ts-type').value = t.type; 
+            document.getElementById('ts-form-title').innerHTML = '<i class="fa-solid fa-edit mr-2 text-brand-orange"></i>Edit Tryout Terpublikasi'; 
+            document.getElementById('ts-btn-submit').innerText = 'Simpan Perubahan'; 
+            document.getElementById('ts-btn-cancel').classList.remove('hidden'); 
+            
+            loadModulesForTryout(); 
+            setTimeout(() => { 
+                t.modules.forEach(mid => { 
+                    const cb = document.querySelector(`.cb-ts-mod[value="${mid}"]`); 
+                    if(cb) cb.checked = true; 
+                }); 
+                calcToTime(); 
+            }, 50); 
+            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+        }
         function renderTryoutHistory() { let html = ''; dbTryouts.forEach((t, idx) => { const pCount = dbResults.filter(r => r.toId === t.id).length; html += `<tr class="border-b hover:bg-gray-50"><td class="py-3 px-3"><div class="font-bold text-brand-navy">${t.program} - ${t.episode}</div><div class="text-[10px] ${t.type==='PREMIUM'?'bg-yellow-100 text-yellow-700 border-yellow-300':'bg-gray-100 border-gray-300 text-gray-600'} px-2 py-0.5 rounded border inline-block mt-1 font-bold tracking-wider">${t.type}</div></td><td class="py-3 px-3 text-xs text-gray-600 font-medium">${new Date(t.start).toLocaleString('id-ID',{dateStyle:'short',timeStyle:'short'})} <br> <span class="text-gray-400">s/d</span> <br> ${new Date(t.end).toLocaleString('id-ID',{dateStyle:'short',timeStyle:'short'})}</td><td class="py-3 px-3 text-center"><span class="font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">${pCount} Orang</span></td><td class="py-3 px-3 text-center"><button onclick="showLeaderboard('${t.id}')" class="bg-blue-100 text-blue-700 p-1.5 rounded hover:bg-blue-200 mr-1" title="Leaderboard"><i class="fa-solid fa-trophy"></i></button> <button onclick="editTryout('${t.id}')" class="bg-yellow-100 text-yellow-700 p-1.5 rounded hover:bg-yellow-200 mr-1" title="Edit"><i class="fa-solid fa-edit"></i></button> <button onclick="deleteTryout(${idx})" class="bg-red-100 text-red-700 p-1.5 rounded hover:bg-red-200" title="Hapus"><i class="fa-solid fa-trash"></i></button></td></tr>`; }); document.getElementById('adm-tbody-to-history').innerHTML = html || '<tr><td colspan="4" class="text-center py-6 text-gray-500 bg-white">Belum ada riwayat tryout.</td></tr>'; }
         function deleteTryout(idx) { if(confirm("Yakin hapus tryout ini? Data pengerjaan peserta tidak akan hilang.")) { dbTryouts.splice(idx, 1); syncServerData('Tryouts'); renderTryoutHistory(); } }
        function showLeaderboard(toId) { 
