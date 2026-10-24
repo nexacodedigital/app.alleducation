@@ -1669,11 +1669,7 @@
                         </div>
                         <button onclick="logout()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-sm hover:bg-red-100 transition border border-red-100"><i class="fa-solid fa-power-off"></i> <span class="hidden md:inline">Keluar</span></button>
                     </div>
-
-                    <!-- Area Konten (Bisa di-scroll) -->
-                    <div class="flex-1 min-h-0 p-4 md:p-6 overflow-y-auto custom-scroll w-full relative">
-                        <div id="a-tab-users" class="hidden">
-
+                    
                     <!-- Area Konten (Bisa di-scroll) -->
                     <div class="flex-1 p-4 md:p-6 overflow-y-auto custom-scroll w-full">
                         <div id="a-tab-users" class="hidden">
@@ -1777,7 +1773,6 @@
                                         <button type="button" id="bs-mod-cancel" onclick="resetModuleForm()" class="hidden bg-gray-200 text-gray-700 px-2 py-2 rounded-xl font-bold w-full hover:bg-gray-300 transition text-xs">Batal</button>
                                     </div>
                                 </form>
-                            </div>
                             </div>
                             
                             <div class="flex justify-between items-center mb-4 gap-4">
@@ -1943,13 +1938,13 @@
                                     <p class="text-xs text-yellow-700 mb-3">Unduh data Anda untuk keamanan.</p>
                                     <button onclick="downloadLocalDB()" class="w-full bg-yellow-400 text-yellow-900 px-4 py-2.5 rounded-lg font-bold shadow-sm hover:bg-yellow-500 transition text-sm">Download .JSON</button>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-        </div>
-    </div>
+                          </div>
+                      </div>
+                  </div>
+                  </div> <!-- <-- Pastikan penutup Area Konten ini ada tepat di atas </main> -->
+              </main>
+          </div>
+      </div>
 
     <!-- Firebase SDK Setup Placeholder -->
     <!-- <script type="module">
